@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="url_post_regist" type="id">http://120.25.97.250:8008/user/info/regiser</item>
+</resources>

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">FinalProject</string>
+    <string name="txt_skip">跳过</string>
+    <string name="firstpage">首页</string>
+    <string name="mepage">我</string>
+    <string name="grouppage">小众</string>
+    <string name="confirm">确定</string>
+    <string name="title_activity_login">Sign in</string>
+    <!-- url -->
+    <string name="url_get_regist_code">http://120.25.97.250:8008/user/info/sendVerificationCode</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="fanhui">返回</string>
+    <string name="queding">确定</string>
+    <string name="prompt_password_again">password again</string>
+    <string name="prompt_nick_name">nick name</string>
+    <string name="prompt_register_code">regist code</string>
+    <string name="action_regist_in">regist in</string>
+    <string name="hint_mine_titles">我的新闻</string>
+    <string name="hint_total_titles">可选</string>
+    <string name="prompt_request_code">invite code (optional)</string>
+    <string name="get_register_code">获取注册码</string>
+    <string name="prompt_history_record">历史记录</string>
+    <string name="url_post_regist">http://120.25.97.250:8008/user/info/regiser</string>
+    <string name="url_get_base_news_type">http://120.25.97.250:8008/new/info/getTouristsNewType?rows=5</string>
+</resources>

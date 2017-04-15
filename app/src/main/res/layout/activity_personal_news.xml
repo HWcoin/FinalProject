@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:text="@string/hint_mine_titles"
+            android:layout_height="20dp" />
+        <GridView
+            android:id="@+id/gv_my_titles"
+            android:numColumns="3"
+            android:verticalSpacing="8dp"
+            android:horizontalSpacing="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+        </GridView>
+        <TextView
+            android:layout_width="match_parent"
+            android:text="@string/hint_total_titles"
+            android:layout_height="20dp" />
+
+        <GridView
+            android:id="@+id/gv_total_titles"
+            android:numColumns="3"
+            android:verticalSpacing="8dp"
+            android:horizontalSpacing="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+        </GridView>
+    </LinearLayout>
+
+</ScrollView>
