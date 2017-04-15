@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,7 +22,6 @@ import java.util.TimerTask;
 
 import spencer.cn.finalproject.acview.BaseActivity;
 import spencer.cn.finalproject.acview.MainSceneActivity;
-import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.BaseNewType;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.LocalDataManager;
@@ -64,7 +62,6 @@ public class MainActivity extends BaseActivity {
                 String cofing = (String) msg.obj;
                 BaseNewType requestNews = parser.fromJson(cofing, BaseNewType.class);
                 LocalDataManager.storeBaseConfig(MainActivity.this, requestNews);
-                loadBaseConfig(requestNews);
 //                closeGuildPages();
             }
         }
@@ -125,8 +122,6 @@ public class MainActivity extends BaseActivity {
     }
     //////////////////////////////////////////////////////////////////////////欢迎页
     private void initWelcomeOpenViews(){
-        BaseNewType baseNewType = LocalDataManager.loadBaseConfig(this);
-        loadBaseConfig(baseNewType);
 
         this.setViewVisibility(View.GONE);
         this.switcher.setImageResource(ads.get(0));
@@ -162,13 +157,6 @@ public class MainActivity extends BaseActivity {
             });
         }
 
-    }
-    ////////////////加载游客配置
-    private void loadBaseConfig(BaseNewType baseNewType){
-        if (baseNewType!=null && baseNewType.getData().size()>0){
-            BaseApplication application = (BaseApplication) getApplication();
-            application.setBaseNewType(baseNewType);
-        }
     }
     ////////////////////////////////////////////////////////////////////////////////
 
