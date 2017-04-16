@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import spencer.cn.finalproject.acview.BaseActivity;
 import spencer.cn.finalproject.dojo.BaseNewType;
+import spencer.cn.finalproject.dojo.LoginBean;
 
 /**
  * Created by Administrator on 2017/3/4.
@@ -14,6 +15,7 @@ import spencer.cn.finalproject.dojo.BaseNewType;
 public class BaseApplication extends Application {
     private ArrayList<BaseActivity> allActivity = new ArrayList<>();
     private BaseNewType baseNewType;
+    private static LoginBean loginBean;
 
     public BaseNewType getBaseNewType() {
         return baseNewType;
@@ -32,5 +34,17 @@ public class BaseApplication extends Application {
     //activity出栈
     public ArrayList<BaseActivity> getAllActivity(){
         return allActivity;
+    }
+
+    public void setAllActivity(ArrayList<BaseActivity> allActivity) {
+        this.allActivity = allActivity;
+    }
+
+    public static LoginBean getLoginBean() {
+        return BaseApplication.loginBean;
+    }
+
+    public static void setLoginBean(LoginBean loginBean) {
+        BaseApplication.loginBean = loginBean;
     }
 }

@@ -1,5 +1,6 @@
 package spencer.cn.finalproject.acview;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,7 +19,9 @@ import com.google.gson.GsonBuilder;
 import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
+import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.GsonNews;
+import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
@@ -27,25 +30,32 @@ public class LoginActivity extends AppCompatActivity {
     private int curStatus;
     private ViewGroup loginLayout;
     private ViewGroup registLayout;
-    Gson parser = new GsonBuilder().create();
+    Gson parser = new GsonBuilder().serializeNulls().create();
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 0xffa:
-                    String gsonStrings = (String) msg.obj;
-
-                    GsonNews requestNews = parser.fromJson(gsonStrings, GsonNews.class);
-                    Toast.makeText(LoginActivity.this, requestNews.getMessage(), Toast.LENGTH_LONG).show();
-                    break;
-                case  0xffb:
-                    String registStrings = (String) msg.obj;
-                    GsonNews registObj = parser.fromJson(registStrings, GsonNews.class);
-                    Toast.makeText(LoginActivity.this, registObj.getMessage(), Toast.LENGTH_LONG).show();
-                    if (registObj.getCode() == 200){
-                        finish();
-                    }
-                    break;
+            if (msg.what == 120) {
+                String gsonStrings = (String) msg.obj;
+                GsonNews registResp = parser.fromJson(gsonStrings, GsonNews.class);
+                Toast.makeText(LoginActivity.this, registResp.getMessage(), Toast.LENGTH_LONG).show();
+            }else if (msg.what == 0xffb){
+                String registStrings = (String) msg.obj;
+                GsonNews registObj = parser.fromJson(registStrings, GsonNews.class);
+                Toast.makeText(LoginActivity.this, registObj.getMessage(), Toast.LENGTH_LONG).show();
+                if (registObj.getCode() == 200){
+                    changeStatus(PublicVar.LOGIN_STATUS);
+                }
+            }else if (msg.what == 0xffc) {
+                String loginStrings = (String) msg.obj;
+                LoginBean loginBean = parser.fromJson(loginStrings, LoginBean.class);
+                if (loginBean.getCode() == 200) {
+                    BaseApplication application = (BaseApplication) getApplication();
+                    application.setLoginBean(loginBean);
+                    storeUserInfo(loginBean);
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "登陆超时", Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -92,6 +102,12 @@ public class LoginActivity extends AppCompatActivity {
             registLayout.setVisibility(ViewGroup.VISIBLE);
         }
     }
+    private void storeUserInfo(LoginBean loginBean){
+        SharedPreferences settings = getSharedPreferences(PublicVar.SHARED_FILE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(PublicVar.ACCESSTOKEN, loginBean.getData().getAccessToken());
+        editor.commit();
+    }
     private void initLoginViews() {
         login_email = (TextInputLayout) findViewById(R.id.login_mail);
         login_pass = (TextInputLayout) findViewById(R.id.login_password);
@@ -104,6 +120,21 @@ public class LoginActivity extends AppCompatActivity {
                 String errMsg = "不能为空";
                 if (checkText(login_email, errMsg)) return;
                 if (checkText(login_pass, errMsg)) return;
+                String url = getResources().getString(R.string.url_post_login);
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("deviceId", "1");
+                params.put("email", login_email.getEditText().getText().toString());
+                String pass = login_pass.getEditText().getText().toString();
+                params.put("password", login_pass.getEditText().getText().toString());
+                NetWorkManager.doPost(url, params, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Message msg = new Message();
+                        msg.what = 0xffc;
+                        msg.obj = gstring;
+                        handler.sendMessage(msg);
+                    }
+                });
             }
         });
 
@@ -173,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onNewsReturn(String gstring) {
                             Message msg = new Message();
-                            msg.what = 0xffa;
+                            msg.what = 120;
                             msg.obj = gstring;
                             handler.sendMessage(msg);
                         }

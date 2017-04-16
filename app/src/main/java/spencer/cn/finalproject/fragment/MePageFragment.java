@@ -1,5 +1,6 @@
 package spencer.cn.finalproject.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.acview.HistoryDetailActivity;
 import spencer.cn.finalproject.acview.LoginActivity;
+import spencer.cn.finalproject.application.BaseApplication;
+import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.util.PublicVar;
 
 /**
@@ -25,6 +28,7 @@ public class MePageFragment extends Fragment {
     private ImageView icon;
     private Button login;
     private Button history;
+    private Context context;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,13 @@ public class MePageFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 
     @Override
@@ -40,7 +51,7 @@ public class MePageFragment extends Fragment {
         View view = inflater.inflate(R.layout.page_me_layout, container,false);
         this.initViews(view);
         this.setInterreactions();
-
+        this.refreshDatas();
         return view;
     }
 
@@ -53,6 +64,19 @@ public class MePageFragment extends Fragment {
         icon = (ImageView) v.findViewById(R.id.iv_player);
         login = (Button) v.findViewById(R.id.btn_name);
         history = (Button) v.findViewById(R.id.btn_me_history_record);
+
+
+    }
+    public void refreshDatas(){
+
+        LoginBean loginBean = BaseApplication.getLoginBean();
+        if (loginBean!=null && loginBean.getData()!=null && loginBean.getData().getUser()!=null){
+            String username = loginBean.getData().getUser().getUsername();
+            username = username==null ? "null" : username;
+            login.setText(username);
+        }else {
+            login.setText("请登录");
+        }
     }
 
     //控件行为

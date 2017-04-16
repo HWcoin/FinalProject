@@ -1,7 +1,5 @@
 package spencer.cn.finalproject.manager;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,7 +17,8 @@ import spencer.cn.finalproject.iexport.NewsCallBack;
  */
 
 public class NetWorkManager {
-
+    public static final MediaType JSON
+            = MediaType.parse("application/json; charset=utf-8");
 
     ////////////////////////////////////请求新闻
     public static void requestNews(final String head, final String type, final NewsCallBack callBack){
@@ -69,15 +68,15 @@ public class NetWorkManager {
                 String str = NetWorkManager.maptogstring(params);
                 RequestBody body = RequestBody.create(JSON, str);
                 Request request = new Request.Builder()
-                        .url(url)
                         .post(body)
+                        .url(url)
                         .build();
                 Response response = null;
                 try {
                     response = client.newCall(request).execute();
-                    Log.e("xxxxx",response.body().string());
+                    String result = response.body().string();
                     if (callBack != null){
-                        callBack.onNewsReturn(response.body().string());
+                        callBack.onNewsReturn(result);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -109,87 +108,6 @@ public class NetWorkManager {
             }
         }.start();
     }
-    /////////////////////////////////////////////////////////////注册
-    public static void register(final HashMap<String, String> params){
-        new Thread(){
-        String url = "http://120.25.97.250:8008/user/info/regiser";
-        @Override
-            public void run() {
-                OkHttpClient client = new OkHttpClient();
-                String str = NetWorkManager.maptogstring(params);
-//                String str = "{\"email\":\"1096025179@qq.com\"," +
-//                        "\"password\":\"123456\"," +
-//                        "\"username\":\"spencer\"," +
-//                        "\"verificationCode\":\"975190\"}";
-                RequestBody body = RequestBody.create(JSON, str);
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(body)
-                        .build();
-                Response response = null;
-                try {
-                    response = client.newCall(request).execute();
-                    Log.e("xxxxx",response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-            }
-        }.start();
-    }
-    public static final MediaType JSON
-            = MediaType.parse("application/json; charset=utf-8");
 
-    ////////////////////////////////////////////////////获取注册码
-    public static void getRegistCode(final HashMap<String, String> params){
-        new Thread(){
-            String url = "http://120.25.97.250:8008/user/info/sendVerificationCode";
-            @Override
-            public void run() {
-                OkHttpClient client = new OkHttpClient();
-                String str = NetWorkManager.maptogstring(params);
-//                String str = "{\"codeType\":\"1\",\"email\":\"1096025179@qq.com\"}";
-                RequestBody body = RequestBody.create(JSON, str);
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(body)
-                        .build();
-                Response response = null;
-                try {
-                    response = client.newCall(request).execute();
-                    Log.e("xxxxx",response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }.start();
-
-    }
-
-    /////////////////////////////////////////////////////////////登陆
-    public static void login(){
-        new Thread(){
-            String url = "http://120.25.97.250:8008/user/info/login";
-            @Override
-            public void run() {
-                OkHttpClient client = new OkHttpClient();
-                String str = "{\"deviceId\":\"123\"," +
-                        "\"email\":\"1096025179@qq.com\"," +
-                        "\"password\":\"123456\"}";
-                RequestBody body = RequestBody.create(JSON, str);
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(body)
-                        .build();
-                Response response = null;
-                try {
-                    response = client.newCall(request).execute();
-                    Log.e("xxxxx",response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
 }

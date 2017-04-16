@@ -39,7 +39,7 @@ public class LocalDataManager {
 
         ObjectInputStream ois = null;
         try {
-             ois = new ObjectInputStream(new FileInputStream(cache));
+            ois = new ObjectInputStream(new FileInputStream(cache));
             GsonNews gsonNews = (GsonNews) ois.readObject();
             if (gsonNews != null){
                 LocalDataManager.caches = gsonNews.getData();

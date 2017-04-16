@@ -34,4 +34,6 @@
     <string name="prompt_history_record">历史记录</string>
     <string name="url_post_regist">http://120.25.97.250:8008/user/info/regiser</string>
     <string name="url_get_base_news_type">http://120.25.97.250:8008/new/info/getTouristsNewType?rows=5</string>
+    <string name="url_post_login">http://120.25.97.250:8008/user/info/login</string>
+    <string name="url_post_auto_login">http://120.25.97.250:8008/user/info/autoLogin</string>
 </resources>

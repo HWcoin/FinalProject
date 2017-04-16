@@ -5,20 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -39,27 +33,33 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
     private ViewPager pages;
     private Toolbar toolbar;
     private ArrayList<Fragment> fragmentList;
+    FunctionsFragmentAdapter fragmentAdapter;
 
-    Gson parser = new GsonBuilder().create();
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-
-        }
-    };
+//    Gson parser = new GsonBuilder().create();
+//    private Handler handler = new Handler(){
+//        @Override
+//        public void handleMessage(Message msg) {
+//
+//        }
+//    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_scene);
         initViews();
-//        LocalDataManager.loadCaches(this);
-        BaseApplication application = (BaseApplication) getApplication();
-        BaseNewType baseNewType = application.getBaseNewType();
-        Log.e("xxxxxxxxxxxxxxxx111", "null:"+(baseNewType==null));
+        LocalDataManager.loadCaches(this);
+        BaseNewType baseNewType = LocalDataManager.loadBaseConfig(this);
 
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        if (fragmentAdapter!=null && BaseApplication.getLoginBean()!=null){
+//            MePageFragment me = (MePageFragment) fragmentList.get(2);
+//            me.refreshDatas();
+//        }
+    }
 
     private void initViews() {
         this.fragmentList = new ArrayList<>();
@@ -93,7 +93,7 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
             }
         }
 
-        FunctionsFragmentAdapter fragmentAdapter = new FunctionsFragmentAdapter(getSupportFragmentManager(), fragmentList, titles);
+        fragmentAdapter = new FunctionsFragmentAdapter(getSupportFragmentManager(), fragmentList, titles);
         this.pages.setAdapter(fragmentAdapter);//给ViewPager设置适配器
         this.tabMain.setupWithViewPager(pages);//将TabLayout和ViewPager关联起来。
         this.tabMain.setTabsFromPagerAdapter(fragmentAdapter);//给Tabs设置适配器
@@ -120,9 +120,8 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
         this.toolbar = (Toolbar) findViewById(R.id.tb_toolbar);
         setSupportActionBar(this.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("首页");
-        toolbar.setSubtitle("副标题");
-//        toolbar.setLogo(R.mipmap.ic_launcher);
+        toolbar.setTitle("小众");
+//        toolbaLogo(R.mipmap.ic_launcher);
         toolbar.setNavigationIcon(android.R.drawable.ic_input_delete);
 //        Toolbar可以设置 Title（主标题），Subtitle（副标题），Logo（logo图标）NavigationIcon（导航按钮）。
     }

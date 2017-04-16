@@ -10,7 +10,7 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 import spencer.cn.finalproject.R;
-import spencer.cn.finalproject.dojo.TitleInfos;
+import spencer.cn.finalproject.dojo.NewType;
 import spencer.cn.finalproject.iexport.ISelectMyTitle;
 import spencer.cn.finalproject.iexport.ISelectTotalTitle;
 import spencer.cn.finalproject.util.PublicVar;
@@ -21,12 +21,12 @@ import spencer.cn.finalproject.util.PublicVar;
 
 public class TitlesAdapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<TitleInfos> dataSource;
+    private ArrayList<NewType> dataSource;
     private int _type;
     private ISelectMyTitle myCallBack;
     private ISelectTotalTitle totalCallBack;
 
-    public TitlesAdapter(Context mContext, ArrayList<TitleInfos> dataSource, int _type){
+    public TitlesAdapter(Context mContext, ArrayList<NewType> dataSource, int _type){
         this.mContext = mContext;
         this.dataSource = dataSource;
         this._type = _type;
@@ -56,7 +56,7 @@ public class TitlesAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final TitleInfos selectItem = dataSource.get(position);
+        final NewType selectItem = dataSource.get(position);
         TitleHolder holder;
         if (convertView == null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_titles, parent, false);
@@ -68,7 +68,7 @@ public class TitlesAdapter extends BaseAdapter {
             holder = (TitleHolder) convertView.getTag();
         }
 
-        holder.title.setText(selectItem.getName());
+        holder.title.setText(selectItem.getTypeName());
         if (selectItem.isShow()){
             holder.delete.setVisibility(View.VISIBLE);
         }else{

@@ -34,6 +34,7 @@ public class PublicVar {
 
     public static String SHARED_FILE = "local_shared";
     public static String IS_FIRST_OPEN = "isFirst";
+    public static String ACCESSTOKEN = "accesstoken";
 
 
     public static int LOGIN_STATUS = 1;

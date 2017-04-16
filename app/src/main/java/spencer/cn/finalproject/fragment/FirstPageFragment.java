@@ -6,17 +6,20 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.FunctionsFragmentAdapter;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.BaseNewType;
+import spencer.cn.finalproject.dojo.LoginBean;
+import spencer.cn.finalproject.dojo.NewType;
+import spencer.cn.finalproject.manager.LocalDataManager;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -27,7 +30,6 @@ public class FirstPageFragment extends Fragment {
     private TabLayout subTab;
     private ViewPager subPages;
     public static String[] news_types = {
-            "贱","贱","贱","贱","贱","贱","贱","贱","贱"
     };
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,15 +69,20 @@ public class FirstPageFragment extends Fragment {
         initViewPage(v);
     }
     private void initTabsDatas(){
+        BaseNewType baseNewType = LocalDataManager.loadBaseConfig(getActivity());
         BaseApplication application = (BaseApplication) getActivity().getApplication();
-        BaseNewType baseNewType = application.getBaseNewType();
-        Log.w("xxxxxxxxxxxxxxxx", "null:"+(baseNewType==null));
-        news_types = new String[baseNewType.getData().size()];
-        for (int i=0; i < baseNewType.getData().size(); i++){
-            news_types[i] = baseNewType.getData().get(i).getTypeName();
-        }
-        for (int i=0; i < news_types.length; i++){
-            Log.w("xxxxx", news_types[i]);
+        LoginBean loginBean = application.getLoginBean();
+        if (loginBean!=null){
+            List<NewType> types = loginBean.getData().getUserConfig().getNewTypes();
+            news_types = new String[types.size()];
+            for (int i=0; i < types.size(); i++){
+                news_types[i] = types.get(i).getTypeName();
+            }
+        }else{
+            news_types = new String[baseNewType.getData().size()];
+            for (int i=0; i < baseNewType.getData().size(); i++){
+                news_types[i] = baseNewType.getData().get(i).getTypeName();
+            }
         }
     }
 
@@ -95,6 +102,7 @@ public class FirstPageFragment extends Fragment {
 
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         for (int i = 0; i < news_types.length; i++) {
+//            NewsTabFragment fragment = NewsTabFragment.newInstance(news_types[i]);
             NewsTabFragment fragment = new NewsTabFragment();
             fragmentList.add(fragment);
         }

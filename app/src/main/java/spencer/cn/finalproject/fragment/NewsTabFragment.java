@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.ItemsAdapter;
 import spencer.cn.finalproject.dojo.GsonNews;
+import spencer.cn.finalproject.dojo.NewType;
 import spencer.cn.finalproject.dojo.News;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.NetWorkManager;
-import spencer.cn.finalproject.util.PublicVar;
 
 /**
  * Created by Administrator on 2017/3/6.
@@ -31,6 +31,7 @@ import spencer.cn.finalproject.util.PublicVar;
 public class NewsTabFragment extends Fragment {
     private RecyclerView newsItems;
     private ItemsAdapter newsAdapter;
+    private NewType _type;
 
     private Handler newsHandler = new Handler(){
         @Override
@@ -55,12 +56,13 @@ public class NewsTabFragment extends Fragment {
 
 
     }
-    public static NewsTabFragment newInstance(int type){
+    public static NewsTabFragment newInstance(NewType type){
         NewsTabFragment fragment = new NewsTabFragment();
-        Bundle b = new Bundle();
-        b.putInt(PublicVar.NEWS_CATEGORY, type);
-        fragment.setArguments(b);
+        fragment.setType(type);
         return  fragment;
+    }
+    public void setType(NewType type){
+        this._type = type;
     }
 
     @Override
