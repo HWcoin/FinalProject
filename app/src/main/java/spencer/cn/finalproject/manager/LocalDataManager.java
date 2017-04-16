@@ -176,4 +176,68 @@ public class LocalDataManager {
             }
         }
     }
+
+
+    /**
+     * 从缓存中加载新闻数据,加载到成员变量datas
+     */
+    public static GsonNews popFromCache(Context mContext, String filename){
+        File cache = new File(mContext.getFilesDir(), filename);
+        if (!cache.exists()){
+            return null;
+        }else {
+            ObjectInputStream fis = null;
+            try {
+                fis = new ObjectInputStream(new FileInputStream(cache));
+                GsonNews gsonNews = (GsonNews) fis.readObject();
+                return gsonNews;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }finally {
+                if (fis != null){
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    /**
+     * 把新的新闻数据加入缓存
+     */
+    public static void  pullToCache(Context mContext, GsonNews result, String filename){
+        File cache = new File(mContext.getFilesDir(), filename);
+        //不存在就创建,存在替换
+        if (!cache.exists()){
+            try {
+                cache.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        ObjectOutputStream fos = null;
+        try {
+            fos = new ObjectOutputStream(new FileOutputStream(cache));
+            fos.writeObject(result);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("缓存写入失败");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Unsupport Encoding Exception");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if (fos != null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

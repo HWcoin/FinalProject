@@ -70,8 +70,7 @@ public class FirstPageFragment extends Fragment {
     }
     private void initTabsDatas(){
         BaseNewType baseNewType = LocalDataManager.loadBaseConfig(getActivity());
-        BaseApplication application = (BaseApplication) getActivity().getApplication();
-        LoginBean loginBean = application.getLoginBean();
+        LoginBean loginBean = BaseApplication.getLoginBean();
         if (loginBean!=null){
             List<NewType> types = loginBean.getData().getUserConfig().getNewTypes();
             news_types = new String[types.size()];
@@ -102,8 +101,8 @@ public class FirstPageFragment extends Fragment {
 
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         for (int i = 0; i < news_types.length; i++) {
-//            NewsTabFragment fragment = NewsTabFragment.newInstance(news_types[i]);
-            NewsTabFragment fragment = new NewsTabFragment();
+            NewType type = getNewTypeByName(news_types[i]);
+            NewsTabFragment fragment = NewsTabFragment.newInstance(type);
             fragmentList.add(fragment);
         }
 
@@ -123,6 +122,17 @@ public class FirstPageFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+    ///////////////根据新闻类型名字获取新闻类型对象
+    private NewType getNewTypeByName(String name){
+        LoginBean loginBean = BaseApplication.getLoginBean();
+        List<NewType> lists = loginBean.getData().getUserConfig().getNewTypes();
+        for (int i=0; i < lists.size(); i++){
+            if (name.equals(lists.get(i).getTypeName())){
+                return lists.get(i);
+            }
+        }
+        return null;
     }
     @Override
     public void onPause() {

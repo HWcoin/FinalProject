@@ -98,6 +98,8 @@ public class MainActivity extends BaseActivity {
 
         this.initViews();
 
+
+
         if (getFirstStatus()){
             this.initFirstOpenViews();
         }else {
