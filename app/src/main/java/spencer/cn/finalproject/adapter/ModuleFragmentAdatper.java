@@ -6,16 +6,18 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
-import spencer.cn.finalproject.fragment.NewsTabFragment;
+/**
+ * Created by Administrator on 2017/4/19.
+ */
 
 /**
  * Created by Administrator on 2017/3/5.
  */
 
-public class FunctionsFragmentAdapter extends FragmentStatePagerAdapter {
-    private ArrayList<NewsTabFragment> fragments;
+public class ModuleFragmentAdatper extends FragmentStatePagerAdapter {
+    private ArrayList<Fragment> fragments;
     private String[] fragTitles;
-    public FunctionsFragmentAdapter(FragmentManager fm, ArrayList<NewsTabFragment> fragments, String[] fragTitles) {
+    public ModuleFragmentAdatper(FragmentManager fm, ArrayList<Fragment> fragments, String[] fragTitles) {
         super(fm);
         this.fragments = fragments;
         this.fragTitles = fragTitles;

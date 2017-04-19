@@ -1,5 +1,7 @@
 package spencer.cn.finalproject.manager;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,6 +59,7 @@ public class NetWorkManager {
             }
         }
         gstring.append("}");
+        Log.e("XXXXX", gstring.toString());
         return gstring.toString();
     }
     //////////////////////////////////////////////////////通用的发post请求的方法

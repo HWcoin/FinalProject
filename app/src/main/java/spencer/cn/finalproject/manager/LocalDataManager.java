@@ -1,6 +1,7 @@
 package spencer.cn.finalproject.manager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.io.File;
@@ -17,6 +18,8 @@ import spencer.cn.finalproject.dojo.BaseNewType;
 import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.News;
 import spencer.cn.finalproject.util.PublicVar;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Administrator on 2017/4/9.
@@ -239,5 +242,13 @@ public class LocalDataManager {
                 }
             }
         }
+    }
+    /**
+     * 获得AccessToken
+     */
+    public static String getAccessToken(Context mContext){
+        SharedPreferences settings = mContext.getSharedPreferences(PublicVar.SHARED_FILE, MODE_PRIVATE);
+        String accestoken = settings.getString(PublicVar.ACCESSTOKEN, "");
+        return accestoken;
     }
 }

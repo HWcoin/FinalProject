@@ -1,21 +1,36 @@
 package spencer.cn.finalproject.acview;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.TitlesAdapter;
 import spencer.cn.finalproject.application.BaseApplication;
+import spencer.cn.finalproject.dojo.ChangeNewsType;
 import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.NewType;
 import spencer.cn.finalproject.dojo.UserConfig;
 import spencer.cn.finalproject.iexport.ISelectMyTitle;
 import spencer.cn.finalproject.iexport.ISelectTotalTitle;
+import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.LocalDataManager;
+import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
 
 public class PersonalNewsActivity extends AppCompatActivity {
@@ -25,9 +40,29 @@ public class PersonalNewsActivity extends AppCompatActivity {
     private ArrayList<NewType> totalTextData;
     private TitlesAdapter myAdapter;
     private TitlesAdapter totalAdapter;
+    private Button complete;
+    Gson parser = new GsonBuilder().serializeNulls().create();
 
 //    String   imeistring = null;
 //    TelephonyManager telephonyManager;
+    Handler changeHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0xfd3){
+                String loginStrings = (String) msg.obj;
+                LoginBean loginBean = parser.fromJson(loginStrings, LoginBean.class);
+                Log.e("XX",""+(loginBean==null));
+                Log.e("XX","放过我："+(loginStrings));
+//                if (loginBean.getCode() == 200) {
+//                    BaseApplication application = (BaseApplication) getApplication();
+//                    application.setLoginBean(loginBean);
+//                    finish();
+//                } else {
+//                    Toast.makeText(PersonalNewsActivity.this, "修改超时", Toast.LENGTH_LONG).show();
+//                }
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -48,6 +83,40 @@ public class PersonalNewsActivity extends AppCompatActivity {
     private void initViews(){
         my = (GridView) findViewById(R.id.gv_my_titles);
         total = (GridView) findViewById(R.id.gv_total_titles);
+        complete = (Button) findViewById(R.id.btn_complete_update);
+        complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Long> myType = new ArrayList<>();
+                for (int i=0; i < myTextData.size(); i++){
+                    myType.add(myTextData.get(i).getUid());
+                }
+                if (myType.size() == 0){
+                    ArrayList<NewType> base = LocalDataManager.loadBaseConfig(PersonalNewsActivity.this).getData();
+                    for (int i=0; i < base.size(); i++){
+                        myType.add(base.get(i).getUid());
+                    }
+                }
+                String accessToken = LocalDataManager.getAccessToken(PersonalNewsActivity.this);
+                Type type = new TypeToken<ChangeNewsType>(){}.getType();
+                String url = getResources().getString(R.string.url_post_change_news_tab);
+                HashMap<String, String> params = new HashMap<String, String>();
+                ChangeNewsType gParams = new ChangeNewsType(accessToken, myType);
+                String parameters = parser.toJson(gParams, type);
+                Log.e("CCCCCC", parameters);
+                NetWorkManager.doPost(url+"?"+parameters, params, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Log.e("change new type", gstring);
+                        Message msg = new Message();
+                        msg.what = 0xfd3;
+                        msg.obj = gstring;
+                        changeHandler.sendMessage(msg);
+                    }
+                });
+
+            }
+        });
 
     }
     public boolean isContainsType(long target, List<Long> lists){
@@ -82,18 +151,6 @@ public class PersonalNewsActivity extends AppCompatActivity {
             finish();
             Toast.makeText(this, "sign in first please", Toast.LENGTH_LONG).show();
         }
-//        myTextData = new ArrayList<>();
-//        myTextData.add(new TitleInfos("111"));
-//        myTextData.add(new TitleInfos("222"));
-//        myTextData.add(new TitleInfos("333"));
-//        myTextData.add(new TitleInfos("444"));
-//        totalTextData = new ArrayList<>();
-//        totalTextData.add(new TitleInfos("aaa"));
-//        totalTextData.add(new TitleInfos("bbb"));
-//        totalTextData.add(new TitleInfos("ccc"));
-//        totalTextData.add(new TitleInfos("ddd"));
-//        totalTextData.add(new TitleInfos("eee"));
-//        totalTextData.add(new TitleInfos("fff"));
 
         myAdapter = new TitlesAdapter(this, myTextData, PublicVar.TABS_MY_TITLES);
         myAdapter.setMyTitleCallBack(new ISelectMyTitle() {

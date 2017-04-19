@@ -8,18 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.ItemsAdapter;
@@ -62,13 +58,15 @@ public class NewsTabFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-
+        requestForDatas();
     }
     public static NewsTabFragment newInstance(NewType type){
         NewsTabFragment fragment = new NewsTabFragment();
         fragment.setType(type);
         return  fragment;
+    }
+    public NewType getType(){
+        return this._type;
     }
     public void setType(NewType type){
         this._type = type;
@@ -78,7 +76,7 @@ public class NewsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.page_news_layout, container,false);
         initViews(view);
-        requestForDatas();
+
         return view;
     }
 
@@ -86,6 +84,7 @@ public class NewsTabFragment extends Fragment {
         newsAdapter = new ItemsAdapter(getActivity(), requestNews.getData());
         newsItems.setAdapter(newsAdapter);
     }
+
 
     //////////
     // 读取缓存、
@@ -98,19 +97,19 @@ public class NewsTabFragment extends Fragment {
          * typexml包含一个 _type:long数据
          */
         String cachefilename = _type.getType().concat(".txt");
-        Log.e("filename", cachefilename);
-        //        long[] temp = {1L, 2L, 3L, 4L, 5L};
-        Gson parser = new GsonBuilder().serializeNulls().create();
-        ArrayList<Long> temp = new ArrayList<>();
-        temp.add(1L);
-        temp.add(2L);
-        temp.add(3L);
-        temp.add(4L);
-        temp.add(5L);
-        Type type = new TypeToken<List<Long>>(){}.getType();
-        String longs = parser.toJson(temp,type);
-        Log.e("long", longs+":::");
-        Log.e("long", "xxxxxxxxxxxxxxxxxx");
+//        Log.e("filename", cachefilename);
+//        //        long[] temp = {1L, 2L, 3L, 4L, 5L};
+//        Gson parser = new GsonBuilder().serializeNulls().create();
+//        ArrayList<Long> temp = new ArrayList<>();
+//        temp.add(1L);
+//        temp.add(2L);
+//        temp.add(3L);
+//        temp.add(4L);
+//        temp.add(5L);
+//        Type type = new TypeToken<List<Long>>(){}.getType();
+//        String longs = parser.toJson(temp,type);
+//        Log.e("long", longs+":::");
+//        Log.e("long", "xxxxxxxxxxxxxxxxxx");
 
         SharedPreferences settings = getActivity().getSharedPreferences(_type.getType(), MODE_PRIVATE);
         Long curMill = System.currentTimeMillis();

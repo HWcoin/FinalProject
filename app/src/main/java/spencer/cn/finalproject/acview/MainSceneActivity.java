@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import spencer.cn.finalproject.R;
-import spencer.cn.finalproject.adapter.FunctionsFragmentAdapter;
+import spencer.cn.finalproject.adapter.ModuleFragmentAdatper;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.BaseNewType;
 import spencer.cn.finalproject.fragment.FirstPageFragment;
@@ -33,7 +33,7 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
     private ViewPager pages;
     private Toolbar toolbar;
     private ArrayList<Fragment> fragmentList;
-    FunctionsFragmentAdapter fragmentAdapter;
+    ModuleFragmentAdatper fragmentAdapter;
 
 //    Gson parser = new GsonBuilder().create();
 //    private Handler handler = new Handler(){
@@ -93,7 +93,7 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
             }
         }
 
-        fragmentAdapter = new FunctionsFragmentAdapter(getSupportFragmentManager(), fragmentList, titles);
+        fragmentAdapter = new ModuleFragmentAdatper(getSupportFragmentManager(), fragmentList, titles);
         this.pages.setAdapter(fragmentAdapter);//给ViewPager设置适配器
         this.tabMain.setupWithViewPager(pages);//将TabLayout和ViewPager关联起来。
         this.tabMain.setTabsFromPagerAdapter(fragmentAdapter);//给Tabs设置适配器

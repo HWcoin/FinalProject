@@ -63,6 +63,7 @@ public class MainActivity extends BaseActivity {
                     case 3:
                         if (isAutoLogin){
                             closeGuildPages();
+                            Log.e("help", "欢迎页走完了");
                         }
                         isAutoLogin = true;
                         break;
@@ -81,6 +82,7 @@ public class MainActivity extends BaseActivity {
                 application.setLoginBean(loginBean);
                 if (isAutoLogin){
                     closeGuildPages();
+                    Log.e("help", "自动登录走完了");
                 }
                 isAutoLogin = true;
             }
