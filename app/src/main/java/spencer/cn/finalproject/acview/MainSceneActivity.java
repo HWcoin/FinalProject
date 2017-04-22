@@ -1,5 +1,6 @@
 package spencer.cn.finalproject.acview;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,6 +43,7 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
 //
 //        }
 //    };
+    ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,7 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
     private void initViewPage() {
         this.tabMain = (TabLayout) findViewById(R.id.layout_main);
         this.pages = (ViewPager) findViewById(R.id.vp_allpages);
+        this.pages.setOffscreenPageLimit(4);
 
         this.tabMain.setTabMode(TabLayout.MODE_FIXED);
         for (int i=0; i < titles.length; i++){

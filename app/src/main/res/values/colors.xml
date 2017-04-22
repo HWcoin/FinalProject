@@ -19,4 +19,9 @@
     <color name="green">#34515c</color>
     <color name="green_dark">#1e3e4a</color>
     <color name="night_mask">#90000000</color>
+    <color name="red">#ff0000</color>
+
+    <color name="night_mode_color">#DD7321</color>
+    <color name="night_mode_dark_color">#DD4814</color>
+    <color name="background_color">#FFFFFF</color>
 </resources>

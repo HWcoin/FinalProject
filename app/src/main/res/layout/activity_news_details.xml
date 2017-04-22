@@ -18,20 +18,26 @@
     </ScrollView>
 
     <LinearLayout
+        android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
+        <EditText
+            android:hint="@string/prompt_send"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content" />
         <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

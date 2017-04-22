@@ -58,7 +58,7 @@ public class NewsTabFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        requestForDatas();
+
     }
     public static NewsTabFragment newInstance(NewType type){
         NewsTabFragment fragment = new NewsTabFragment();
@@ -76,13 +76,22 @@ public class NewsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.page_news_layout, container,false);
         initViews(view);
-
+        requestForDatas();
         return view;
     }
 
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if (getUserVisibleHint()){
+//            requestForDatas();
+//        }
+//    }
+
     public void refreshDatas(GsonNews requestNews){
         newsAdapter = new ItemsAdapter(getActivity(), requestNews.getData());
-        newsItems.setAdapter(newsAdapter);
+        if (newsItems != null)
+            newsItems.setAdapter(newsAdapter);
     }
 
 

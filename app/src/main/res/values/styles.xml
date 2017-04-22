@@ -3,9 +3,15 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- Application theme. -->
@@ -28,4 +34,13 @@
         <!--<item name="selectorListItem">@drawable/list_item_night</item>-->
     </style>
 
+    <style name="Theme.Test" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/night_mode_color </item>
+        <item name="colorPrimaryDark">@color/night_mode_dark_color </item>
+        <item name="colorAccent">@color/night_mode_color </item>
+        <item name="android:windowBackground">@color/background_color</item>
+    </style>
+
 </resources>
+
+

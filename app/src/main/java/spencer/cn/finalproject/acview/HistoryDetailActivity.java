@@ -1,14 +1,13 @@
 package spencer.cn.finalproject.acview;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.HistoryRecordAdapter;
 import spencer.cn.finalproject.manager.LocalDataManager;
 
-public class HistoryDetailActivity extends AppCompatActivity {
+public class HistoryDetailActivity extends BaseActivity {
     private ListView historyRecord;
     private HistoryRecordAdapter adapter;
     @Override

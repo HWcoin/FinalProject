@@ -33,7 +33,9 @@
         <activity android:name=".acview.LoginActivity" />
         <activity android:name=".acview.NewsDetailsActivity" />
         <activity android:name=".acview.PersonalNewsActivity" />
-        <activity android:name=".acview.HistoryDetailActivity"></activity>
+        <activity android:name=".acview.HistoryDetailActivity" />
+        <activity android:name=".acview.ChangeUserInfoActivity" />
+        <activity android:name=".acview.BaseActionBarActivity"></activity>
     </application>
 
 </manifest>

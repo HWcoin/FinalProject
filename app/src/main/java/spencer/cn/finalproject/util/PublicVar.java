@@ -50,5 +50,11 @@ public class PublicVar {
 
 
     public static String NEWS_CATEGORY = "news_category";
+    public static String VIEW_NAME = "view_name";
+
+    public static int VIEW_DEFAULT = 0;
+
+    public static int VIEW_CHANGE_PASSWORD = 0;
+    public static int VIEW_FORGET_PASSWORD = 1;
 }
 //mysql -h 120.77.34.81 -uroot -pwulizhou

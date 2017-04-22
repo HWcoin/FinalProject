@@ -5,19 +5,32 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import spencer.cn.finalproject.R;
+import spencer.cn.finalproject.acview.BaseActionBarActivity;
+import spencer.cn.finalproject.acview.ChangeUserInfoActivity;
 import spencer.cn.finalproject.acview.HistoryDetailActivity;
 import spencer.cn.finalproject.acview.LoginActivity;
 import spencer.cn.finalproject.application.BaseApplication;
+import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.LoginBean;
+import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.LocalDataManager;
+import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
 
 /**
@@ -28,7 +41,31 @@ public class MePageFragment extends Fragment {
     private ImageView icon;
     private Button login;
     private Button history;
+    private Button logout;
+    private Button changePass;
+    private Button forgetPass;
     private Context context;
+    private Gson parser = new GsonBuilder().serializeNulls().create();
+    private Handler executor = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0xfc1){
+                String loginStrings = (String) msg.obj;
+                Log.e("e", loginStrings);
+                GsonNews logoutBean = parser.fromJson(loginStrings, GsonNews.class);
+                if (logoutBean.getCode() == 200){
+                    //清除缓存
+                    LocalDataManager.clearAccessToken(getActivity());
+                    BaseApplication.setLoginBean(null);
+                    Intent loginActivity = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(loginActivity);
+                }else{
+                    Toast.makeText(getActivity(), "登出超时："+logoutBean.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }
+    };
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +101,9 @@ public class MePageFragment extends Fragment {
         icon = (ImageView) v.findViewById(R.id.iv_player);
         login = (Button) v.findViewById(R.id.btn_name);
         history = (Button) v.findViewById(R.id.btn_me_history_record);
+        logout = (Button) v.findViewById(R.id.btn_logout);
+        changePass = (Button) v.findViewById(R.id.btn_change_password);
+        forgetPass = (Button) v.findViewById(R.id.btn_forget_password);
 
 
     }
@@ -72,7 +112,7 @@ public class MePageFragment extends Fragment {
         LoginBean loginBean = BaseApplication.getLoginBean();
         if (loginBean!=null && loginBean.getData()!=null && loginBean.getData().getUser()!=null){
             String username = loginBean.getData().getUser().getUsername();
-            username = username==null ? "null" : username;
+            username = (username==null) ? "null" : username;
             login.setText(username);
         }else {
             login.setText("请登录");
@@ -102,6 +142,40 @@ public class MePageFragment extends Fragment {
             public void onClick(View v) {
                 Intent historyIntent = new Intent(getActivity(), HistoryDetailActivity.class);
                 getActivity().startActivity(historyIntent);
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = getActivity().getResources().getString(R.string.url_get_logout);
+                String accessToken = LocalDataManager.getAccessToken(getActivity());
+                NetWorkManager.doGet(url + accessToken, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Message msg = new Message();
+                        msg.what = 0xfc1;
+                        msg.obj = gstring;
+                        executor.sendMessage(msg);
+                    }
+                });
+            }
+        });
+        changePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
+                cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_CHANGE_PASSWORD);
+                startActivity(cui);
+            }
+        });
+        forgetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
+//                cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_FORGET_PASSWORD);
+//                startActivity(cui);
+                Intent intent = new Intent(getActivity(), BaseActionBarActivity.class);
+                startActivity(intent);
             }
         });
     }

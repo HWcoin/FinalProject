@@ -96,12 +96,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:id="@+id/btn_forget_password"
+                android:text="忘记密码"
                 android:layout_width="match_parent"
                 android:layout_height="64dp" />
             <Button
+                android:id="@+id/btn_change_password"
+                android:text="修改密码"
                 android:layout_width="match_parent"
                 android:layout_height="64dp" />
             <Button
+                android:id="@+id/btn_logout"
+                android:text="登出"
+                android:background="@color/red"
                 android:layout_width="match_parent"
                 android:layout_height="64dp" />
         </LinearLayout>

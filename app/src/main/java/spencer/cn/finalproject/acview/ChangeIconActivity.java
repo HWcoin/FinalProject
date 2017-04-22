@@ -2,20 +2,18 @@ package spencer.cn.finalproject.acview;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.ChangeIconAdapter;
 import spencer.cn.finalproject.iexport.ISelectedItem;
 import spencer.cn.finalproject.util.PublicVar;
 
-public class ChangeIconActivity extends AppCompatActivity {
+public class ChangeIconActivity extends BaseActivity {
     public Button back;
     private RecyclerView cells;
     private int selectIcon = R.mipmap.ic_launcher;

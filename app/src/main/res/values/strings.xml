@@ -37,5 +37,13 @@
     <string name="url_post_login">http://120.25.97.250:8008/user/info/login</string>
     <string name="url_post_auto_login">http://120.25.97.250:8008/user/info/autoLogin</string>
     <string name="url_get_type_news">http://120.25.97.250:8008/new/info/list?type=</string>
+    <string name="url_get_logout">http://120.25.97.250:8008/user/info/logout?accessToken=</string>
     <string name="url_post_change_news_tab">http://120.25.97.250:8008/user/info/userNewTypeConfig</string>
+    <string name="url_post_change_pass">http://120.25.97.250:8008/user/info/updatePassword?accessToken=</string>
+    <string name="url_post_forget_pass">http://120.25.97.250:8008/user/info/forgetPassword</string>
+    <string name="change_new_password">new password</string>
+    <string name="change_old_password">old password</string>
+    <string name="change_old_password_again">old password again</string>
+    <string name="change_new_password_again">new password again</string>
+    <string name="prompt_send">发送</string>
 </resources>

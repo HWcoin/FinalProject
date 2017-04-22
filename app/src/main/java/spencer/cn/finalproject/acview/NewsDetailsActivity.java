@@ -2,7 +2,6 @@ package spencer.cn.finalproject.acview;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -12,7 +11,7 @@ import android.widget.Toast;
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.dojo.NewsInfo;
 
-public class NewsDetailsActivity extends AppCompatActivity {
+public class NewsDetailsActivity extends BaseActivity {
     private WebView webView;
     private Intent intent;
     @Override

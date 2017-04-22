@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,7 @@ import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActionBarActivity {
     private int curStatus;
     private ViewGroup loginLayout;
     private ViewGroup registLayout;

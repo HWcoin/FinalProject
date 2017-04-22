@@ -3,7 +3,6 @@ package spencer.cn.finalproject.acview;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +32,7 @@ import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
 
-public class PersonalNewsActivity extends AppCompatActivity {
+public class PersonalNewsActivity extends BaseActivity {
     private GridView my;
     private GridView total;
     private ArrayList<NewType> myTextData;

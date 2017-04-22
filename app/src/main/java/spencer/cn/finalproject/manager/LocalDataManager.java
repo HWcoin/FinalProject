@@ -251,4 +251,13 @@ public class LocalDataManager {
         String accestoken = settings.getString(PublicVar.ACCESSTOKEN, "");
         return accestoken;
     }
+    /**
+     * 清除AccessToken
+     */
+    public static void clearAccessToken(Context mContext){
+        SharedPreferences settings = mContext.getSharedPreferences(PublicVar.SHARED_FILE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(PublicVar.ACCESSTOKEN, "");
+        editor.commit();
+    }
 }

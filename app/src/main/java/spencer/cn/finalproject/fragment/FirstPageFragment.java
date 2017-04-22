@@ -150,6 +150,7 @@ public class FirstPageFragment extends Fragment {
     private void initViewPage(View v) {
         this.subTab = (TabLayout) v.findViewById(R.id.layout_sub_tab);
         this.subPages = (ViewPager) v.findViewById(R.id.vp_sub_pages);
+        this.subPages.setOffscreenPageLimit(20);
 
         initTabsDatas();
 
