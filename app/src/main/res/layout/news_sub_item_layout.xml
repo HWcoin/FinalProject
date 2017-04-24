@@ -37,6 +37,7 @@
                     android:textSize="16sp"
                     android:text="hello world"
                     android:maxLines="2"
+                    android:textColor="@color/black"
                     android:gravity="center_vertical"
                     android:ellipsize="end"
                     android:paddingLeft="4dp"/>
@@ -50,6 +51,7 @@
                             android:id="@+id/tv_news_source"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:textColor="@color/black"
                             android:text="新闻来源"
                             android:layout_margin="4dp"
                             android:gravity="center"/>
@@ -57,6 +59,7 @@
                             android:id="@+id/tv_news_date"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:textColor="@color/black"
                             android:text="新闻时间"
                             android:layout_margin="4dp"
                             android:gravity="center"/>

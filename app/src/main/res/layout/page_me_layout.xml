@@ -1,117 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:card="http://schemas.android.com/tools"
     android:id="@+id/fragment_me">
 
 
-    <LinearLayout
+
+            <LinearLayout
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="16dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_player"
+                    android:layout_width="78dp"
+                    android:layout_height="78dp"
+                    android:layout_margin="8dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/rect_quad"
+                    android:src="@mipmap/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/btn_name"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:background="@color/colorPrimary"
+                    android:layout_height="64dp" />
+            </LinearLayout>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorDarkBlue"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_player"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_margin="16dp"
-                android:background="@drawable/circle_icon_bg"
-                android:src="@mipmap/ic_launcher" />
-
-            <Button
-                android:id="@+id/btn_name"
+            <android.support.v7.widget.CardView
+                card:cardCornerRadius="5dp"
+                card:cardElevation="16dp"
+                card:cardBackgroundColor="@color/white"
+                android:elevation="16dp"
+                android:layout_margin="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_margin="16dp" />
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:padding="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_function1"
+                        android:layout_width="0dp"
+                        android:elevation="8dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/btn_function2"
+                        android:layout_width="0dp"
+                        android:elevation="8dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/btn_function3"
+                        android:layout_width="0dp"
+                        android:elevation="8dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/btn_function4"
+                        android:layout_width="0dp"
+                        android:elevation="8dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                card:cardCornerRadius="5dp"
+                card:cardElevation="16dp"
+                card:cardBackgroundColor="@color/white"
+                android:elevation="16dp"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                    <LinearLayout
+                            android:padding="8dp"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <Button
+                                android:id="@+id/btn_me_history_record"
+                                android:layout_width="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="@string/prompt_history_record"
+                                android:textSize="18sp"
+                                android:elevation="8dp"
+                                android:drawableLeft="@mipmap/ic_action_document"
+                                android:layout_height="64dp" />
+
+                            <Button
+                                android:elevation="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp" />
+                            <Button
+                                android:elevation="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp" />
+                            <Button
+                                android:elevation="8dp"
+                                android:id="@+id/btn_forget_password"
+                                android:text="忘记密码"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp" />
+                            <Button
+                                android:id="@+id/btn_change_password"
+                                android:text="修改密码"
+                                android:elevation="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp" />
+                            <Button
+                                android:id="@+id/btn_logout"
+                                android:text="登出"
+                                android:elevation="8dp"
+                                android:background="@color/red"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp" />
+                    </LinearLayout>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
-
-        <LinearLayout
-            android:padding="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_function1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/btn_function2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/btn_function3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/btn_function4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:padding="8dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/btn_me_history_record"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical"
-                android:text="@string/prompt_history_record"
-                android:textSize="18sp"
-                android:drawableLeft="@mipmap/ic_action_document"
-                android:layout_height="64dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:padding="8dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="64dp" />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="64dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:padding="8dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/btn_forget_password"
-                android:text="忘记密码"
-                android:layout_width="match_parent"
-                android:layout_height="64dp" />
-            <Button
-                android:id="@+id/btn_change_password"
-                android:text="修改密码"
-                android:layout_width="match_parent"
-                android:layout_height="64dp" />
-            <Button
-                android:id="@+id/btn_logout"
-                android:text="登出"
-                android:background="@color/red"
-                android:layout_width="match_parent"
-                android:layout_height="64dp" />
-        </LinearLayout>
-    </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

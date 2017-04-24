@@ -1,10 +1,14 @@
 package spencer.cn.finalproject;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +84,7 @@ public class MainActivity extends BaseActivity {
                 LoginBean loginBean = parser.fromJson(loginStrings, LoginBean.class);
                 BaseApplication application = (BaseApplication) getApplication();
                 application.setLoginBean(loginBean);
+
                 if (isAutoLogin){
                     closeGuildPages();
                     Log.e("help", "自动登录走完了");
@@ -88,10 +93,27 @@ public class MainActivity extends BaseActivity {
             }
         }
     };
+    private int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 200;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+            }
+        }
 
         ads.add(R.mipmap.ic_action_emo_angry);
         ads.add(R.mipmap.ic_action_emo_cry);
@@ -109,6 +131,28 @@ public class MainActivity extends BaseActivity {
         }
 
     }
+
+
+
+//处理权限请求响应：当你的app请求权限，系统显示一个dialog给用户，当用户响应时，
+// 系统调用onRequestPermissionResult()并传递请求码，
+// 你的app必须重写这个方法并检查该权限是否已经授予。
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+            String permissions[], int[] grantResults) {
+            if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS){
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+                } else {
+
+
+                }
+                return;
+            }
+            }
+
     private boolean getFirstStatus(){
         SharedPreferences settings = getSharedPreferences(PublicVar.SHARED_FILE, MODE_PRIVATE);
         boolean isfirst = settings.getBoolean(PublicVar.IS_FIRST_OPEN, true);

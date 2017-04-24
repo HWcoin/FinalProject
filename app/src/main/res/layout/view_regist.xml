@@ -2,28 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="spencer.cn.finalproject.acview.LoginActivity">
-
-    <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
     <ScrollView
-        android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+    <android.support.v7.widget.CardView
+        card:cardCornerRadius="5dp"
+        card:cardElevation="16dp"
+        card:cardBackgroundColor="@color/white"
+        android:elevation="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
@@ -33,6 +29,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/sign_in_email"
                 android:orientation="horizontal"
+                android:layout_margin="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -48,6 +45,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/sign_in_password"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -66,6 +65,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/sign_in_password_again"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -84,6 +85,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/sign_in_nick_name"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -100,26 +103,10 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:orientation="horizontal"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<android.support.design.widget.TextInputEditText-->
-                    <!--android:id="@+id/register_code"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:hint="@string/prompt_register_code"-->
-                    <!--android:imeActionId="@+id/login"-->
-                    <!--android:imeActionLabel="@string/action_sign_in_short"-->
-                    <!--android:imeOptions="actionUnspecified"-->
-                    <!--android:inputType="textPassword"-->
-                    <!--android:maxLines="1"-->
-                    <!--android:singleLine="true" />-->
-            <!--</android.support.design.widget.TextInputLayout>-->
-
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/sign_in_request_code"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -137,6 +124,8 @@
             </android.support.design.widget.TextInputLayout>
             <LinearLayout
                 android:orientation="horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
@@ -157,6 +146,8 @@
                 <Button
                     android:id="@+id/btn_getRegistCode"
                     android:layout_width="0dp"
+                    android:elevation="16dp"
+                    android:background="@drawable/rect_quad"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/get_register_code" />
@@ -164,20 +155,24 @@
 
             <Button
                 android:id="@+id/email_sign_in_ok"
-                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/rect_quad"
                 android:text="@string/queding"
                 android:textStyle="bold" />
             <Button
                 android:id="@+id/email_sign_in_back"
-                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:background="@drawable/rect_quad"
+                android:layout_margin="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/fanhui"
                 android:textStyle="bold" />
         </LinearLayout>
+    </android.support.v7.widget.CardView>
     </ScrollView>
 </LinearLayout>

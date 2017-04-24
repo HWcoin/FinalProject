@@ -7,4 +7,5 @@
     tools:context="spencer.cn.finalproject.acview.ChangeUserInfoActivity">
     <include layout="@layout/view_change_pass" android:id="@+id/view_change_pass"/>
     <include layout="@layout/view_forget_pass" android:id="@+id/view_forget_pass" android:visibility="gone"/>
+    <include layout="@layout/view_comments" android:id="@+id/view_commonts" android:visibility="gone"/>
 </FrameLayout>

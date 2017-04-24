@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:name=".application.BaseApplication"
         android:allowBackup="true"
@@ -35,7 +37,8 @@
         <activity android:name=".acview.PersonalNewsActivity" />
         <activity android:name=".acview.HistoryDetailActivity" />
         <activity android:name=".acview.ChangeUserInfoActivity" />
-        <activity android:name=".acview.BaseActionBarActivity"></activity>
+        <!-- <activity android:name=".acview.BaseActionBarActivity"></activity> -->
+        <activity android:name=".acview.CommentActivity"></activity>
     </application>
 
 </manifest>

@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="spencer.cn.finalproject.acview.NewsDetailsActivity">
     <ScrollView
         android:layout_weight="1"
@@ -18,13 +20,14 @@
     </ScrollView>
 
     <LinearLayout
+        android:elevation="16dp"
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
             android:hint="@string/prompt_send"
-            android:imeActionId="@+id/login"
+            android:imeActionId="@+id/edt_edit_commont"
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionUnspecified"
             android:inputType="text"
@@ -32,12 +35,19 @@
             android:singleLine="true"
             android:layout_weight="1"
             android:layout_width="0dp"
+            android:textSize="10sp"
             android:layout_height="wrap_content" />
         <Button
-            android:layout_width="80dp"
+            android:id="@+id/btn_send_commont"
+            android:text="发送"
+            android:textSize="10sp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content" />
         <Button
-            android:layout_width="80dp"
+            android:id="@+id/btn_check_commonts"
+            android:textSize="10sp"
+            android:text="评论"
+            android:layout_width="70dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

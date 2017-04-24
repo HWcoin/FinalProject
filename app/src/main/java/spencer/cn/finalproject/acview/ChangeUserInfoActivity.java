@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +27,7 @@ import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
 
-public class ChangeUserInfoActivity extends BaseActivity {
+public class ChangeUserInfoActivity extends BaseActionBarActivity {
     ViewGroup changePassworld;
     TextInputLayout cp_oldPassword;
     TextInputLayout cp_newPassword;
@@ -39,6 +41,10 @@ public class ChangeUserInfoActivity extends BaseActivity {
     EditText registCode;
     Button getRegistCode;
     Button fp_confirm;
+
+    ViewGroup commentsView;
+    SwipeRefreshLayout refreshComments;
+    RecyclerView commentsContent;
 
     Gson userparser = new GsonBuilder().serializeNulls().create();
     Handler handler = new Handler(){
@@ -86,9 +92,17 @@ public class ChangeUserInfoActivity extends BaseActivity {
     private void initViews() {
         changePassworld = (ViewGroup) findViewById(R.id.view_change_pass);
         forgetPassword = (ViewGroup) findViewById(R.id.view_forget_pass);
+        commentsView = (ViewGroup) findViewById(R.id.view_commonts);
 
         initChangePasswordViews();
         initForgetPasswordViews();
+        initCommontsViews();
+
+    }
+
+    private void initCommontsViews() {
+        refreshComments = (SwipeRefreshLayout) findViewById(R.id.srl_refesh_commonts);
+        commentsContent = (RecyclerView) findViewById(R.id.rv_content_comments);
     }
 
     private void initChangePasswordViews() {
@@ -214,12 +228,15 @@ public class ChangeUserInfoActivity extends BaseActivity {
         int viewType = intent.getIntExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_DEFAULT);
         changePassworld.setVisibility(View.GONE);
         forgetPassword.setVisibility(View.GONE);
+        commentsView.setVisibility(View.GONE);
         if (viewType == PublicVar.VIEW_CHANGE_PASSWORD){
             changePassworld.setVisibility(View.VISIBLE);
 
         }else if (viewType == PublicVar.VIEW_FORGET_PASSWORD){
             forgetPassword.setVisibility(View.VISIBLE);
 
+        }else if (viewType == PublicVar.VIEW_CHECK_COMMENTS){
+            commentsView.setVisibility(View.VISIBLE);
         }
     }
 }

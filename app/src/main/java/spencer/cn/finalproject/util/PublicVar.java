@@ -56,5 +56,6 @@ public class PublicVar {
 
     public static int VIEW_CHANGE_PASSWORD = 0;
     public static int VIEW_FORGET_PASSWORD = 1;
+    public static int VIEW_CHECK_COMMENTS = 2;
 }
 //mysql -h 120.77.34.81 -uroot -pwulizhou

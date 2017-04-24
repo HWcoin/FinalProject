@@ -7,13 +7,13 @@
     android:orientation="vertical"
     tools:context="spencer.cn.finalproject.acview.MainSceneActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/tb_toolbar"
-        android:layout_width="match_parent"
-        android:background="?attr/colorPrimary"
-        android:layout_height="?attr/actionBarSize">
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/tb_toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--android:layout_height="?attr/actionBarSize">-->
 
-    </android.support.v7.widget.Toolbar>
+    <!--</android.support.v7.widget.Toolbar>-->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_allpages"
@@ -26,8 +26,10 @@
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabSelectedTextColor="@color/white"
+        android:elevation="24dp"
         app:tabTextColor="@color/black"
+        android:background="@color/colorPrimary"
         app:tabIndicatorColor="@color/green"
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp">

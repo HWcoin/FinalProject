@@ -1,19 +1,20 @@
 <resources>
-    <string name="app_name">FinalProject</string>
+    <string name="app_name">小众</string>
     <string name="txt_skip">跳过</string>
     <string name="firstpage">首页</string>
     <string name="mepage">我</string>
     <string name="grouppage">小众</string>
     <string name="confirm">确定</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">注册</string>
     <!-- url -->
     <string name="url_get_regist_code">http://120.25.97.250:8008/user/info/sendVerificationCode</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="prompt_email">邮件</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登陆</string>
+    <string name="action_sign_in_short">注册</string>
+
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -23,13 +24,13 @@
     </string>
     <string name="fanhui">返回</string>
     <string name="queding">确定</string>
-    <string name="prompt_password_again">password again</string>
-    <string name="prompt_nick_name">nick name</string>
-    <string name="prompt_register_code">regist code</string>
-    <string name="action_regist_in">regist in</string>
+    <string name="prompt_password_again">再次输入密码</string>
+    <string name="prompt_nick_name">昵称</string>
+    <string name="prompt_register_code">注册码</string>
+    <string name="action_regist_in">注册</string>
     <string name="hint_mine_titles">我的新闻</string>
     <string name="hint_total_titles">可选</string>
-    <string name="prompt_request_code">invite code (optional)</string>
+    <string name="prompt_request_code">邀请码(可选)</string>
     <string name="get_register_code">获取注册码</string>
     <string name="prompt_history_record">历史记录</string>
     <string name="url_post_regist">http://120.25.97.250:8008/user/info/regiser</string>
@@ -41,9 +42,12 @@
     <string name="url_post_change_news_tab">http://120.25.97.250:8008/user/info/userNewTypeConfig</string>
     <string name="url_post_change_pass">http://120.25.97.250:8008/user/info/updatePassword?accessToken=</string>
     <string name="url_post_forget_pass">http://120.25.97.250:8008/user/info/forgetPassword</string>
+    <string name="url_post_upload_img">http://120.25.97.250:8008/user/info/uploadAvatar?accessToken=</string>
+    <string name="url_download_img">http://120.25.97.250:8008/user/info/down/</string>
+    <string name="url_download_small_img">http://120.25.97.250:8008/user/info/down/small_</string>
     <string name="change_new_password">new password</string>
     <string name="change_old_password">old password</string>
     <string name="change_old_password_again">old password again</string>
     <string name="change_new_password_again">new password again</string>
-    <string name="prompt_send">发送</string>
+    <string name="prompt_send">编辑评论</string>
 </resources>

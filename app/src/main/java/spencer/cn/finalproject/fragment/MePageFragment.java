@@ -15,13 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 
 import spencer.cn.finalproject.R;
-import spencer.cn.finalproject.acview.BaseActionBarActivity;
 import spencer.cn.finalproject.acview.ChangeUserInfoActivity;
 import spencer.cn.finalproject.acview.HistoryDetailActivity;
 import spencer.cn.finalproject.acview.LoginActivity;
@@ -39,7 +40,7 @@ import spencer.cn.finalproject.util.PublicVar;
 
 public class MePageFragment extends Fragment {
     private ImageView icon;
-    private Button login;
+    private TextView login;
     private Button history;
     private Button logout;
     private Button changePass;
@@ -99,11 +100,12 @@ public class MePageFragment extends Fragment {
     //初始化控件
     public void initViews(View v){
         icon = (ImageView) v.findViewById(R.id.iv_player);
-        login = (Button) v.findViewById(R.id.btn_name);
+        login = (TextView) v.findViewById(R.id.btn_name);
         history = (Button) v.findViewById(R.id.btn_me_history_record);
         logout = (Button) v.findViewById(R.id.btn_logout);
         changePass = (Button) v.findViewById(R.id.btn_change_password);
         forgetPass = (Button) v.findViewById(R.id.btn_forget_password);
+
 
 
     }
@@ -114,6 +116,9 @@ public class MePageFragment extends Fragment {
             String username = loginBean.getData().getUser().getUsername();
             username = (username==null) ? "null" : username;
             login.setText(username);
+            String pic = loginBean.getData().getUser().getAvatar();
+            String url = getActivity().getResources().getString(R.string.url_download_small_img)+pic;
+            Picasso.with(getActivity()).load(url).into(icon);
         }else {
             login.setText("请登录");
         }
@@ -171,11 +176,11 @@ public class MePageFragment extends Fragment {
         forgetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
-//                cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_FORGET_PASSWORD);
-//                startActivity(cui);
-                Intent intent = new Intent(getActivity(), BaseActionBarActivity.class);
-                startActivity(intent);
+                Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
+                cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_FORGET_PASSWORD);
+                startActivity(cui);
+//                Intent intent = new Intent(getActivity(), BaseActionBarActivity.class);
+//                startActivity(intent);
             }
         });
     }

@@ -1,19 +1,22 @@
 package spencer.cn.finalproject.acview;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -22,28 +25,35 @@ import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.ModuleFragmentAdatper;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.BaseNewType;
+import spencer.cn.finalproject.dojo.UploadImgResp;
 import spencer.cn.finalproject.fragment.FirstPageFragment;
 import spencer.cn.finalproject.fragment.GroupPageFragment;
 import spencer.cn.finalproject.fragment.MePageFragment;
-import spencer.cn.finalproject.iexport.IActionBar;
+import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.ImageUploadManager;
 import spencer.cn.finalproject.manager.LocalDataManager;
+import spencer.cn.finalproject.util.BitmapUtil;
 import spencer.cn.finalproject.util.PublicVar;
 
-public class MainSceneActivity extends BaseActivity implements IActionBar{
+public class MainSceneActivity extends BaseActionBarActivity {//implements IActionBar{
     private TabLayout tabMain;
     private ViewPager pages;
-    private Toolbar toolbar;
+//    private Toolbar toolbar;
     private ArrayList<Fragment> fragmentList;
     ModuleFragmentAdatper fragmentAdapter;
 
-//    Gson parser = new GsonBuilder().create();
-//    private Handler handler = new Handler(){
-//        @Override
-//        public void handleMessage(Message msg) {
-//
-//        }
-//    };
-    ActionBar actionBar;
+    Gson parser = new GsonBuilder().serializeNulls().create();
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0xf81){
+                String gsonStrings = (String) msg.obj;
+                Log.e("e", gsonStrings);
+                UploadImgResp registResp = parser.fromJson(gsonStrings, UploadImgResp.class);
+                Toast.makeText(MainSceneActivity.this, registResp.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,9 +114,9 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition()==0){
-                    showActionBar();
+//                    showActionBar();
                 }else{
-                    hideActionBar();
+//                    hideActionBar();
                 }
                 pages.setCurrentItem(tab.getPosition());
             }
@@ -120,12 +130,12 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
     }
 
     private void initToolBar() {
-        this.toolbar = (Toolbar) findViewById(R.id.tb_toolbar);
-        setSupportActionBar(this.toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("小众");
+//        this.toolbar = (Toolbar) findViewById(R.id.tb_toolbar);
+//        setSupportActionBar(this.toolbar);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        toolbar.setTitle("小众");
 //        toolbaLogo(R.mipmap.ic_launcher);
-        toolbar.setNavigationIcon(android.R.drawable.ic_input_delete);
+//        toolbar.setNavigationIcon(android.R.drawable.ic_input_delete);
 //        Toolbar可以设置 Title（主标题），Subtitle（副标题），Logo（logo图标）NavigationIcon（导航按钮）。
     }
 
@@ -144,15 +154,15 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
         finish();
     }
 
-    @Override
-    public void showActionBar() {
-        this.toolbar.setVisibility(View.VISIBLE);
-    }
+//    @Override
+//    public void showActionBar() {
+//        this.toolbar.setVisibility(View.VISIBLE);
+//    }
 
-    @Override
-    public void hideActionBar() {
-        this.toolbar.setVisibility(View.GONE);
-    }
+//    @Override
+//    public void hideActionBar() {
+//        this.toolbar.setVisibility(View.GONE);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -186,13 +196,32 @@ public class MainSceneActivity extends BaseActivity implements IActionBar{
             }else if (PublicVar.CHANGE_GALLEY_ICON_REQUEST_CODE == requestCode){
                 MePageFragment me = (MePageFragment) fragmentList.get(PublicVar.ME_PATE_INDEX);
                 Uri imageFileUri = data.getData();
+                Bitmap bitmap = null;
                 try {
-                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFileUri));
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFileUri));
                     me.setPlayerIcon(bitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+
+
+                ///upload img
+                String accessToken = LocalDataManager.getAccessToken(this);
+                Bitmap compressBitmap = BitmapUtil.createZoomInBitmap(bitmap, 100);
+                String url = getResources().getString(R.string.url_post_upload_img) + accessToken;
+                ImageUploadManager.uploadImgWithBitmap(url, this, compressBitmap, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Message msg = new Message();
+                        msg.what = 0xf81;
+                        msg.obj = gstring;
+                        handler.sendMessage(msg);
+                    }
+                });
             }
         }
+
+
     }
+
 }
