@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,6 +53,7 @@ public class HistoryRecordAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_history_record, parent, false);
             holder = new HistoryRecordHolder();
             holder.title = (TextView) convertView.findViewById(R.id.tv_record_title);
+            holder.icon = (ImageView) convertView.findViewById(R.id.iv_history_icon);
             convertView.setTag(holder);
         }else{
             holder = (HistoryRecordHolder) convertView.getTag();
@@ -63,10 +67,20 @@ public class HistoryRecordAdapter extends BaseAdapter {
                 mContext.startActivity(intent);
             }
         });
+        Picasso.with(mContext).load(dataSource.get(position).getThumbnail_pic_s()).into(holder.icon);
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                intent.putExtra(NewsInfo.URL, dataSource.get(position).getUrl());
+                mContext.startActivity(intent);
+            }
+        });
         return  convertView;
     }
 
     static class HistoryRecordHolder{
         TextView title;
+        ImageView icon;
     }
 }
