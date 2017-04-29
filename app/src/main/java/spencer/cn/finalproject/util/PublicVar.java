@@ -7,6 +7,7 @@ import spencer.cn.finalproject.R;
  */
 
 public class PublicVar {
+
     public static int CHANGE_ICON_REQUEST_CODE = 0x111;
     public static int CHANGE_GALLEY_ICON_REQUEST_CODE = 0x112;
     public static String CHANGE_ICON_NAME = "change_icon_name";
@@ -57,5 +58,10 @@ public class PublicVar {
     public static int VIEW_CHANGE_PASSWORD = 0;
     public static int VIEW_FORGET_PASSWORD = 1;
     public static int VIEW_CHECK_COMMENTS = 2;
+    public static int VIEW_POINTS_RULES = 3;
+    public static int VIEW_CUSTOMER_SERVICE = 4;
+
+
+    public static int GET_PIC_FOR_XIAOZHONG = 1000;
 }
 //mysql -h 120.77.34.81 -uroot -pwulizhou

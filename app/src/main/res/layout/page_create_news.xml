@@ -1,9 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_margin="16dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:text="创建新闻"
+        android:text="添加图片"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/iv_xiaozhong_icon"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_action_add" />
+    <ScrollView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_title"
+                android:imeActionId="@+id/edt_edit_xiaozhong_title"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionUnspecified"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:singleLine="true"
+                android:textSize="10sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/prompt_content"
+                android:imeActionId="@+id/edt_edit_xiaozhong_content"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textMultiLine"
+                android:minLines="10"
+                android:maxLines="15"
+                android:padding="4dp"
+                android:background="@null"
+                android:gravity="left|top"
+                android:layout_marginTop="8dp"
+                android:scrollbars="vertical"
+                android:layout_marginBottom="8dp"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/btn_post"
+        android:text="发表"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

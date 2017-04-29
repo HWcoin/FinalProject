@@ -1,6 +1,7 @@
 package spencer.cn.finalproject.fragment;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -110,5 +111,10 @@ public class GroupPageFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    public void setArticalBitmap(Bitmap bitmap){
+        CreateNews createNews = (CreateNews) fragments.get(0);
+        createNews.setArticleBitmap(bitmap);
     }
 }

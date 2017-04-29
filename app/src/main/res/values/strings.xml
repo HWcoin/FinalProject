@@ -33,21 +33,30 @@
     <string name="prompt_request_code">邀请码(可选)</string>
     <string name="get_register_code">获取注册码</string>
     <string name="prompt_history_record">历史记录</string>
+
+
     <string name="url_post_regist">http://120.25.97.250:8008/user/info/regiser</string>
     <string name="url_get_base_news_type">http://120.25.97.250:8008/new/info/getTouristsNewType?rows=5</string>
     <string name="url_post_login">http://120.25.97.250:8008/user/info/login</string>
     <string name="url_post_auto_login">http://120.25.97.250:8008/user/info/autoLogin</string>
     <string name="url_get_type_news">http://120.25.97.250:8008/new/info/list?type=</string>
     <string name="url_get_logout">http://120.25.97.250:8008/user/info/logout?accessToken=</string>
-    <string name="url_post_change_news_tab">http://120.25.97.250:8008/user/info/userNewTypeConfig</string>
+    <string name="url_post_change_news_tab">http://120.25.97.250:8008/user/info/userNewTypeConfig?accessToken=</string>
     <string name="url_post_change_pass">http://120.25.97.250:8008/user/info/updatePassword?accessToken=</string>
     <string name="url_post_forget_pass">http://120.25.97.250:8008/user/info/forgetPassword</string>
     <string name="url_post_upload_img">http://120.25.97.250:8008/user/info/uploadAvatar?accessToken=</string>
     <string name="url_download_img">http://120.25.97.250:8008/user/info/down/</string>
     <string name="url_download_small_img">http://120.25.97.250:8008/user/info/down/small_</string>
+    <string name="url_get_points_rules">http://120.25.97.250:8008/other/info/getIntegralDescription</string>
+    <string name="url_get_custom_service">http://120.25.97.250:8008/other/info/getCustomerServiceInformation</string>
+    <string name="url_post_news_Details">http://120.25.97.250:8008/new/info/getDetails</string>
+
+
     <string name="change_new_password">new password</string>
     <string name="change_old_password">old password</string>
     <string name="change_old_password_again">old password again</string>
     <string name="change_new_password_again">new password again</string>
     <string name="prompt_send">编辑评论</string>
+    <string name="prompt_title">标题</string>
+    <string name="prompt_content">编辑内容</string>
 </resources>

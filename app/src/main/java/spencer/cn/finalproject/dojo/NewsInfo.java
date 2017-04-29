@@ -12,6 +12,10 @@ public class NewsInfo {
     public static ArrayList<String> typesNames;
     public static ArrayList<String> typesUrls;
     public static final String URL = "url";//常量
+    public static final String TITLE = "title";
+    public static final String UNIQUEKEY = "uniquekey";
+    public static final String PICTUREURL = "pictureurl";
+
     static{
         //初始化新闻类型请求参数
         typesArgs = new ArrayList<>();

@@ -45,6 +45,9 @@ public class MePageFragment extends Fragment {
     private Button logout;
     private Button changePass;
     private Button forgetPass;
+    private Button rulesPoint;
+    private Button contactService;
+
     private Context context;
     private Gson parser = new GsonBuilder().serializeNulls().create();
     private Handler executor = new Handler(){
@@ -105,8 +108,8 @@ public class MePageFragment extends Fragment {
         logout = (Button) v.findViewById(R.id.btn_logout);
         changePass = (Button) v.findViewById(R.id.btn_change_password);
         forgetPass = (Button) v.findViewById(R.id.btn_forget_password);
-
-
+        rulesPoint = (Button) v.findViewById(R.id.btn_rules_point);
+        contactService = (Button) v.findViewById(R.id.btn_customer_service);
 
     }
     public void refreshDatas(){
@@ -181,6 +184,22 @@ public class MePageFragment extends Fragment {
                 startActivity(cui);
 //                Intent intent = new Intent(getActivity(), BaseActionBarActivity.class);
 //                startActivity(intent);
+            }
+        });
+        rulesPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
+                cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_POINTS_RULES);
+                startActivity(cui);
+            }
+        });
+        contactService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
+                cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_CUSTOMER_SERVICE);
+                startActivity(cui);
             }
         });
     }

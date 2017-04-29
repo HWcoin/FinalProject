@@ -30,6 +30,7 @@
         <activity
             android:name=".acview.MainSceneActivity"
             android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".acview.ChangeIconActivity" />
         <activity android:name=".acview.LoginActivity" />

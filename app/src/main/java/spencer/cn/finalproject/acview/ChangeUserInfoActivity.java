@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.dojo.GsonNews;
+import spencer.cn.finalproject.dojo.UploadImgResp;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
@@ -45,6 +47,12 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     ViewGroup commentsView;
     SwipeRefreshLayout refreshComments;
     RecyclerView commentsContent;
+
+    ViewGroup pointRuleView;
+    TextView pointRules;
+
+    ViewGroup cusServiceViwe;
+    TextView cusService;
 
     Gson userparser = new GsonBuilder().serializeNulls().create();
     Handler handler = new Handler(){
@@ -75,6 +83,23 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                 }else{
                     Toast.makeText(ChangeUserInfoActivity.this, "重置失败：" + result.getMessage(), Toast.LENGTH_LONG).show();
                 }
+            }else if (msg.what == 0xf94){
+                String rString = (String) msg.obj;
+                UploadImgResp rules = userparser.fromJson(rString, UploadImgResp.class);
+                Log.e("xxxx", rString);
+                if (rules.getCode() == 200){
+                    pointRules.setText(rules.getData());
+                }else{
+                    pointRules.setText("请求超时");
+                }
+            }else if (msg.what == 0xf95){
+                String rString = (String) msg.obj;
+                UploadImgResp rules = userparser.fromJson(rString, UploadImgResp.class);
+                if (rules.getCode() == 200){
+                    cusService.setText(rules.getData());
+                }else{
+                    cusService.setText("请求超时");
+                }
             }
         }
     };
@@ -93,11 +118,45 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         changePassworld = (ViewGroup) findViewById(R.id.view_change_pass);
         forgetPassword = (ViewGroup) findViewById(R.id.view_forget_pass);
         commentsView = (ViewGroup) findViewById(R.id.view_commonts);
+        pointRuleView = (ViewGroup) findViewById(R.id.view_points_rules);
+        cusServiceViwe = (ViewGroup) findViewById(R.id.view_cus_service);
 
         initChangePasswordViews();
         initForgetPasswordViews();
         initCommontsViews();
+        initPointsRulesViews();
+        initCusServiceViews();
 
+    }
+
+    private void initCusServiceViews() {
+        cusService = (TextView) findViewById(R.id.tv_customer_service);
+
+        String url = getResources().getString(R.string.url_get_custom_service);
+        NetWorkManager.doGet(url, new NewsCallBack() {
+            @Override
+            public void onNewsReturn(String gstring) {
+                Message msg = new Message();
+                msg.what = 0xf95;
+                msg.obj = gstring;
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
+    private void initPointsRulesViews() {
+        pointRules = (TextView) findViewById(R.id.tv_point_rule);
+
+        String url = getResources().getString(R.string.url_get_points_rules);
+        NetWorkManager.doGet(url, new NewsCallBack() {
+            @Override
+            public void onNewsReturn(String gstring) {
+                Message msg = new Message();
+                msg.what = 0xf94;
+                msg.obj = gstring;
+                handler.sendMessage(msg);
+            }
+        });
     }
 
     private void initCommontsViews() {
@@ -229,6 +288,9 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         changePassworld.setVisibility(View.GONE);
         forgetPassword.setVisibility(View.GONE);
         commentsView.setVisibility(View.GONE);
+        pointRuleView.setVisibility(View.GONE);
+        cusServiceViwe.setVisibility(View.GONE);
+
         if (viewType == PublicVar.VIEW_CHANGE_PASSWORD){
             changePassworld.setVisibility(View.VISIBLE);
 
@@ -237,6 +299,11 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
 
         }else if (viewType == PublicVar.VIEW_CHECK_COMMENTS){
             commentsView.setVisibility(View.VISIBLE);
+        }else if (viewType == PublicVar.VIEW_POINTS_RULES){
+            pointRuleView.setVisibility(View.VISIBLE);
+
+        }else if (viewType == PublicVar.VIEW_CUSTOMER_SERVICE){
+            cusServiceViwe.setVisibility(View.VISIBLE);
         }
     }
 }

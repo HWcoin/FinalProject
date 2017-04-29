@@ -41,6 +41,7 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
 //    private Toolbar toolbar;
     private ArrayList<Fragment> fragmentList;
     ModuleFragmentAdatper fragmentAdapter;
+    private boolean flag = true;
 
     Gson parser = new GsonBuilder().serializeNulls().create();
     private Handler handler = new Handler(){
@@ -145,7 +146,24 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
         for (BaseActivity ba : app.getAllActivity()){
             ba.finish();
         }
+        if (flag){
+            Toast.makeText(this, "再次点击退出", Toast.LENGTH_SHORT).show();
+            flag = false;
+            new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    flag = true;
+                }
+            }.start();
+            return;
+        }
         LocalDataManager.storeCaches(this, LocalDataManager.caches);
+
         System.exit(0);
     }
 
@@ -218,6 +236,16 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
                         handler.sendMessage(msg);
                     }
                 });
+            }else if (PublicVar.GET_PIC_FOR_XIAOZHONG == requestCode){
+                GroupPageFragment me = (GroupPageFragment) fragmentList.get(PublicVar.GROUP_PATE_INDEX);
+                Uri imageFileUri = data.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFileUri));
+                    me.setArticalBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

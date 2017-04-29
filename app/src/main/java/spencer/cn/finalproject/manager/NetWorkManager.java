@@ -88,6 +88,31 @@ public class NetWorkManager {
             }
         }.start();
     }
+
+    public static void doPost(final String url, final String params, final NewsCallBack callBack){
+        new Thread(){
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
+                RequestBody body = RequestBody.create(JSON, params);
+                Request request = new Request.Builder()
+                        .post(body)
+                        .url(url)
+                        .build();
+                Response response = null;
+                try {
+                    response = client.newCall(request).execute();
+                    String result = response.body().string();
+                    if (callBack != null){
+                        callBack.onNewsReturn(result);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }.start();
+    }
     ///////////////////////////////////////////////通用get请求
     public static void doGet(final String url, final NewsCallBack callBack){
         new Thread(){

@@ -92,6 +92,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
             if (mViewHolderClickListener!=null){
                 Intent intent = new Intent(context, NewsDetailsActivity.class);
                 intent.putExtra(NewsInfo.URL, items.get(mViewHolderClickListener.getPosition()).getUrl());
+                intent.putExtra(NewsInfo.TITLE, items.get(mViewHolderClickListener.getPosition()).getTitle());
+                intent.putExtra(NewsInfo.PICTUREURL, items.get(mViewHolderClickListener.getPosition()).getThumbnail_pic_s());
+                intent.putExtra(NewsInfo.UNIQUEKEY, items.get(mViewHolderClickListener.getPosition()).getUniquekey());
                 context.startActivity(intent);
                 /////////////////////////////////////////////点击新闻，加入历史记录
                 LocalDataManager.keepNewsRecord(items.get(mViewHolderClickListener.getPosition()));

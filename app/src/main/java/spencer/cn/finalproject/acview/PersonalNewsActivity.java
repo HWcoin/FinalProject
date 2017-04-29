@@ -3,7 +3,6 @@ package spencer.cn.finalproject.acview;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -22,6 +21,7 @@ import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.TitlesAdapter;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.ChangeNewsType;
+import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.NewType;
 import spencer.cn.finalproject.dojo.UserConfig;
@@ -40,6 +40,7 @@ public class PersonalNewsActivity extends BaseActivity {
     private TitlesAdapter myAdapter;
     private TitlesAdapter totalAdapter;
     private Button complete;
+    private ArrayList<Long> myType;
     Gson parser = new GsonBuilder().serializeNulls().create();
 
 //    String   imeistring = null;
@@ -49,16 +50,16 @@ public class PersonalNewsActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             if (msg.what == 0xfd3){
                 String loginStrings = (String) msg.obj;
-                LoginBean loginBean = parser.fromJson(loginStrings, LoginBean.class);
-                Log.e("XX",""+(loginBean==null));
-                Log.e("XX","放过我："+(loginStrings));
-//                if (loginBean.getCode() == 200) {
-//                    BaseApplication application = (BaseApplication) getApplication();
-//                    application.setLoginBean(loginBean);
-//                    finish();
-//                } else {
-//                    Toast.makeText(PersonalNewsActivity.this, "修改超时", Toast.LENGTH_LONG).show();
-//                }
+                GsonNews personal = parser.fromJson(loginStrings, GsonNews.class);
+                if (personal.getCode() == 200) {
+                    BaseApplication application = (BaseApplication) getApplication();
+                    if (myType != null){
+                        application.getLoginBean().getData().getUserConfig().setUserNewType(myType);
+                    }
+                    finish();
+                } else {
+                    Toast.makeText(PersonalNewsActivity.this, "修改超时", Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -67,7 +68,6 @@ public class PersonalNewsActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_news);
-
 
         initViews();
 
@@ -86,7 +86,7 @@ public class PersonalNewsActivity extends BaseActivity {
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Long> myType = new ArrayList<>();
+                myType = new ArrayList<>();
                 for (int i=0; i < myTextData.size(); i++){
                     myType.add(myTextData.get(i).getUid());
                 }
@@ -100,13 +100,11 @@ public class PersonalNewsActivity extends BaseActivity {
                 Type type = new TypeToken<ChangeNewsType>(){}.getType();
                 String url = getResources().getString(R.string.url_post_change_news_tab);
                 HashMap<String, String> params = new HashMap<String, String>();
-                ChangeNewsType gParams = new ChangeNewsType(accessToken, myType);
+                ChangeNewsType gParams = new ChangeNewsType(myType);
                 String parameters = parser.toJson(gParams, type);
-                Log.e("CCCCCC", parameters);
-                NetWorkManager.doPost(url+"?"+parameters, params, new NewsCallBack() {
+                NetWorkManager.doPost(url+accessToken, parameters, new NewsCallBack() {
                     @Override
                     public void onNewsReturn(String gstring) {
-                        Log.e("change new type", gstring);
                         Message msg = new Message();
                         msg.what = 0xfd3;
                         msg.obj = gstring;

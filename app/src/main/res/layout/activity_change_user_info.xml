@@ -8,4 +8,6 @@
     <include layout="@layout/view_change_pass" android:id="@+id/view_change_pass"/>
     <include layout="@layout/view_forget_pass" android:id="@+id/view_forget_pass" android:visibility="gone"/>
     <include layout="@layout/view_comments" android:id="@+id/view_commonts" android:visibility="gone"/>
+    <include layout="@layout/view_points_rule" android:id="@+id/view_points_rules" android:visibility="gone"/>
+    <include layout="@layout/view_customer_service" android:id="@+id/view_cus_service" android:visibility="gone"/>
 </FrameLayout>
