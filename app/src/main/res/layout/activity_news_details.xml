@@ -27,7 +27,7 @@
         android:layout_height="wrap_content">
         <EditText
             android:hint="@string/prompt_send"
-            android:imeActionId="@+id/edt_edit_commont"
+            android:id="@+id/edt_edit_commont"
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionUnspecified"
             android:inputType="text"

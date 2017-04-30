@@ -65,14 +65,14 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
 //        if (fragmentAdapter!=null && BaseApplication.getLoginBean()!=null){
 //            MePageFragment me = (MePageFragment) fragmentList.get(2);
 //            me.refreshDatas();
 //        }
-    }
+//    }
 
     private void initViews() {
         this.fragmentList = new ArrayList<>();

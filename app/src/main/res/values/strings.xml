@@ -50,7 +50,8 @@
     <string name="url_get_points_rules">http://120.25.97.250:8008/other/info/getIntegralDescription</string>
     <string name="url_get_custom_service">http://120.25.97.250:8008/other/info/getCustomerServiceInformation</string>
     <string name="url_post_news_Details">http://120.25.97.250:8008/new/info/getDetails</string>
-
+    <string name="url_post_a_comment">http://120.25.97.250:8008/new/info/submitComments?accessToken=</string>
+    <string name="url_get_comments">http://120.25.97.250:8008/new/info/getComments</string>
 
     <string name="change_new_password">new password</string>
     <string name="change_old_password">old password</string>

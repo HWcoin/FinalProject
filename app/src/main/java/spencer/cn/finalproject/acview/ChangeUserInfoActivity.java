@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,17 +21,24 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
+import spencer.cn.finalproject.adapter.CommontsAdapter;
+import spencer.cn.finalproject.application.BaseApplication;
+import spencer.cn.finalproject.dojo.CommentInfoResp;
 import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.UploadImgResp;
+import spencer.cn.finalproject.dojo.resp.GetCommentsResp;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
 
 public class ChangeUserInfoActivity extends BaseActionBarActivity {
+    private Intent curIntent;
+
     ViewGroup changePassworld;
     TextInputLayout cp_oldPassword;
     TextInputLayout cp_newPassword;
@@ -47,6 +56,10 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     ViewGroup commentsView;
     SwipeRefreshLayout refreshComments;
     RecyclerView commentsContent;
+    Long curUid;
+    int curPage;
+    CommontsAdapter adapter;
+    ArrayList<CommentInfoResp> datas;
 
     ViewGroup pointRuleView;
     TextView pointRules;
@@ -54,7 +67,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     ViewGroup cusServiceViwe;
     TextView cusService;
 
-    Gson userparser = new GsonBuilder().serializeNulls().create();
+    Gson userparser = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -100,6 +113,29 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                 }else{
                     cusService.setText("请求超时");
                 }
+            }else  if (msg.what == 0xf96){
+                refreshComments.setRefreshing(false);
+                String rString = (String) msg.obj;
+                GetCommentsResp comments = userparser.fromJson(rString, GetCommentsResp.class);
+                if (comments.getCode() == 200){
+                    if (datas==null){
+                        datas = comments.getData();
+                        Long userId = BaseApplication.getLoginBean().getData().getUser().getUid();
+                        adapter = new CommontsAdapter(ChangeUserInfoActivity.this, datas, userId);
+                        commentsContent.setAdapter(adapter);
+                    }else{
+                        if ( comments.getData().size() <= 0){
+                            Toast.makeText(ChangeUserInfoActivity.this, "这已经是全部评论喽", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        for(int i=0; i < comments.getData().size(); i++){
+                            datas.add(comments.getData().get(i));
+                        }
+                        adapter.setItems(datas);
+                    }
+                }else{
+                    Toast.makeText(ChangeUserInfoActivity.this, "请求超时", Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -108,10 +144,16 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_user_info);
-
+        curIntent = getIntent();
         initViews();
-        switchViews(getIntent());
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        switchViews(getIntent());
     }
 
     private void initViews() {
@@ -147,21 +189,53 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     private void initPointsRulesViews() {
         pointRules = (TextView) findViewById(R.id.tv_point_rule);
 
-        String url = getResources().getString(R.string.url_get_points_rules);
-        NetWorkManager.doGet(url, new NewsCallBack() {
-            @Override
-            public void onNewsReturn(String gstring) {
-                Message msg = new Message();
-                msg.what = 0xf94;
-                msg.obj = gstring;
-                handler.sendMessage(msg);
-            }
-        });
+
     }
 
     private void initCommontsViews() {
         refreshComments = (SwipeRefreshLayout) findViewById(R.id.srl_refesh_commonts);
         commentsContent = (RecyclerView) findViewById(R.id.rv_content_comments);
+        commentsContent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        commentsContent.setItemAnimator(new DefaultItemAnimator());
+
+//        if (curUid <= 0L){
+//            Toast.makeText(this, "等待新闻加载", Toast.LENGTH_LONG).show();
+//            finish();
+//            return;
+//        }
+        ///////////////////////加载新闻
+
+        refreshComments.setColorSchemeResources(android.R.color.holo_blue_light,android.R.color.holo_green_light);
+        refreshComments.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //访问网络数据
+//                refreshComments.setRefreshing(false);
+                curPage += curPage;
+                getComments(curUid, curPage);
+            }
+        });
+
+    }
+    private void getComments(Long uid, int page){
+        String url = getResources().getString(R.string.url_get_comments);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("accessToken", LocalDataManager.getAccessToken(this));
+        params.put("newId", uid+"");
+        params.put("page", page+"");
+        params.put("rows", 15+"");
+        String tail = NetWorkManager.mapToGetParams(params);
+        Log.e("xxx", tail);
+        NetWorkManager.doGet(url + tail, new NewsCallBack() {
+            @Override
+            public void onNewsReturn(String gstring) {
+                Message msg = new Message();
+                Log.e("xxx11", gstring);
+                msg.what = 0xf96;
+                msg.obj = gstring;
+                handler.sendMessage(msg);
+            }
+        });
     }
 
     private void initChangePasswordViews() {
@@ -299,11 +373,25 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
 
         }else if (viewType == PublicVar.VIEW_CHECK_COMMENTS){
             commentsView.setVisibility(View.VISIBLE);
+            curUid = curIntent.getLongExtra(PublicVar.NEWS_ID, 0);
+            curPage = 1;
+            refreshComments.setRefreshing(true);
+            getComments(curUid, curPage);
         }else if (viewType == PublicVar.VIEW_POINTS_RULES){
             pointRuleView.setVisibility(View.VISIBLE);
-
+            String url = getResources().getString(R.string.url_get_points_rules);
+            NetWorkManager.doGet(url, new NewsCallBack() {
+                @Override
+                public void onNewsReturn(String gstring) {
+                    Message msg = new Message();
+                    msg.what = 0xf94;
+                    msg.obj = gstring;
+                    handler.sendMessage(msg);
+                }
+            });
         }else if (viewType == PublicVar.VIEW_CUSTOMER_SERVICE){
             cusServiceViwe.setVisibility(View.VISIBLE);
+
         }
     }
 }

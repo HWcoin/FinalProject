@@ -63,5 +63,6 @@ public class PublicVar {
 
 
     public static int GET_PIC_FOR_XIAOZHONG = 1000;
+    public static String NEWS_ID = "news_id";
 }
 //mysql -h 120.77.34.81 -uroot -pwulizhou

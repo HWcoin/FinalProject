@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -111,7 +110,6 @@ public class FirstPageFragment extends Fragment {
                 //访问网络数据
 
 //                viewpager.getCurrentItem()
-                Log.e("refresh", ""+subPages.getCurrentItem());
                 final int position = subPages.getCurrentItem();
                 NewType _type = fragmentList.get(position).getType();
                 String url = getActivity().getResources().getString(R.string.url_get_type_news);

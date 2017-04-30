@@ -137,5 +137,18 @@ public class NetWorkManager {
         }.start();
     }
 
-
+    ////////////////////////////map -> get params?a=b/
+    public static String mapToGetParams(HashMap<String, String> params){
+        StringBuilder builder = new StringBuilder("?");
+        Iterator<Map.Entry<String, String>> iter = params.entrySet().iterator();
+        while(iter.hasNext()){
+            Map.Entry<String, String> entry = iter.next();
+            if (iter.hasNext() == false){
+                builder.append(entry.getKey() + "=" + entry.getValue());
+            }else{
+                builder.append(entry.getKey() + "=" + entry.getValue()+"&");
+            }
+        }
+        return  builder.toString();
+    }
 }
