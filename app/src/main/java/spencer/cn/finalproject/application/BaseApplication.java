@@ -47,11 +47,11 @@ public class BaseApplication extends Application {
     public static void setLoginBean(LoginBean loginBean) {
         BaseApplication.loginBean = loginBean;
     }
-    private boolean isNightMode = true;
-    public boolean isNightMode() {
-        return isNightMode;
+    private static boolean isNightMode = false;
+    public static boolean isNightMode() {
+        return BaseApplication.isNightMode;
     }
-    public void setIsNightMode(boolean b) {
-        this.isNightMode = b;
+    public static void setIsNightMode(boolean b) {
+        BaseApplication.isNightMode = b;
     }
 }

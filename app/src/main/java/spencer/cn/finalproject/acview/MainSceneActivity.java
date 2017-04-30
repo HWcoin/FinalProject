@@ -192,6 +192,12 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
                 Intent personal = new Intent(MainSceneActivity.this, PersonalNewsActivity.class);
                 startActivity(personal);
                 break;
+            case R.id.action_switch_day_theme:
+                BaseApplication.setIsNightMode(false);
+                break;
+            case R.id.action_switch_night_theme:
+                BaseApplication.setIsNightMode(true);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

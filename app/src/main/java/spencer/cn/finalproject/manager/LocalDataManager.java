@@ -28,6 +28,12 @@ import static android.content.Context.MODE_PRIVATE;
 public class LocalDataManager {
     public static ArrayList<News> caches = new ArrayList<>();;
     ////////////////////////////////////////////从本地加载历史记录
+
+    /**
+     *从本地加载历史记录
+     * @param mContext
+     * @return
+     */
     public static ArrayList<News> loadCaches(Context mContext) {
         File cache = new File(mContext.getFilesDir(), PublicVar.HISTORY);
         if (!cache.exists()){

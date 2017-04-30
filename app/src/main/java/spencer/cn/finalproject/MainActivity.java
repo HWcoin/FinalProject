@@ -211,6 +211,10 @@ public class MainActivity extends BaseActivity {
         autoLogin();
     }
     ////////////////////////////////////////
+
+    /**
+     * 自动登陆
+     */
     public void autoLogin(){
         SharedPreferences settings = getSharedPreferences(PublicVar.SHARED_FILE, MODE_PRIVATE);
         String accestoken = settings.getString(PublicVar.ACCESSTOKEN, "");

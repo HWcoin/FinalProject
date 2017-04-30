@@ -47,6 +47,12 @@ public class NetWorkManager {
         }.start();
     }
     ////////////////////////////////////post请求封装参数
+
+    /**
+     *
+     * @param params
+     * @return
+     */
     public static String maptogstring(HashMap<String, String> params){
         StringBuilder gstring = new StringBuilder("{");
         Iterator<Map.Entry<String, String>> iter = params.entrySet().iterator();
@@ -63,6 +69,13 @@ public class NetWorkManager {
         return gstring.toString();
     }
     //////////////////////////////////////////////////////通用的发post请求的方法
+
+    /**
+     *
+     * @param url
+     * @param params
+     * @param callBack
+     */
     public static void doPost(final String url, final HashMap<String, String> params, final NewsCallBack callBack){
         new Thread(){
             @Override
@@ -114,6 +127,12 @@ public class NetWorkManager {
         }.start();
     }
     ///////////////////////////////////////////////通用get请求
+
+    /**
+     *
+     * @param url
+     * @param callBack
+     */
     public static void doGet(final String url, final NewsCallBack callBack){
         new Thread(){
             @Override

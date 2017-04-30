@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -63,6 +64,7 @@ public class NewsDetailsActivity extends BaseActivity {
                 }
             }else if (msg.what == 0xf82){
                 String newComment = (String) msg.obj;
+                Log.e("dfdf", newComment);
                 CommentResp result = parser.fromJson(newComment, CommentResp.class);
                 if (result.getCode() == 200 ){
                     comments.setText("");

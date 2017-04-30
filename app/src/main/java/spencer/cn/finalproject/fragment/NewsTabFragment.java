@@ -106,19 +106,7 @@ public class NewsTabFragment extends Fragment {
          * typexml包含一个 _type:long数据
          */
         String cachefilename = _type.getType().concat(".txt");
-//        Log.e("filename", cachefilename);
-//        //        long[] temp = {1L, 2L, 3L, 4L, 5L};
-//        Gson parser = new GsonBuilder().serializeNulls().create();
-//        ArrayList<Long> temp = new ArrayList<>();
-//        temp.add(1L);
-//        temp.add(2L);
-//        temp.add(3L);
-//        temp.add(4L);
-//        temp.add(5L);
-//        Type type = new TypeToken<List<Long>>(){}.getType();
-//        String longs = parser.toJson(temp,type);
-//        Log.e("long", longs+":::");
-//        Log.e("long", "xxxxxxxxxxxxxxxxxx");
+//
 
         SharedPreferences settings = getActivity().getSharedPreferences(_type.getType(), MODE_PRIVATE);
         Long curMill = System.currentTimeMillis();
