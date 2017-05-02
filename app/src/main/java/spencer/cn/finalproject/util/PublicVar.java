@@ -60,6 +60,7 @@ public class PublicVar {
     public static int VIEW_CHECK_COMMENTS = 2;
     public static int VIEW_POINTS_RULES = 3;
     public static int VIEW_CUSTOMER_SERVICE = 4;
+    public static int VIEW_POINTS_DETAIL = 5;
 
 
     public static int GET_PIC_FOR_XIAOZHONG = 1000;

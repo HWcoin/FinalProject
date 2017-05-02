@@ -67,6 +67,13 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     ViewGroup cusServiceViwe;
     TextView cusService;
 
+//    积分获得情况
+    ViewGroup pointDetailView;
+    SwipeRefreshLayout refreshPointDetailView;
+    RecyclerView pointsDetailContent;
+    int curPointsDetailPage;
+//    adapter arrayList
+
     Gson userparser = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     Handler handler = new Handler(){
         @Override
@@ -162,12 +169,34 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         commentsView = (ViewGroup) findViewById(R.id.view_commonts);
         pointRuleView = (ViewGroup) findViewById(R.id.view_points_rules);
         cusServiceViwe = (ViewGroup) findViewById(R.id.view_cus_service);
+        pointDetailView = (ViewGroup) findViewById(R.id.view_points_detail);
 
         initChangePasswordViews();
         initForgetPasswordViews();
         initCommontsViews();
         initPointsRulesViews();
         initCusServiceViews();
+        initPointsDetailViews();
+    }
+
+    private void initPointsDetailViews() {
+        refreshPointDetailView = (SwipeRefreshLayout) findViewById(R.id.srl_refesh_points_detail);
+        pointsDetailContent = (RecyclerView) findViewById(R.id.rv_points_detail);
+        pointsDetailContent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        pointsDetailContent.setItemAnimator(new DefaultItemAnimator());
+        refreshComments.setColorSchemeResources(android.R.color.holo_blue_light,android.R.color.holo_green_light);
+        refreshComments.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //访问网络数据
+//                refreshComments.setRefreshing(false);
+                curPointsDetailPage += curPointsDetailPage;
+                getPointsDetail(curPointsDetailPage);
+            }
+        });
+    }
+
+    private void getPointsDetail(int curPage){
 
     }
 
@@ -364,6 +393,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         commentsView.setVisibility(View.GONE);
         pointRuleView.setVisibility(View.GONE);
         cusServiceViwe.setVisibility(View.GONE);
+        pointDetailView.setVisibility(View.GONE);
 
         if (viewType == PublicVar.VIEW_CHANGE_PASSWORD){
             changePassworld.setVisibility(View.VISIBLE);
@@ -392,6 +422,11 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         }else if (viewType == PublicVar.VIEW_CUSTOMER_SERVICE){
             cusServiceViwe.setVisibility(View.VISIBLE);
 
+        }else if (viewType == PublicVar.VIEW_POINTS_DETAIL){
+            pointDetailView.setVisibility(View.VISIBLE);
+            curPointsDetailPage = 1;
+            refreshPointDetailView.setRefreshing(true);
+            getPointsDetail(curPointsDetailPage);
         }
     }
 }

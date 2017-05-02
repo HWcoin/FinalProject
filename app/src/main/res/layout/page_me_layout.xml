@@ -23,13 +23,36 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/rect_quad"
                     android:src="@mipmap/ic_launcher" />
-
-                <TextView
-                    android:id="@+id/btn_name"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:gravity="center_horizontal"
-                    android:background="@color/colorPrimary"
-                    android:layout_height="64dp" />
+                    android:layout_height="64dp">
+                    <TextView
+                        android:id="@+id/btn_name"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:gravity="center"
+                        android:background="@color/colorPrimary"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:id="@+id/btn_sign_every_day"
+                        android:text="签到"
+                        android:background="@color/colorPrimary"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/btn_check_points"
+                        android:text="积分"
+                        android:gravity="center"
+                        android:background="@color/colorPrimary"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
             </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -109,12 +132,14 @@
                                 android:layout_height="64dp" />
 
                             <Button
+                                android:id="@+id/btn_points_detail"
+                                android:text="积分详情"
                                 android:elevation="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
                                 android:id="@+id/btn_rules_point"
-                                android:text="积分说明"
+                                android:text="积分规则说明"
                                 android:elevation="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />

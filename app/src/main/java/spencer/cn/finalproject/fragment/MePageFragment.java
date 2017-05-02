@@ -22,6 +22,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.acview.ChangeUserInfoActivity;
 import spencer.cn.finalproject.acview.HistoryDetailActivity;
@@ -29,9 +31,12 @@ import spencer.cn.finalproject.acview.LoginActivity;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.LoginBean;
+import spencer.cn.finalproject.dojo.UploadImgResp;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
+import spencer.cn.finalproject.util.DialogUtil;
+import spencer.cn.finalproject.util.LoadingWaitUtils;
 import spencer.cn.finalproject.util.PublicVar;
 
 /**
@@ -40,13 +45,18 @@ import spencer.cn.finalproject.util.PublicVar;
 
 public class MePageFragment extends Fragment {
     private ImageView icon;
-    private TextView login;
+    private TextView login;//用户名
+    private TextView signForPoints;//签到
+    private TextView usrPoints;
     private Button history;
     private Button logout;
     private Button changePass;
     private Button forgetPass;
     private Button rulesPoint;
     private Button contactService;
+    private Button pointsDetail;
+
+    private LoadingWaitUtils waiting;
 
     private Context context;
     private Gson parser = new GsonBuilder().serializeNulls().create();
@@ -67,6 +77,16 @@ public class MePageFragment extends Fragment {
                     Toast.makeText(getActivity(), "登出超时："+logoutBean.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
+            }else if(msg.what == 0xfc2){
+                waiting.cancel();
+                String loginStrings = (String) msg.obj;
+                GsonNews checkBean = parser.fromJson(loginStrings, GsonNews.class);
+                Toast.makeText(getActivity(), checkBean.getMessage(), Toast.LENGTH_LONG).show();
+            }else if (msg.what == 0xfc3){
+                waiting.cancel();
+                String pointsString = (String) msg.obj;
+                UploadImgResp checkBean = parser.fromJson(pointsString, UploadImgResp.class);
+                DialogUtil.dialog(getActivity(), "您当前的积分：" + checkBean.getData());
             }
         }
     };
@@ -90,6 +110,7 @@ public class MePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.page_me_layout, container,false);
+        waiting = new LoadingWaitUtils(getActivity());
         this.initViews(view);
         this.setInterreactions();
         this.refreshDatas();
@@ -110,6 +131,9 @@ public class MePageFragment extends Fragment {
         forgetPass = (Button) v.findViewById(R.id.btn_forget_password);
         rulesPoint = (Button) v.findViewById(R.id.btn_rules_point);
         contactService = (Button) v.findViewById(R.id.btn_customer_service);
+        signForPoints = (TextView) v.findViewById(R.id.btn_sign_every_day);
+        usrPoints = (TextView) v.findViewById(R.id.btn_check_points);
+        pointsDetail = (Button) v.findViewById(R.id.btn_points_detail);
 
     }
     public void refreshDatas(){
@@ -186,6 +210,14 @@ public class MePageFragment extends Fragment {
 //                startActivity(intent);
             }
         });
+        pointsDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
+                cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_POINTS_DETAIL);
+                startActivity(cui);
+            }
+        });
         rulesPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,13 +234,47 @@ public class MePageFragment extends Fragment {
                 startActivity(cui);
             }
         });
+        signForPoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = getActivity().getResources().getString(R.string.url_post_daily_check_in);
+                String accessToken = LocalDataManager.getAccessToken(getActivity());
+                HashMap<String, String> params = new HashMap<String, String>();
+                waiting.show();
+                NetWorkManager.doPost(url+accessToken, params, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Message msg = new Message();
+                        msg.what = 0xfc2;
+                        msg.obj = gstring;
+                        executor.sendMessage(msg);
+                    }
+                });
+            }
+        });
+        usrPoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = getActivity().getResources().getString(R.string.url_get_user_integral);
+                String accessToken = LocalDataManager.getAccessToken(getActivity());
+                waiting.show();
+                NetWorkManager.doGet(url + accessToken, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Message msg = new Message();
+                        msg.what = 0xfc3;
+                        msg.obj = gstring;
+                        executor.sendMessage(msg);
+                    }
+                });
+            }
+        });
     }
 
     public void setPlayerIcon(int iconId){
         icon.setBackgroundResource(iconId);
         Bitmap bitmap = BitmapFactory.decodeResource(getActivity().getResources(), iconId);
         icon.setImageBitmap(bitmap);
-//        Toast.makeText(getActivity(), "hello icon", Toast.LENGTH_LONG).show();
     }
     public void setPlayerIcon(Bitmap iconBitmap){
         icon.setImageBitmap(iconBitmap);
