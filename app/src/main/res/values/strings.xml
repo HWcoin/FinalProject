@@ -54,6 +54,11 @@
     <string name="url_get_comments">http://120.25.97.250:8008/new/info/getComments</string>
     <string name="url_post_daily_check_in">http://120.25.97.250:8008/user/info/dailyCheckIn?accessToken=</string>
     <string name="url_get_user_integral">http://120.25.97.250:8008/user/info/getUserIntegral?accessToken=</string>
+    <string name="url_get_user_integral_list">http://120.25.97.250:8008/user/info/getIntegralDetailsList</string>
+    <string name="url_post_delete_comments">http://120.25.97.250:8008/new/info/deleteComments?accessToken=</string>
+    <string name="url_post_stick_top">http://120.25.97.250:8008/new/info/stickTop?accessToken=</string>
+
+
 
     <string name="change_new_password">new password</string>
     <string name="change_old_password">old password</string>

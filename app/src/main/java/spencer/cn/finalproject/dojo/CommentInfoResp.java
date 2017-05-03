@@ -1,7 +1,5 @@
 package spencer.cn.finalproject.dojo;
 
-import java.util.Date;
-
 /**
  * 评论信息
  * @author wulizhou
@@ -13,7 +11,7 @@ public class CommentInfoResp {
 	private String avatar; // 头像
 	private String username; // 用户名称
 	private String content; // 评论内容
-	private Date createDate; // 评论时间
+	private String createDate; // 评论时间
 	
 	public Long getCommentId() {
 		return commentId;
@@ -55,11 +53,11 @@ public class CommentInfoResp {
 		this.content = content;
 	}
 
-	public Date getCreateDate() {
+	public String getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
 

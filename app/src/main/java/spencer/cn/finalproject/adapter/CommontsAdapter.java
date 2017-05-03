@@ -1,7 +1,10 @@
 package spencer.cn.finalproject.adapter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.dojo.CommentInfoResp;
+import spencer.cn.finalproject.dojo.resp.CommentResp;
+import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.LocalDataManager;
+import spencer.cn.finalproject.manager.NetWorkManager;
 
 /**
  *  created at 2016/7/2 15:09
@@ -29,6 +39,30 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
     private ArrayList<CommentInfoResp> items;
     private Long userId;
     SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E");
+    private Gson parser = new GsonBuilder().serializeNulls().create();
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0x257){
+                String newDetail = (String) msg.obj;
+                CommentResp result = parser.fromJson(newDetail, CommentResp.class);
+                if (result.getCode() == 200){
+                    setItems(result.getData());
+                }else {
+                    Toast.makeText(context, result.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }else if (msg.what == 0x258){
+                String newDetail = (String) msg.obj;
+                Log.e("ada", newDetail);
+                CommentResp result = parser.fromJson(newDetail, CommentResp.class);
+                if (result.getCode() == 200){
+                    setItems(result.getData());
+                }else {
+                    Toast.makeText(context, result.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    };
 
     public CommontsAdapter(Context context, ArrayList<CommentInfoResp> items, Long userId) {
         this.context = context;
@@ -48,7 +82,7 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
          * 设置点击事件，获得被点击的位置position
          */
         holder.tvUserName.setText(items.get(position).getUsername());
-        holder.tvPostTime.setText(sdf.format(items.get(position).getCreateDate()));
+        holder.tvPostTime.setText(items.get(position).getCreateDate());
         holder.tvPostContent.setText(items.get(position).getContent());
 
         //加载网络图片、加载中的图片和加载失败的图片之后再补、太晚了，要睡觉
@@ -58,13 +92,13 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
         holder.btnLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "left", Toast.LENGTH_LONG).show();
+                setTop(0, position);
             }
         });
         holder.btnCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "center", Toast.LENGTH_LONG).show();
+                setTop(1, position);
             }
         });
         if (userId != items.get(position).getUserId()){
@@ -74,11 +108,40 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
             holder.btnRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Right", Toast.LENGTH_LONG).show();
+                    String url = context.getResources().getString(R.string.url_post_delete_comments);
+                    String accessToken = LocalDataManager.getAccessToken(context);
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("commentId", items.get(position).getCommentId()+"");
+                    NetWorkManager.doPost(url + accessToken, params, new NewsCallBack() {
+                        @Override
+                        public void onNewsReturn(String gstring) {
+                            Message msg = new Message();
+                            msg.what = 0x257;
+                            msg.obj = gstring;
+                            handler.sendMessage(msg);
+                        }
+                    });
                 }
             });
         }
 
+    }
+
+    private void setTop(int type, int position){
+        String url = context.getResources().getString(R.string.url_post_stick_top);
+        String accessToken = LocalDataManager.getAccessToken(context);
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("commonId", items.get(position).getCommentId()+"");
+        params.put("type", type+"");
+        NetWorkManager.doPost(url + accessToken, params, new NewsCallBack() {
+            @Override
+            public void onNewsReturn(String gstring) {
+                Message msg = new Message();
+                msg.what = 0x258;
+                msg.obj = gstring;
+                handler.sendMessage(msg);
+            }
+        });
     }
 
     @Override

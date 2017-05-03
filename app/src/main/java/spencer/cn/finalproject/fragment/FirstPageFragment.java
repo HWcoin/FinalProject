@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,6 +44,7 @@ public class FirstPageFragment extends Fragment {
     private ViewPager subPages;
     private SwipeRefreshLayout refresh;
     ArrayList<NewsTabFragment> fragmentList;
+    FunctionsFragmentAdapter fragmentAdapter;
     public static String[] news_types = {
     };
 
@@ -82,6 +84,8 @@ public class FirstPageFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.e("fragment", "onStart");
+        refreshDatas();
     }
 
     @Override
@@ -90,7 +94,7 @@ public class FirstPageFragment extends Fragment {
 
         //初始化布局
         initViews(view);
-
+        Log.e("fragment", "onCreateView");
         return view;
 
     }
@@ -98,7 +102,11 @@ public class FirstPageFragment extends Fragment {
     private void initViews(View v) {
         //初始化ViewPager
         refresh = (SwipeRefreshLayout) v.findViewById(R.id.srl_refresh);
-        initViewPage(v);
+        this.subPages = (ViewPager) v.findViewById(R.id.vp_sub_pages);
+        this.subTab = (TabLayout) v.findViewById(R.id.layout_sub_tab);
+        this.subTab.setTabMode(TabLayout.MODE_SCROLLABLE);
+        this.subPages.setOffscreenPageLimit(20);
+
 
         /**
          * 设置下拉刷新
@@ -126,6 +134,8 @@ public class FirstPageFragment extends Fragment {
                 });
             }
         });
+
+        initViewPage(v);
     }
     private void initTabsDatas(){
         BaseNewType baseNewType = loadBaseConfig(getActivity());
@@ -144,16 +154,31 @@ public class FirstPageFragment extends Fragment {
             }
         }
     }
+    private void refreshDatas(){
+        initTabsDatas();
 
+        fragmentList = new ArrayList<>();
+        Log.e("caonima", news_types.length+"");
+        for (int i = 0; i < news_types.length; i++) {
+            NewType type = getNewTypeByName(news_types[i]);
+            NewsTabFragment fragment = NewsTabFragment.newInstance(type);
+            fragmentList.add(fragment);
+        }
+
+        if (fragmentAdapter != null){
+            fragmentAdapter = new FunctionsFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, news_types);
+            Log.e("xxx", "ragmentAdapter.notifyDataSetChanged();");
+//            fragmentAdapter.notifyDataSetChanged();
+        }
+
+    }
     private void initViewPage(View v) {
-        this.subTab = (TabLayout) v.findViewById(R.id.layout_sub_tab);
-        this.subPages = (ViewPager) v.findViewById(R.id.vp_sub_pages);
-        this.subPages.setOffscreenPageLimit(20);
+
 
         initTabsDatas();
 
 
-        this.subTab.setTabMode(TabLayout.MODE_SCROLLABLE);
+
         for (int i=0; i < news_types.length; i++){
             TabLayout.Tab  tab = this.subTab.newTab();
             tab.setText(news_types[i]);
@@ -167,7 +192,7 @@ public class FirstPageFragment extends Fragment {
             fragmentList.add(fragment);
         }
 
-        FunctionsFragmentAdapter fragmentAdapter = new FunctionsFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, news_types);
+        fragmentAdapter = new FunctionsFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, news_types);
         this.subPages.setAdapter(fragmentAdapter);//给ViewPager设置适配器
         this.subTab.setupWithViewPager(this.subPages);//将TabLayout和ViewPager关联起来。
         this.subTab.setTabsFromPagerAdapter(fragmentAdapter);//给Tabs设置适配器

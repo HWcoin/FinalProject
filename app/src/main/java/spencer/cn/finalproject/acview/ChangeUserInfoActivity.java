@@ -26,11 +26,14 @@ import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.CommontsAdapter;
+import spencer.cn.finalproject.adapter.PointsDescAdapter;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.CommentInfoResp;
 import spencer.cn.finalproject.dojo.GsonNews;
+import spencer.cn.finalproject.dojo.IntegralInfoResp;
 import spencer.cn.finalproject.dojo.UploadImgResp;
 import spencer.cn.finalproject.dojo.resp.GetCommentsResp;
+import spencer.cn.finalproject.dojo.resp.PointsDetailsBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
@@ -72,6 +75,8 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     SwipeRefreshLayout refreshPointDetailView;
     RecyclerView pointsDetailContent;
     int curPointsDetailPage;
+    PointsDescAdapter pointsDescAdapter;
+    ArrayList<IntegralInfoResp> integralDatas;
 //    adapter arrayList
 
     Gson userparser = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -143,6 +148,29 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                 }else{
                     Toast.makeText(ChangeUserInfoActivity.this, "请求超时", Toast.LENGTH_LONG).show();
                 }
+            }else if (msg.what == 0xf97){
+                refreshPointDetailView.setRefreshing(false);
+                String rString = (String) msg.obj;
+                Log.e("xxx", rString);
+                PointsDetailsBean bean = userparser.fromJson(rString, PointsDetailsBean.class);
+                if (bean.getCode() == 200){
+                    if (integralDatas==null){
+                        integralDatas = bean.getData();
+                        pointsDescAdapter = new PointsDescAdapter(ChangeUserInfoActivity.this, integralDatas);
+                        pointsDetailContent.setAdapter(pointsDescAdapter);
+                    }else{
+                        if ( bean.getData().size() <= 0){
+                            Toast.makeText(ChangeUserInfoActivity.this, "这已经是全部喽", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        for(int i=0; i < bean.getData().size(); i++){
+                            integralDatas.add(bean.getData().get(i));
+                        }
+                        pointsDescAdapter.setItems(integralDatas);
+                    }
+                }else{
+                    Toast.makeText(ChangeUserInfoActivity.this, "请求超时", Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -184,8 +212,8 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         pointsDetailContent = (RecyclerView) findViewById(R.id.rv_points_detail);
         pointsDetailContent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         pointsDetailContent.setItemAnimator(new DefaultItemAnimator());
-        refreshComments.setColorSchemeResources(android.R.color.holo_blue_light,android.R.color.holo_green_light);
-        refreshComments.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        refreshPointDetailView.setColorSchemeResources(android.R.color.holo_blue_light,android.R.color.holo_green_light);
+        refreshPointDetailView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 //访问网络数据
@@ -197,7 +225,21 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     }
 
     private void getPointsDetail(int curPage){
-
+        String url = getResources().getString(R.string.url_get_user_integral_list);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("accessToken", LocalDataManager.getAccessToken(this));
+        params.put("page", curPage+"");
+        params.put("rows", 15+"");
+        String tail = NetWorkManager.mapToGetParams(params);
+        NetWorkManager.doGet(url + tail, new NewsCallBack() {
+            @Override
+            public void onNewsReturn(String gstring) {
+                Message msg = new Message();
+                msg.what = 0xf97;
+                msg.obj = gstring;
+                handler.sendMessage(msg);
+            }
+        });
     }
 
     private void initCusServiceViews() {
@@ -254,12 +296,10 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         params.put("page", page+"");
         params.put("rows", 15+"");
         String tail = NetWorkManager.mapToGetParams(params);
-        Log.e("xxx", tail);
         NetWorkManager.doGet(url + tail, new NewsCallBack() {
             @Override
             public void onNewsReturn(String gstring) {
                 Message msg = new Message();
-                Log.e("xxx11", gstring);
                 msg.what = 0xf96;
                 msg.obj = gstring;
                 handler.sendMessage(msg);

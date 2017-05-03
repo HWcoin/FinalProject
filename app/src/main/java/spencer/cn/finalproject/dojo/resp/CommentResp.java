@@ -1,5 +1,7 @@
 package spencer.cn.finalproject.dojo.resp;
 
+import java.util.ArrayList;
+
 import spencer.cn.finalproject.dojo.CommentInfoResp;
 
 /**
@@ -9,12 +11,12 @@ import spencer.cn.finalproject.dojo.CommentInfoResp;
 public class CommentResp {
     private int code;
     private String Message;
-    private CommentInfoResp data;
+    private ArrayList<CommentInfoResp> data;
 
     public CommentResp() {
     }
 
-    public CommentResp(int code, String message, CommentInfoResp data) {
+    public CommentResp(int code, String message, ArrayList<CommentInfoResp> data) {
         this.code = code;
         Message = message;
         this.data = data;
@@ -36,11 +38,11 @@ public class CommentResp {
         Message = message;
     }
 
-    public CommentInfoResp getData() {
+    public ArrayList<CommentInfoResp> getData() {
         return data;
     }
 
-    public void setData(CommentInfoResp data) {
+    public void setData(ArrayList<CommentInfoResp> data) {
         this.data = data;
     }
 }
