@@ -57,8 +57,9 @@
     <string name="url_get_user_integral_list">http://120.25.97.250:8008/user/info/getIntegralDetailsList</string>
     <string name="url_post_delete_comments">http://120.25.97.250:8008/new/info/deleteComments?accessToken=</string>
     <string name="url_post_stick_top">http://120.25.97.250:8008/new/info/stickTop?accessToken=</string>
-
-
+    <string name="url_post_collect_news">http://120.25.97.250:8008/new/info/newCollection?accessToken=</string>
+    <string name="url_get_hot_week_news">http://120.25.97.250:8008/new/info/topNewsOnWeek?rows=10</string>
+    <string name="url_get_hot_history_news">http://120.25.97.250:8008/new/info/topNewsOnHistory?rows=10</string>
 
     <string name="change_new_password">new password</string>
     <string name="change_old_password">old password</string>

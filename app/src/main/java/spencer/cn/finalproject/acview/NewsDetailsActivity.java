@@ -41,6 +41,7 @@ public class NewsDetailsActivity extends BaseActivity {
     private String picUrl;
     private String title;
     private String uniqueKey;
+    private String newDate;
 
     private GetDetailsResp resp;
 
@@ -64,7 +65,6 @@ public class NewsDetailsActivity extends BaseActivity {
                 }
             }else if (msg.what == 0xf82){
                 String newComment = (String) msg.obj;
-                Log.e("dfdf", newComment);
                 CommentResp result = parser.fromJson(newComment, CommentResp.class);
                 if (result.getCode() == 200 ){
                     comments.setText("");
@@ -73,6 +73,9 @@ public class NewsDetailsActivity extends BaseActivity {
                     Toast.makeText(NewsDetailsActivity.this, "发表评论超时！", Toast.LENGTH_LONG).show();
                 }
 
+            }else if (msg.what == 0xf83){
+                String newComment = (String)msg.obj;
+                Log.e("xx", newComment);
             }
         }
     };
@@ -123,7 +126,7 @@ public class NewsDetailsActivity extends BaseActivity {
                     Toast.makeText(NewsDetailsActivity.this, "请输入评论", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (resp.getUid()<=0){
+                if (resp == null || resp.getUid()<=0){
                     Toast.makeText(NewsDetailsActivity.this, "等待新闻加载", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -145,6 +148,29 @@ public class NewsDetailsActivity extends BaseActivity {
 
             }
         });
+        //收藏评论
+        collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (resp == null || resp.getUid() <= 0){
+                    Toast.makeText(NewsDetailsActivity.this, "等待新闻加载", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String url = getResources().getString(R.string.url_post_collect_news);
+                String accessToken = LocalDataManager.getAccessToken(NewsDetailsActivity.this);
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("newId", resp.getUid()+"");
+                NetWorkManager.doPost(url + accessToken, params, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Message msg = new Message();
+                        msg.what = 0xf83;
+                        msg.obj = gstring;
+                        handler.sendMessage(msg);
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -157,23 +183,26 @@ public class NewsDetailsActivity extends BaseActivity {
         picUrl = intent.getStringExtra(NewsInfo.PICTUREURL);
         uniqueKey = intent.getStringExtra(NewsInfo.UNIQUEKEY);
         title = intent.getStringExtra(NewsInfo.TITLE);
+        newDate = intent.getStringExtra(NewsInfo.NEWDATE);
+
 
         String newsUrl = getResources().getString(R.string.url_post_news_Details);
         HashMap<String, String> params = new HashMap<>();
         params.put("pictureUrl", picUrl);
         params.put("title", title);
         params.put("uniquekey", uniqueKey);
+        params.put("newDate", newDate);
         params.put("url", url);
         NetWorkManager.doPost(newsUrl, params, new NewsCallBack() {
             @Override
             public void onNewsReturn(String gstring) {
                 Message msg = new Message();
+                Log.e("xxx", gstring);
                 msg.what = 0xf81;
                 msg.obj = gstring;
                 handler.sendMessage(msg);
             }
         });
     }
-
 
 }

@@ -28,6 +28,7 @@ import spencer.cn.finalproject.dojo.BaseNewType;
 import spencer.cn.finalproject.dojo.UploadImgResp;
 import spencer.cn.finalproject.fragment.FirstPageFragment;
 import spencer.cn.finalproject.fragment.GroupPageFragment;
+import spencer.cn.finalproject.fragment.HotNewsFragment;
 import spencer.cn.finalproject.fragment.MePageFragment;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.ImageUploadManager;
@@ -98,10 +99,13 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
             if (i == 0){
                 FirstPageFragment first = new FirstPageFragment();
                 fragmentList.add(first);
-            }else if (i == 1){
+            }else if (i==1){
+                HotNewsFragment hotNews = new HotNewsFragment();
+                fragmentList.add(hotNews);
+            } else if (i == 2){
                 GroupPageFragment group = new GroupPageFragment();
                 fragmentList.add(group);
-            }else if (i == 2){
+            }else if (i == 3){
                 MePageFragment me = new MePageFragment();
                 fragmentList.add(me);
             }
@@ -185,7 +189,6 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId()==android.R.id.home){
-            Toast.makeText(this, "Hello world", Toast.LENGTH_SHORT).show();
         }
         switch(item.getItemId()){
             case R.id.action_settings:

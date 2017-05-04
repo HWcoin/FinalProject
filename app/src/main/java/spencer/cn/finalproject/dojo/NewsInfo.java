@@ -15,6 +15,7 @@ public class NewsInfo {
     public static final String TITLE = "title";
     public static final String UNIQUEKEY = "uniquekey";
     public static final String PICTUREURL = "pictureurl";
+    public static final String NEWDATE = "newDate";
 
     static{
         //初始化新闻类型请求参数

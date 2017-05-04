@@ -36,13 +36,13 @@ public class NewsTabFragment extends Fragment {
     private RecyclerView newsItems;
     private ItemsAdapter newsAdapter;
     private NewType _type;
-
+    Gson parser = new GsonBuilder().serializeNulls().create();
     private Handler newsHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == 0xffe){
+
+            if (msg.what == 0xf343){
                 String gsonStrings = (String) msg.obj;
-                Gson parser = new GsonBuilder().create();
                 GsonNews requestNews = parser.fromJson(gsonStrings, GsonNews.class);
                 String cachefilename = _type.getType().concat(".txt");
                 LocalDataManager.pullToCache(getActivity(), requestNews, cachefilename);
@@ -119,7 +119,7 @@ public class NewsTabFragment extends Fragment {
                 @Override
                 public void onNewsReturn(String gstring) {
                     Message msg = new Message();
-                    msg.what = 0xffe;
+                    msg.what = 0xf343;
                     msg.obj = gstring;
                     newsHandler.sendMessage(msg);
                 }

@@ -30,8 +30,9 @@ public class PublicVar {
     };
 
     public static  int FIRST_PATE_INDEX = 0;
-    public static  int GROUP_PATE_INDEX = 1;
-    public static  int ME_PATE_INDEX = 2;
+    public static  int HOT_PATE_INDEX = 1;
+    public static  int GROUP_PATE_INDEX = 2;
+    public static  int ME_PATE_INDEX = 3;
 
     public static String SHARED_FILE = "local_shared";
     public static String IS_FIRST_OPEN = "isFirst";
@@ -65,5 +66,10 @@ public class PublicVar {
 
     public static int GET_PIC_FOR_XIAOZHONG = 1000;
     public static String NEWS_ID = "news_id";
+
+    public static String [] hotUrls = {
+            "http://120.25.97.250:8008/new/info/topNewsOnWeek?rows=10",
+            "http://120.25.97.250:8008/new/info/topNewsOnHistory?rows=10"
+    };
 }
 //mysql -h 120.77.34.81 -uroot -pwulizhou

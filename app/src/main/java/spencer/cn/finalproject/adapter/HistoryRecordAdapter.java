@@ -67,6 +67,7 @@ public class HistoryRecordAdapter extends BaseAdapter {
                 intent.putExtra(NewsInfo.TITLE, dataSource.get(position).getTitle());
                 intent.putExtra(NewsInfo.PICTUREURL, dataSource.get(position).getThumbnail_pic_s());
                 intent.putExtra(NewsInfo.UNIQUEKEY, dataSource.get(position).getUniquekey());
+                intent.putExtra(NewsInfo.NEWDATE, dataSource.get(position).getDate());
                 mContext.startActivity(intent);
             }
         });
@@ -79,6 +80,7 @@ public class HistoryRecordAdapter extends BaseAdapter {
                 intent.putExtra(NewsInfo.TITLE, dataSource.get(position).getTitle());
                 intent.putExtra(NewsInfo.PICTUREURL, dataSource.get(position).getThumbnail_pic_s());
                 intent.putExtra(NewsInfo.UNIQUEKEY, dataSource.get(position).getUniquekey());
+                intent.putExtra(NewsInfo.NEWDATE, dataSource.get(position).getDate());
                 mContext.startActivity(intent);
             }
         });

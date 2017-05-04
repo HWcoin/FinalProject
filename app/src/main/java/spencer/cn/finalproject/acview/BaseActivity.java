@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity{
     public String[] titles = {
-            "首页", "小众", "我"
+            "首页","热门", "小众", "我"
     };
 
     @Override

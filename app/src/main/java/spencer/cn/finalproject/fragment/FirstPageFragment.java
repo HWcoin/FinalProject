@@ -173,11 +173,8 @@ public class FirstPageFragment extends Fragment {
 
     }
     private void initViewPage(View v) {
-
-
+        
         initTabsDatas();
-
-
 
         for (int i=0; i < news_types.length; i++){
             TabLayout.Tab  tab = this.subTab.newTab();
