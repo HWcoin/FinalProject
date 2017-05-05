@@ -75,7 +75,16 @@ public class NewsDetailsActivity extends BaseActivity {
 
             }else if (msg.what == 0xf83){
                 String newComment = (String)msg.obj;
-                Log.e("xx", newComment);
+                CommentResp result = parser.fromJson(newComment, CommentResp.class);
+                if (result == null){
+                    Toast.makeText(NewsDetailsActivity.this, "超时", Toast.LENGTH_LONG).show();
+                }
+                if (result.getCode() == 200 ){
+                    comments.setText("");
+                    Toast.makeText(NewsDetailsActivity.this, result.getMessage(), Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(NewsDetailsActivity.this, result.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -191,7 +200,7 @@ public class NewsDetailsActivity extends BaseActivity {
         params.put("pictureUrl", picUrl);
         params.put("title", title);
         params.put("uniquekey", uniqueKey);
-        params.put("newDate", newDate);
+        params.put("newDate", newDate.split(" ")[0]);
         params.put("url", url);
         NetWorkManager.doPost(newsUrl, params, new NewsCallBack() {
             @Override

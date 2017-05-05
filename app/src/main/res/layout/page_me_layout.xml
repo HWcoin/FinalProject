@@ -130,7 +130,12 @@
                                 android:elevation="8dp"
                                 android:drawableLeft="@mipmap/ic_action_document"
                                 android:layout_height="64dp" />
-
+                            <Button
+                                android:id="@+id/btn_my_collect"
+                                android:text="我的收藏"
+                                android:elevation="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp" />
                             <Button
                                 android:id="@+id/btn_points_detail"
                                 android:text="积分详情"

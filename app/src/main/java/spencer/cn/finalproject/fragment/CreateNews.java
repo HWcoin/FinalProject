@@ -3,8 +3,11 @@ package spencer.cn.finalproject.fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +16,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.HashMap;
+
 import spencer.cn.finalproject.R;
+import spencer.cn.finalproject.dojo.resp.CurPointBean;
+import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.ImageUploadManager;
+import spencer.cn.finalproject.manager.LocalDataManager;
+import spencer.cn.finalproject.util.BitmapUtil;
+import spencer.cn.finalproject.util.LoadingWaitUtils;
 import spencer.cn.finalproject.util.PublicVar;
 
 /**
@@ -26,7 +40,27 @@ public class CreateNews extends BaseFragment {
     private EditText content;
     private Button post;
     private Bitmap _targetBitmap;
+    private LoadingWaitUtils wait;
 
+    Gson parser = new GsonBuilder().serializeNulls().create();
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0xe12){
+                wait.cancel();
+                String artical = (String) msg.obj;
+                CurPointBean postResult = parser.fromJson(artical, CurPointBean.class);
+                Log.e("xx", artical);
+                if (postResult.getCode() == 200){
+                    title.setText("");
+                    content.setText("");
+                    Toast.makeText(getActivity(), "发表成功，再来一篇吧", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getActivity(), postResult.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    };
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +70,7 @@ public class CreateNews extends BaseFragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.page_create_news, container, false);
         initViews(view);
+        wait = new LoadingWaitUtils(getActivity());
         return view;
     }
 
@@ -61,7 +96,26 @@ public class CreateNews extends BaseFragment {
                     Toast.makeText(getActivity(), "标题或内容不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                if (_targetBitmap == null){
+                    Toast.makeText(getActivity(), "请选择一张图片", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Bitmap compressBitmap = BitmapUtil.createZoomInBitmap(_targetBitmap, 100);
+                String url = getActivity().getResources().getString(R.string.url_post_artical);
+                String accessToken = LocalDataManager.getAccessToken(getActivity());
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("title", titleText);
+                params.put("content", contentText);
+                wait.show();
+                ImageUploadManager.postArtical(url + accessToken, getActivity(), compressBitmap, params, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Message msg = new Message();
+                        msg.what = 0xe12;
+                        msg.obj = gstring;
+                        handler.sendMessage(msg);
+                    }
+                });
             }
         });
     }

@@ -31,7 +31,7 @@ import spencer.cn.finalproject.acview.LoginActivity;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.LoginBean;
-import spencer.cn.finalproject.dojo.UploadImgResp;
+import spencer.cn.finalproject.dojo.resp.CurPointBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
@@ -55,6 +55,7 @@ public class MePageFragment extends Fragment {
     private Button rulesPoint;
     private Button contactService;
     private Button pointsDetail;
+    private Button collect;
 
     private LoadingWaitUtils waiting;
 
@@ -85,8 +86,10 @@ public class MePageFragment extends Fragment {
             }else if (msg.what == 0xfc3){
                 waiting.cancel();
                 String pointsString = (String) msg.obj;
-                UploadImgResp checkBean = parser.fromJson(pointsString, UploadImgResp.class);
-                DialogUtil.dialog(getActivity(), "您当前的积分：" + checkBean.getData());
+                Log.e("xxxxxx", pointsString);
+                CurPointBean checkBean = parser.fromJson(pointsString, CurPointBean.class);
+                if (checkBean != null)
+                    DialogUtil.dialog(getActivity(), "您当前的积分：" + checkBean.getData().getIntegral() + "\n当前排名："+checkBean.getData().getSeq());
             }
         }
     };
@@ -134,6 +137,7 @@ public class MePageFragment extends Fragment {
         signForPoints = (TextView) v.findViewById(R.id.btn_sign_every_day);
         usrPoints = (TextView) v.findViewById(R.id.btn_check_points);
         pointsDetail = (Button) v.findViewById(R.id.btn_points_detail);
+        collect = (Button) v.findViewById(R.id.btn_my_collect);
 
     }
     public void refreshDatas(){
@@ -267,6 +271,14 @@ public class MePageFragment extends Fragment {
                         executor.sendMessage(msg);
                     }
                 });
+            }
+        });
+        collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
+                cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_MY_COLLECT);
+                startActivity(cui);
             }
         });
     }

@@ -25,19 +25,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
+import spencer.cn.finalproject.adapter.CollectionsAdapter;
 import spencer.cn.finalproject.adapter.CommontsAdapter;
 import spencer.cn.finalproject.adapter.PointsDescAdapter;
 import spencer.cn.finalproject.application.BaseApplication;
+import spencer.cn.finalproject.dojo.CollectionListResp;
 import spencer.cn.finalproject.dojo.CommentInfoResp;
 import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.IntegralInfoResp;
 import spencer.cn.finalproject.dojo.UploadImgResp;
+import spencer.cn.finalproject.dojo.resp.CollectListBean;
 import spencer.cn.finalproject.dojo.resp.GetCommentsResp;
 import spencer.cn.finalproject.dojo.resp.PointsDetailsBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
+
+import static spencer.cn.finalproject.manager.NetWorkManager.mapToGetParams;
 
 public class ChangeUserInfoActivity extends BaseActionBarActivity {
     private Intent curIntent;
@@ -77,7 +82,17 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     int curPointsDetailPage;
     PointsDescAdapter pointsDescAdapter;
     ArrayList<IntegralInfoResp> integralDatas;
+
 //    adapter arrayList
+
+    //my collect
+    ViewGroup myCollectView;
+    SwipeRefreshLayout refreshMyCollect;
+    RecyclerView lvMyCollect;
+    int curCollectPage;
+    CollectionsAdapter collectAdapter;
+    ArrayList<CollectionListResp> collectDatas;
+
 
     Gson userparser = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     Handler handler = new Handler(){
@@ -171,6 +186,28 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                 }else{
                     Toast.makeText(ChangeUserInfoActivity.this, "请求超时", Toast.LENGTH_LONG).show();
                 }
+            }else if (msg.what == 0xf98){
+                refreshMyCollect.setRefreshing(false);
+                String rString = (String) msg.obj;
+                CollectListBean bean = userparser.fromJson(rString, CollectListBean.class);
+                if (bean.getCode() == 200){
+                    if (collectDatas==null){
+                        collectDatas = bean.getData();
+                        collectAdapter = new CollectionsAdapter(ChangeUserInfoActivity.this, collectDatas);
+                        lvMyCollect.setAdapter(collectAdapter);
+                    }else{
+                        if ( bean.getData().size() <= 0){
+                            Toast.makeText(ChangeUserInfoActivity.this, "这已经是全部喽", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        for(int i=0; i < bean.getData().size(); i++){
+                            collectDatas.add(0, bean.getData().get(i));
+                        }
+                        collectAdapter.setItems(collectDatas);
+                    }
+                }else{
+                    Toast.makeText(ChangeUserInfoActivity.this, "请求超时", Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -198,6 +235,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         pointRuleView = (ViewGroup) findViewById(R.id.view_points_rules);
         cusServiceViwe = (ViewGroup) findViewById(R.id.view_cus_service);
         pointDetailView = (ViewGroup) findViewById(R.id.view_points_detail);
+        myCollectView = (ViewGroup) findViewById(R.id.view_my_collects);
 
         initChangePasswordViews();
         initForgetPasswordViews();
@@ -205,6 +243,44 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         initPointsRulesViews();
         initCusServiceViews();
         initPointsDetailViews();
+        initMyCollectViews();
+    }
+
+    private void initMyCollectViews() {
+        refreshMyCollect = (SwipeRefreshLayout) findViewById(R.id.srl_my_collects);
+        lvMyCollect = (RecyclerView) findViewById(R.id.rv_my_colelcts);
+        lvMyCollect.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        lvMyCollect.setItemAnimator(new DefaultItemAnimator());
+        refreshMyCollect.setColorSchemeResources(android.R.color.holo_blue_light,android.R.color.holo_green_light);
+        refreshMyCollect.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //访问网络数据
+//                refreshComments.setRefreshing(false);
+                curCollectPage += 1;
+                getCollectDatas(curCollectPage);
+            }
+        });
+    }
+
+    private void getCollectDatas(int curpage){
+        String url = getResources().getString(R.string.url_get_my_collect);
+        String accessToken = LocalDataManager.getAccessToken(this);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("accessToken", accessToken);
+        params.put("page", curpage+"");
+        params.put("rows", 15+"");
+
+        String tail = NetWorkManager.mapToGetParams(params);
+        NetWorkManager.doGet(url + tail, new NewsCallBack() {
+            @Override
+            public void onNewsReturn(String gstring) {
+                Message msg = new Message();
+                msg.what = 0xf98;
+                msg.obj = gstring;
+                handler.sendMessage(msg);
+            }
+        });
     }
 
     private void initPointsDetailViews() {
@@ -218,7 +294,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
             public void onRefresh() {
                 //访问网络数据
 //                refreshComments.setRefreshing(false);
-                curPointsDetailPage += curPointsDetailPage;
+                curPointsDetailPage += 1;
                 getPointsDetail(curPointsDetailPage);
             }
         });
@@ -230,7 +306,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         params.put("accessToken", LocalDataManager.getAccessToken(this));
         params.put("page", curPage+"");
         params.put("rows", 15+"");
-        String tail = NetWorkManager.mapToGetParams(params);
+        String tail = mapToGetParams(params);
         NetWorkManager.doGet(url + tail, new NewsCallBack() {
             @Override
             public void onNewsReturn(String gstring) {
@@ -282,7 +358,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
             public void onRefresh() {
                 //访问网络数据
 //                refreshComments.setRefreshing(false);
-                curPage += curPage;
+                curPage += 1;
                 getComments(curUid, curPage);
             }
         });
@@ -295,7 +371,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         params.put("newId", uid+"");
         params.put("page", page+"");
         params.put("rows", 15+"");
-        String tail = NetWorkManager.mapToGetParams(params);
+        String tail = mapToGetParams(params);
         NetWorkManager.doGet(url + tail, new NewsCallBack() {
             @Override
             public void onNewsReturn(String gstring) {
@@ -434,6 +510,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         pointRuleView.setVisibility(View.GONE);
         cusServiceViwe.setVisibility(View.GONE);
         pointDetailView.setVisibility(View.GONE);
+        myCollectView.setVisibility(View.GONE);
 
         if (viewType == PublicVar.VIEW_CHANGE_PASSWORD){
             changePassworld.setVisibility(View.VISIBLE);
@@ -467,6 +544,11 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
             curPointsDetailPage = 1;
             refreshPointDetailView.setRefreshing(true);
             getPointsDetail(curPointsDetailPage);
+        }else if (viewType == PublicVar.VIEW_MY_COLLECT){
+            myCollectView.setVisibility(View.VISIBLE);
+            curCollectPage = 1;
+            refreshMyCollect.setRefreshing(true);
+            getCollectDatas(curCollectPage);
         }
     }
 }

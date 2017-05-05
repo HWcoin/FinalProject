@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import okhttp3.Call;
@@ -42,6 +43,51 @@ public class ImageUploadManager {
         }
         return builder;
         //添加其它信息
+    }
+
+    private static MultipartBody.Builder getMultipartBodyWithBitmap(Context mContext, File file, HashMap<String, String> params){
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("file", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file));
+        Set<Map.Entry<String, String>> set = params.entrySet();
+        Iterator<Map.Entry<String, String>> it =  set.iterator();
+        while (it.hasNext()){
+            Map.Entry<String, String> i = it.next();
+            builder.addFormDataPart(i.getKey(), i.getValue());
+        }
+        return builder;
+    }
+
+    public static void postArtical(final String url, final Context mContext, final Bitmap bitmap, final HashMap<String, String> params, final NewsCallBack callBack){
+        new Thread(){
+            @Override
+            public void run() {
+                File cache =  BitmapUtil.saveBitmap2file(mContext, bitmap, "cache.png");
+
+                MultipartBody requestBody = getMultipartBodyWithBitmap(mContext, cache, params).build();
+                //构建请求
+                Request request = new Request.Builder()
+                        .url(url)//地址
+                        .post(requestBody)//添加请求体
+                        .build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.e("imgCallBack", e.getLocalizedMessage());
+
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        if (callBack != null){
+                            String result = response.body().string();
+                            Log.e("imgCallBack", result);
+                            callBack.onNewsReturn(result);
+                        }
+                    }
+                });
+            }
+        }.start();
     }
 
     public static void uploadImgWithBitmap(final String url, final Context mContext, final Bitmap bitmap, final NewsCallBack callBack) {

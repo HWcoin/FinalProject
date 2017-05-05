@@ -41,7 +41,7 @@ public class NewsTabFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
 
-            if (msg.what == 0xf343){
+            if (msg.what == 0xf33){
                 String gsonStrings = (String) msg.obj;
                 GsonNews requestNews = parser.fromJson(gsonStrings, GsonNews.class);
                 String cachefilename = _type.getType().concat(".txt");
@@ -119,7 +119,7 @@ public class NewsTabFragment extends Fragment {
                 @Override
                 public void onNewsReturn(String gstring) {
                     Message msg = new Message();
-                    msg.what = 0xf343;
+                    msg.what = 0xf33;
                     msg.obj = gstring;
                     newsHandler.sendMessage(msg);
                 }

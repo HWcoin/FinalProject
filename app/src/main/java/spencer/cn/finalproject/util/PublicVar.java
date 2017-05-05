@@ -62,11 +62,12 @@ public class PublicVar {
     public static int VIEW_POINTS_RULES = 3;
     public static int VIEW_CUSTOMER_SERVICE = 4;
     public static int VIEW_POINTS_DETAIL = 5;
+    public static int VIEW_MY_COLLECT = 6;
 
 
     public static int GET_PIC_FOR_XIAOZHONG = 1000;
-    public static String NEWS_ID = "news_id";
 
+    public static String NEWS_ID = "news_id";
     public static String [] hotUrls = {
             "http://120.25.97.250:8008/new/info/topNewsOnWeek?rows=10",
             "http://120.25.97.250:8008/new/info/topNewsOnHistory?rows=10"

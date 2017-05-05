@@ -43,7 +43,6 @@ public class HotFragment extends BaseFragment {
 
             if (msg.what == 0xf17){
                 String gsonStrings = (String) msg.obj;
-                Log.e("xxwpf", gsonStrings);
                 HotNewsResp requestNews = parser.fromJson(gsonStrings, HotNewsResp.class);
                 if (requestNews != null){
                     refreshDatas(requestNews);
