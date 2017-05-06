@@ -73,8 +73,7 @@ public class MyNews extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        curPage = 1;
-        getMyLists(curPage);
+
 
     }
     public void getMyLists(int curpage){
@@ -106,6 +105,8 @@ public class MyNews extends BaseFragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.page_my_news, container, false);
         initViews(v);
+        curPage = 1;
+        getMyLists(curPage);
         return v;
     }
 

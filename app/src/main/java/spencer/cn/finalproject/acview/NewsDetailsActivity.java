@@ -29,7 +29,7 @@ import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
 
-public class NewsDetailsActivity extends BaseActivity {
+public class NewsDetailsActivity extends BaseActionBarActivity {
     private WebView webView;
     private Intent intent;
     private EditText comments;
@@ -81,7 +81,7 @@ public class NewsDetailsActivity extends BaseActivity {
                 }
                 if (result.getCode() == 200 ){
                     comments.setText("");
-                    Toast.makeText(NewsDetailsActivity.this, result.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewsDetailsActivity.this, "收藏成功", Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(NewsDetailsActivity.this, result.getMessage(), Toast.LENGTH_LONG).show();
                 }

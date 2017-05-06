@@ -545,10 +545,14 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
             refreshPointDetailView.setRefreshing(true);
             getPointsDetail(curPointsDetailPage);
         }else if (viewType == PublicVar.VIEW_MY_COLLECT){
-            myCollectView.setVisibility(View.VISIBLE);
-            curCollectPage = 1;
-            refreshMyCollect.setRefreshing(true);
-            getCollectDatas(curCollectPage);
+            if (collectAdapter!=null){
+                lvMyCollect.setAdapter(collectAdapter);
+            }else {
+                myCollectView.setVisibility(View.VISIBLE);
+                curCollectPage = 1;
+                refreshMyCollect.setRefreshing(true);
+                getCollectDatas(curCollectPage);
+            }
         }
     }
 }

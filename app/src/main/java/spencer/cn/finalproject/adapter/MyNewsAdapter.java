@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import spencer.cn.finalproject.R;
+import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.XiaozhongNewResp;
 import spencer.cn.finalproject.listener.OnViewHolderClickListener;
 
@@ -63,12 +64,18 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
         holder.tvTitle.setOnClickListener(holder);
         holder.tvSource.setOnClickListener(holder);
         holder.tvDate.setOnClickListener(holder);
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("xxx", "caonima");
-            }
-        });
+        Long userId = BaseApplication.getLoginBean().getData().getUser().getUid();
+        if (userId != items.get(position).getUserId()){
+            holder.btnDelete.setVisibility(View.GONE);
+        }else {
+            holder.btnDelete.setVisibility(View.VISIBLE);
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("xxx", "caonima");
+                }
+            });
+        }
     }
 
     @Override
