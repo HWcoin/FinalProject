@@ -63,6 +63,7 @@ public class PublicVar {
     public static int VIEW_CUSTOMER_SERVICE = 4;
     public static int VIEW_POINTS_DETAIL = 5;
     public static int VIEW_MY_COLLECT = 6;
+    public static int VIEW_CHANGE_NAME = 7;
 
 
     public static int GET_PIC_FOR_XIAOZHONG = 1000;
@@ -72,5 +73,8 @@ public class PublicVar {
             "http://120.25.97.250:8008/new/info/topNewsOnWeek?rows=10",
             "http://120.25.97.250:8008/new/info/topNewsOnHistory?rows=10"
     };
+
+    public static String MY_NEWS_ID = "my_news_id";
+
 }
 //mysql -h 120.77.34.81 -uroot -pwulizhou

@@ -1,6 +1,9 @@
 package spencer.cn.finalproject.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,15 +12,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
+import spencer.cn.finalproject.acview.CommentActivity;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.XiaozhongNewResp;
+import spencer.cn.finalproject.dojo.resp.MyListBean;
+import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.listener.OnViewHolderClickListener;
+import spencer.cn.finalproject.manager.LocalDataManager;
+import spencer.cn.finalproject.manager.NetWorkManager;
+import spencer.cn.finalproject.util.PublicVar;
 
 /**
  *  created at 2016/7/2 15:09
@@ -28,7 +41,24 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
 
     private Context context;
     private ArrayList<XiaozhongNewResp> items;
-
+    private Gson parser = new GsonBuilder().serializeNulls().create();
+    private int curPosition = 0;
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0xeb1){
+                String newDetail = (String) msg.obj;
+                Log.e("ada", newDetail);
+                MyListBean result = parser.fromJson(newDetail, MyListBean.class);
+                if (result.getCode() == 200){
+                    items.remove(curPosition);
+                    setItems(items);
+                }else {
+                    Toast.makeText(context, result.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    };
     public MyNewsAdapter(Context context, ArrayList<XiaozhongNewResp> items) {
         this.context = context;
         this.items = items;
@@ -72,7 +102,20 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("xxx", "caonima");
+                    String url = context.getResources().getString(R.string.url_post_delete_my_news);
+                    String accessToken = LocalDataManager.getAccessToken(context);
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("xiaoZhongNewsId", items.get(position).getUid()+"");
+                    curPosition = position;
+                    NetWorkManager.doPost(url + accessToken, params, new NewsCallBack() {
+                        @Override
+                        public void onNewsReturn(String gstring) {
+                            Message msg = new Message();
+                            msg.what = 0xeb1;
+                            msg.obj = gstring;
+                            handler.sendMessage(msg);
+                        }
+                    });
                 }
             });
         }
@@ -105,6 +148,9 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
         public void onClick(View v) {
             if (mViewHolderClickListener!=null){
                 Log.e("xxx", "zhengmingwobeidianjile");
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra(PublicVar.MY_NEWS_ID, items.get(mViewHolderClickListener.getPosition()).getUid());
+                context.startActivity(intent);
 //                Intent intent = new Intent(context, NewsDetailsActivity.class);
 //                intent.putExtra(NewsInfo.URL, items.get(mViewHolderClickListener.getPosition()).getUrl());
 //                intent.putExtra(NewsInfo.TITLE, items.get(mViewHolderClickListener.getPosition()).getTitle());

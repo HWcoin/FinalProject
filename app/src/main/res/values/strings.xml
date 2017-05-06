@@ -65,6 +65,13 @@
     <string name="url_get_my_collect">http://120.25.97.250:8008/new/info/collectionList</string>
     <string name="url_post_cancel_collect">http://120.25.97.250:8008/new/info/cancelCollection?accessToken=</string>
     <string name="url_get_shequ_list">http://120.25.97.250:8008/xiaozhong/info/xiaozhongNewsList</string>
+    <string name="url_get_my_news_details">http://120.25.97.250:8008/xiaozhong/info/getDetails</string>
+    <string name="url_post_my_news_comments">http://120.25.97.250:8008/xiaozhong/info/submitComments?accessToken=</string>
+    <string name="url_get_get_my_news_comments">http://120.25.97.250:8008/xiaozhong/info/getComments</string>
+    <string name="url_post_my_news_sticktop">http://120.25.97.250:8008/xiaozhong/info/stickTop?accessToken=</string>
+    <string name="url_post_my_news_delete_comments">http://120.25.97.250:8008/xiaozhong/info/deleteComments?accessToken=</string>
+    <string name="url_post_delete_my_news">http://120.25.97.250:8008/xiaozhong/info/deleteXiaozhongNews?accessToken=</string>
+    <string name="url_post_change_name">http://120.25.97.250:8008/user/info/updateUserInfo?accessToken=</string>
 
     <string name="change_new_password">new password</string>
     <string name="change_old_password">old password</string>

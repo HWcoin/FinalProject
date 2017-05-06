@@ -84,7 +84,6 @@ public class OthersNews extends BaseFragment {
         params.put("page", curpage+"");
         params.put("rows", 15+"");
         String tail = NetWorkManager.mapToGetParams(params);
-        Log.e("xes", tail);
         NetWorkManager.doGet(url+tail, new NewsCallBack() {
             @Override
             public void onNewsReturn(String gstring) {

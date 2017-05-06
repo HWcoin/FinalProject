@@ -33,6 +33,7 @@ import spencer.cn.finalproject.dojo.CollectionListResp;
 import spencer.cn.finalproject.dojo.CommentInfoResp;
 import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.IntegralInfoResp;
+import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.UploadImgResp;
 import spencer.cn.finalproject.dojo.resp.CollectListBean;
 import spencer.cn.finalproject.dojo.resp.GetCommentsResp;
@@ -42,6 +43,7 @@ import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
 
+import static spencer.cn.finalproject.application.BaseApplication.getLoginBean;
 import static spencer.cn.finalproject.manager.NetWorkManager.mapToGetParams;
 
 public class ChangeUserInfoActivity extends BaseActionBarActivity {
@@ -92,6 +94,10 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     int curCollectPage;
     CollectionsAdapter collectAdapter;
     ArrayList<CollectionListResp> collectDatas;
+
+    ViewGroup changenameView;
+    EditText edtName;
+    Button changeName;
 
 
     Gson userparser = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -147,7 +153,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                 if (comments.getCode() == 200){
                     if (datas==null){
                         datas = comments.getData();
-                        Long userId = BaseApplication.getLoginBean().getData().getUser().getUid();
+                        Long userId = getLoginBean().getData().getUser().getUid();
                         adapter = new CommontsAdapter(ChangeUserInfoActivity.this, datas, userId);
                         commentsContent.setAdapter(adapter);
                     }else{
@@ -208,6 +214,16 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                 }else{
                     Toast.makeText(ChangeUserInfoActivity.this, "请求超时", Toast.LENGTH_LONG).show();
                 }
+            }else if (msg.what == 0xf99){
+                String rString = (String) msg.obj;
+                Log.e("x23", rString);
+                GsonNews bean = userparser.fromJson(rString, GsonNews.class);
+                if (bean.getCode() == 200){
+                    finish();
+                    Toast.makeText(ChangeUserInfoActivity.this, "修改成功", Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(ChangeUserInfoActivity.this, "请求超时", Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -236,6 +252,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         cusServiceViwe = (ViewGroup) findViewById(R.id.view_cus_service);
         pointDetailView = (ViewGroup) findViewById(R.id.view_points_detail);
         myCollectView = (ViewGroup) findViewById(R.id.view_my_collects);
+        changenameView = (ViewGroup) findViewById(R.id.view_change_name);
 
         initChangePasswordViews();
         initForgetPasswordViews();
@@ -244,6 +261,39 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         initCusServiceViews();
         initPointsDetailViews();
         initMyCollectViews();
+        initChangeNameViews();
+    }
+
+    private void initChangeNameViews() {
+         edtName = (EditText) findViewById(R.id.edt_change_user_naem);
+         changeName = (Button) findViewById(R.id.btn_change_name);
+//        LoginBean bena =  BaseApplication.getLoginBean();
+//        if (bena != null){
+//            edtName.setHint(bena.getData().getUser().getUsername());
+//        }
+        changeName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newUserName = edtName.getText().toString();
+                if (TextUtils.isEmpty(newUserName)){
+                    Toast.makeText(ChangeUserInfoActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String url = getResources().getString(R.string.url_post_change_name);
+                String accessToken = LocalDataManager.getAccessToken(ChangeUserInfoActivity.this);
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("username", newUserName);
+                NetWorkManager.doPost(url + accessToken, params, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Message msg = new Message();
+                        msg.what = 0xf99;
+                        msg.obj = gstring;
+                        handler.sendMessage(msg);
+                    }
+                });
+            }
+        });
     }
 
     private void initMyCollectViews() {
@@ -511,6 +561,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         cusServiceViwe.setVisibility(View.GONE);
         pointDetailView.setVisibility(View.GONE);
         myCollectView.setVisibility(View.GONE);
+        changenameView.setVisibility(View.GONE);
 
         if (viewType == PublicVar.VIEW_CHANGE_PASSWORD){
             changePassworld.setVisibility(View.VISIBLE);
@@ -552,6 +603,12 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                 curCollectPage = 1;
                 refreshMyCollect.setRefreshing(true);
                 getCollectDatas(curCollectPage);
+            }
+        }else if (viewType == PublicVar.VIEW_CHANGE_NAME){
+            changenameView.setVisibility(View.VISIBLE);
+            LoginBean bena =  BaseApplication.getLoginBean();
+            if (bena != null){
+                edtName.setHint(bena.getData().getUser().getUsername());
             }
         }
     }

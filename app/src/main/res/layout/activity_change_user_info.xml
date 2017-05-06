@@ -12,4 +12,5 @@
     <include layout="@layout/view_customer_service" android:id="@+id/view_cus_service" android:visibility="gone"/>
     <include layout="@layout/view_points_detail" android:id="@+id/view_points_detail" android:visibility="gone"/>
     <include layout="@layout/view_my_collects" android:id="@+id/view_my_collects" android:visibility="gone"/>
+    <include layout="@layout/view_change_name" android:id="@+id/view_change_name" android:visibility="gone"/>
 </FrameLayout>

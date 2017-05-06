@@ -64,6 +64,7 @@
             android:background="@color/white"
             android:orientation="vertical">
 
+            <!--
             <android.support.v7.widget.CardView
                 card:cardCornerRadius="5dp"
                 card:cardElevation="16dp"
@@ -108,6 +109,7 @@
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+            -->
             <android.support.v7.widget.CardView
                 card:cardCornerRadius="5dp"
                 card:cardElevation="16dp"
@@ -124,13 +126,13 @@
                             <Button
                                 android:id="@+id/btn_me_history_record"
                                 android:layout_width="match_parent"
-                                android:gravity="center_vertical"
                                 android:text="@string/prompt_history_record"
-                                android:textSize="18sp"
-                                android:elevation="8dp"
-                                android:drawableLeft="@mipmap/ic_action_document"
-                                android:layout_height="64dp" />
-                            <Button
+                        android:textSize="18sp"
+                        android:elevation="8dp"
+                        android:layout_height="64dp" />
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:drawableLeft="@mipmap/ic_action_document"-->
+                        <Button
                                 android:id="@+id/btn_my_collect"
                                 android:text="我的收藏"
                                 android:elevation="8dp"
@@ -158,6 +160,12 @@
                                 android:elevation="8dp"
                                 android:id="@+id/btn_forget_password"
                                 android:text="忘记密码"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp" />
+                            <Button
+                                android:id="@+id/btn_change_user_name"
+                                android:text="修改昵称"
+                                android:elevation="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button

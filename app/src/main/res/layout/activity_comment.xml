@@ -2,14 +2,125 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="spencer.cn.finalproject.acview.CommentActivity">
 
-    <android.support.v7.widget.RecyclerView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <android.support.v7.widget.CardView
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card:cardCornerRadius="5dp"
+            card:cardElevation="2dp"
+            card:cardMaxElevation="@dimen/cardview_default_elevation">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="132dp">
+                        <ImageView
+                            android:id="@+id/iv_my_news_img"
+                            android:layout_margin="16dp"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/ic_action_add"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp" />
+                        <TextView
+                            android:id="@+id/tv_my_news_title"
+                            android:layout_gravity="center_vertical"
+                            android:ellipsize="end"
+                            android:textSize="16sp"
+                            android:maxLines="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_my_news_content"
+                        android:padding="8dp"
+                        android:gravity="top|left"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+        </android.support.v7.widget.CardView>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--<ScrollView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/srl_my_news_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_my_news_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
+                </android.support.v4.widget.SwipeRefreshLayout>
+            </LinearLayout>
+        <!--</ScrollView>-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:elevation="16dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:hint="@string/prompt_send"
+            android:id="@+id/edt_edit_mynews_commont"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:textSize="10sp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_send_mynews_commont"
+            android:text="发送"
+            android:textSize="10sp"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!--<android.support.v7.widget.RecyclerView
         android:id="@+id/rv_news_commonts"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.RecyclerView>-->
 </LinearLayout>

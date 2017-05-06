@@ -56,6 +56,7 @@ public class MePageFragment extends Fragment {
     private Button contactService;
     private Button pointsDetail;
     private Button collect;
+    private Button changeName;
 
     private LoadingWaitUtils waiting;
 
@@ -138,7 +139,7 @@ public class MePageFragment extends Fragment {
         usrPoints = (TextView) v.findViewById(R.id.btn_check_points);
         pointsDetail = (Button) v.findViewById(R.id.btn_points_detail);
         collect = (Button) v.findViewById(R.id.btn_my_collect);
-
+        changeName = (Button) v.findViewById(R.id.btn_change_user_name);
     }
     public void refreshDatas(){
 
@@ -201,6 +202,14 @@ public class MePageFragment extends Fragment {
             public void onClick(View v) {
                 Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
                 cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_CHANGE_PASSWORD);
+                startActivity(cui);
+            }
+        });
+        changeName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
+                cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_CHANGE_NAME);
                 startActivity(cui);
             }
         });
