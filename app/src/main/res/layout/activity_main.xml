@@ -15,11 +15,17 @@
             android:inAnimation="@android:anim/fade_in"
             android:outAnimation="@android:anim/fade_out"
             android:layout_width="match_parent"
-            android:background="@mipmap/ic_action_emo_angry"
             android:layout_height="match_parent">
         <!--android:background="@mipmap/ic_launcher"-->
 
         </ImageSwitcher>
+        <ImageView
+            android:id="@+id/ims_welcome_pages"
+            android:inAnimation="@android:anim/fade_in"
+            android:outAnimation="@android:anim/fade_out"
+            android:layout_width="match_parent"
+            android:scaleType="fitXY"
+            android:layout_height="match_parent"/>
     </FrameLayout>
 
     <!-- 切换图片按钮-->
@@ -31,19 +37,25 @@
         android:orientation="horizontal">
 
         <Button
+            android:background="@drawable/circle_quad_white"
+            android:layout_marginBottom="16dp"
             android:id="@+id/btn_image_1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_width="10dp"
+            android:layout_height="10dp" />
 
         <Button
+            android:background="@drawable/circle_quad_white"
+            android:layout_marginBottom="16dp"
             android:id="@+id/btn_image_2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_width="10dp"
+            android:layout_height="10dp" />
 
         <Button
+            android:layout_marginBottom="16dp"
             android:id="@+id/btn_image_3"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:background="@drawable/circle_quad_white"
+            android:layout_width="10dp"
+            android:layout_height="10dp" />
     </LinearLayout>
 
 

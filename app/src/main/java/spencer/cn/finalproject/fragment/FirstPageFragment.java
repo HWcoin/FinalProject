@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -84,8 +83,7 @@ public class FirstPageFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.e("fragment", "onStart");
-        refreshDatas();
+//        refreshDatas();
     }
 
     @Override
@@ -94,7 +92,6 @@ public class FirstPageFragment extends Fragment {
 
         //初始化布局
         initViews(view);
-        Log.e("fragment", "onCreateView");
         return view;
 
     }
@@ -158,18 +155,12 @@ public class FirstPageFragment extends Fragment {
         initTabsDatas();
 
         fragmentList = new ArrayList<>();
-        Log.e("caonima", news_types.length+"");
         for (int i = 0; i < news_types.length; i++) {
             NewType type = getNewTypeByName(news_types[i]);
             NewsTabFragment fragment = NewsTabFragment.newInstance(type);
             fragmentList.add(fragment);
         }
 
-        if (fragmentAdapter != null){
-            fragmentAdapter = new FunctionsFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, news_types);
-            Log.e("xxx", "ragmentAdapter.notifyDataSetChanged();");
-//            fragmentAdapter.notifyDataSetChanged();
-        }
 
     }
     private void initViewPage(View v) {

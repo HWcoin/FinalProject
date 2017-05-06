@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import java.util.HashMap;
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.acview.CommentActivity;
 import spencer.cn.finalproject.application.BaseApplication;
+import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.XiaozhongNewResp;
 import spencer.cn.finalproject.dojo.resp.MyListBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
@@ -48,7 +48,6 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
         public void handleMessage(Message msg) {
             if (msg.what == 0xeb1){
                 String newDetail = (String) msg.obj;
-                Log.e("ada", newDetail);
                 MyListBean result = parser.fromJson(newDetail, MyListBean.class);
                 if (result.getCode() == 200){
                     items.remove(curPosition);
@@ -82,11 +81,11 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
             }
         });
         holder.tvTitle.setText(items.get(position).getTitle());
-        holder.tvSource.setText(items.get(position).getHits()+" hit(s)");
+        holder.tvSource.setText(items.get(position).getHits() + " hit(s)");
         holder.tvDate.setText(items.get(position).getCreateDate());
 
         //加载网络图片、加载中的图片和加载失败的图片之后再补、太晚了，要睡觉
-        String url = context.getResources().getString(R.string.url_download_img)+items.get(position).getPictureUrl();
+        String url = context.getResources().getString(R.string.url_download_img) + items.get(position).getPictureUrl();
         Picasso.with(context).load(url).into(holder.ivPic);
 
         //设置点击事件
@@ -94,7 +93,12 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
         holder.tvTitle.setOnClickListener(holder);
         holder.tvSource.setOnClickListener(holder);
         holder.tvDate.setOnClickListener(holder);
-        Long userId = BaseApplication.getLoginBean().getData().getUser().getUid();
+        LoginBean loginBean = BaseApplication.getLoginBean();
+        Long userId = -1L;
+        if (loginBean == null) {
+        } else{
+            userId = BaseApplication.getLoginBean().getData().getUser().getUid();
+        }
         if (userId != items.get(position).getUserId()){
             holder.btnDelete.setVisibility(View.GONE);
         }else {
@@ -147,7 +151,6 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
         @Override
         public void onClick(View v) {
             if (mViewHolderClickListener!=null){
-                Log.e("xxx", "zhengmingwobeidianjile");
                 Intent intent = new Intent(context, CommentActivity.class);
                 intent.putExtra(PublicVar.MY_NEWS_ID, items.get(mViewHolderClickListener.getPosition()).getUid());
                 context.startActivity(intent);

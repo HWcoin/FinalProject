@@ -21,6 +21,8 @@ import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.MyNewsAdapter;
+import spencer.cn.finalproject.application.BaseApplication;
+import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.XiaozhongNewResp;
 import spencer.cn.finalproject.dojo.resp.MyListBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
@@ -45,13 +47,13 @@ public class MyNews extends BaseFragment {
 
             if (msg.what == 0xe12){
                 String gsonStrings = (String) msg.obj;
-                Log.e("xxxrigoule", gsonStrings);
+                Log.e("xx", gsonStrings);
                 MyListBean result = parser.fromJson(gsonStrings, MyListBean.class);
                 if (result.getCode()==200){
                     refreshMyNews.setRefreshing(false);
                     if (datas==null || datas.size()==0){
                         datas = result.getData();
-                        mynewsAdapter = new MyNewsAdapter(getActivity(), datas);
+                        mynewsAdapter.setItems(datas);
                         mynewsItems.setAdapter(mynewsAdapter);
                     }else{
                         if (result.getData().size()<=0){
@@ -73,8 +75,12 @@ public class MyNews extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-
-
+        LoginBean loginBean = BaseApplication.getLoginBean();
+        if (loginBean != null) {
+            Log.e("xx", "caonibabaqusi");
+            curPage = 1;
+            getMyLists(curPage);
+        }
     }
     public void getMyLists(int curpage){
         String url = getActivity().getResources().getString(R.string.url_get_my_list);
@@ -84,7 +90,6 @@ public class MyNews extends BaseFragment {
         params.put("page", curpage+"");
         params.put("rows", 15+"");
         String tail = NetWorkManager.mapToGetParams(params);
-        Log.e("xes", tail);
         NetWorkManager.doGet(url+tail, new NewsCallBack() {
             @Override
             public void onNewsReturn(String gstring) {
@@ -105,8 +110,7 @@ public class MyNews extends BaseFragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.page_my_news, container, false);
         initViews(v);
-        curPage = 1;
-        getMyLists(curPage);
+
         return v;
     }
 

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,8 @@ public class NewsTabFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
+        Log.e("xe", "onstart");
+//        requestForDatas();
     }
     public static NewsTabFragment newInstance(NewType type){
         NewsTabFragment fragment = new NewsTabFragment();
@@ -80,18 +82,14 @@ public class NewsTabFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if (getUserVisibleHint()){
-//            requestForDatas();
-//        }
-//    }
 
     public void refreshDatas(GsonNews requestNews){
         newsAdapter = new ItemsAdapter(getActivity(), requestNews.getData());
-        if (newsItems != null)
+        if (newsItems != null){
             newsItems.setAdapter(newsAdapter);
+//            newsAdapter.setItems(requestNews.getData());
+            newsAdapter.notifyDataSetChanged();
+        }
     }
 
 
@@ -99,7 +97,7 @@ public class NewsTabFragment extends Fragment {
     // 读取缓存、
     // 缓存不存在，-> 请求网络数据
     //缓存存在->判断上一次的存取时间，超过5分钟请求网络数据，否则只显示缓存
-    private void requestForDatas() {
+    public void requestForDatas() {
         /**
          * type.txt:文件保存新闻缓存
          * type.xml:保存文件最近一次缓存的时间

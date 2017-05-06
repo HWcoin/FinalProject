@@ -20,6 +20,7 @@ import android.widget.ViewSwitcher;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,9 +38,9 @@ import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
 
 public class MainActivity extends BaseActivity {
-    private Button skip;
     private Button[] images;
     private ImageSwitcher switcher;
+    private ImageView  welcomePages;
     private int curIndex = 0;
     private ArrayList<Integer> ads = new ArrayList<>();
 
@@ -115,10 +116,10 @@ public class MainActivity extends BaseActivity {
             }
         }
 
-        ads.add(R.mipmap.ic_action_emo_angry);
-        ads.add(R.mipmap.ic_action_emo_cry);
-        ads.add(R.mipmap.ic_action_emo_cool);
-        ads.add(R.mipmap.ic_action_emo_evil);
+        ads.add(R.mipmap.guilda);
+        ads.add(R.mipmap.guildb);
+        ads.add(R.mipmap.guildc);
+        ads.add(R.mipmap.guilda);
 
         this.initViews();
 
@@ -126,8 +127,12 @@ public class MainActivity extends BaseActivity {
 
         if (getFirstStatus()){
             this.initFirstOpenViews();
+            this.switcher.setVisibility(View.VISIBLE);
+            this.welcomePages.setVisibility(View.INVISIBLE);
         }else {
             this.initWelcomeOpenViews();
+            this.switcher.setVisibility(View.INVISIBLE);
+            this.welcomePages.setVisibility(View.VISIBLE);
         }
 
     }
@@ -164,7 +169,7 @@ public class MainActivity extends BaseActivity {
     }
     private void initViews(){
         this.switcher = (ImageSwitcher) this.findViewById(R.id.ims_switch_image);
-        this.skip = (Button) this.findViewById(R.id.btn_skip);
+        welcomePages = (ImageView) findViewById(R.id.ims_welcome_pages);
         this.images = new Button[IMAGES_NUMS];
         for (int i=0; i < IMAGES_NUMS; i++){
             this.images[i] = (Button) this.findViewById(ids[i]);
@@ -182,7 +187,6 @@ public class MainActivity extends BaseActivity {
         this.switcher.setImageResource(ads.get(curIndex));
     }
     private void setViewVisibility(int visibility){
-        this.skip.setVisibility(visibility);
         for (int i=0; i < IMAGES_NUMS; i++){
             this.images[i].setVisibility(visibility);
         }
@@ -191,7 +195,9 @@ public class MainActivity extends BaseActivity {
     private void initWelcomeOpenViews(){
 
         this.setViewVisibility(View.GONE);
-        this.switcher.setImageResource(ads.get(3));
+//        this.switcher.setImageResource(ads.get(3));
+        String url = getResources().getString(R.string.url_download_img)+"start-page.jpg";
+        Picasso.with(this).load(url).into(welcomePages);
 
         //计时
         this.isAutoLogin = false;
@@ -204,7 +210,7 @@ public class MainActivity extends BaseActivity {
             }
         };
         curIndex = 2;
-        timer.schedule(task, 1500);
+        timer.schedule(task, 3000);
         ///////////////////////////////////////////自动登录
         autoLogin();
     }
@@ -259,12 +265,7 @@ public class MainActivity extends BaseActivity {
 
         initBtnsListeners();
 
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeGuildPages();
-            }
-        });
+
 
         //计时
         TimerTask task = new TimerTask() {

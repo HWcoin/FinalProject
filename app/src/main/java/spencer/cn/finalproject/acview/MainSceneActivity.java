@@ -66,14 +66,13 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
 
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if (fragmentAdapter!=null && BaseApplication.getLoginBean()!=null){
-//            MePageFragment me = (MePageFragment) fragmentList.get(2);
-//            me.refreshDatas();
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (fragmentAdapter!=null ){
+            fragmentAdapter.notifyDataSetChanged();
+        }
+    }
 
     private void initViews() {
         this.fragmentList = new ArrayList<>();
@@ -84,7 +83,7 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
     private void initViewPage() {
         this.tabMain = (TabLayout) findViewById(R.id.layout_main);
         this.pages = (ViewPager) findViewById(R.id.vp_allpages);
-        this.pages.setOffscreenPageLimit(4);
+        this.pages.setOffscreenPageLimit(5);
 
         this.tabMain.setTabMode(TabLayout.MODE_FIXED);
         for (int i=0; i < titles.length; i++){
@@ -195,12 +194,12 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
                 Intent personal = new Intent(MainSceneActivity.this, PersonalNewsActivity.class);
                 startActivity(personal);
                 break;
-            case R.id.action_switch_day_theme:
-                BaseApplication.setIsNightMode(false);
-                break;
-            case R.id.action_switch_night_theme:
-                BaseApplication.setIsNightMode(true);
-                break;
+//            case R.id.action_switch_day_theme:
+//                BaseApplication.setIsNightMode(false);
+//                break;
+//            case R.id.action_switch_night_theme:
+//                BaseApplication.setIsNightMode(true);
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -27,7 +27,17 @@ public class ModuleFragmentAdatper extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         return fragments.get(position);
     }
-
+//
+//    @Override
+//    public int getItemPosition(Object object) {
+//        return POSITION_NONE;
+//    }
+    //    @Override
+//    public void destroyItem(ViewGroup container, int position, Object object) {
+//        ViewPager viewPager = (ViewPager) container;
+//        NewsTabFragment obj = (NewsTabFragment) object;
+//        viewPager.removeView(obj.getView());
+//    }
     @Override
     public int getCount() {
         return fragments.size();

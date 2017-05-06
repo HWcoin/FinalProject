@@ -3,7 +3,6 @@ package spencer.cn.finalproject.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 
 import java.util.ArrayList;
 
@@ -27,10 +26,10 @@ public class FunctionsFragmentAdapter extends FragmentStatePagerAdapter {
         return fragments.get(position);
     }
 
-    @Override
-    public int getItemPosition(Object object) {
-        return PagerAdapter.POSITION_NONE;
-    }
+//    @Override
+//    public int getItemPosition(Object object) {
+//        return PagerAdapter.POSITION_NONE;
+//    }
 
 //    @Override
 //     public Object instantiateItem(ViewGroup container, int position) {

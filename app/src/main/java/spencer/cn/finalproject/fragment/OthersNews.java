@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,6 @@ public class OthersNews extends BaseFragment {
 
             if (msg.what == 0xe23){
                 String gsonStrings = (String) msg.obj;
-                Log.e("xxxrigoule", gsonStrings);
                 MyListBean result = parser.fromJson(gsonStrings, MyListBean.class);
                 if (result.getCode()==200){
                     refreshMyNews.setRefreshing(false);
