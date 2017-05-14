@@ -81,10 +81,18 @@ public class MainActivity extends BaseActivity {
                 LocalDataManager.storeBaseConfig(MainActivity.this, requestNews);
             }else if (msg.what == 0xfe2){
                 String loginStrings = (String) msg.obj;
-                Log.e("e", loginStrings);
+
                 LoginBean loginBean = parser.fromJson(loginStrings, LoginBean.class);
                 BaseApplication application = (BaseApplication) getApplication();
                 application.setLoginBean(loginBean);
+                if (loginBean != null && loginBean.getCode() == 200){
+                    BaseApplication.setConfig(loginBean.getData().getUserConfig());
+                    BaseApplication.setInfo(loginBean.getData().getUser());
+                    SharedPreferences settings = getSharedPreferences(PublicVar.SHARED_FILE, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString(PublicVar.ACCESSTOKEN, loginBean.getData().getAccessToken());
+                    editor.commit();
+                }
 
                 if (isAutoLogin){
                     closeGuildPages();

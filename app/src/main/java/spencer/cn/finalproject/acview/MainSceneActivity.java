@@ -69,9 +69,13 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
     @Override
     protected void onStart() {
         super.onStart();
-        if (fragmentAdapter!=null ){
-            fragmentAdapter.notifyDataSetChanged();
-        }
+//        if (fragmentAdapter!=null ){
+//            fragmentList.remove(0);
+//            FirstPageFragment first = new FirstPageFragment();
+//            fragmentList.add(0, first);
+//            fragmentAdapter.notifyDataSetChanged();
+//        }
+//        Log.e("first", "onstart这里执行");
     }
 
     private void initViews() {

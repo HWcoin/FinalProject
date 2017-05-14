@@ -23,6 +23,7 @@ import spencer.cn.finalproject.adapter.MyNewsAdapter;
 import spencer.cn.finalproject.dojo.XiaozhongNewResp;
 import spencer.cn.finalproject.dojo.resp.MyListBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 
@@ -56,6 +57,16 @@ public class OthersNews extends BaseFragment {
                             Toast.makeText(getActivity(), "已经是全部内容了", Toast.LENGTH_LONG).show();
                             return;
                         }
+//                        datas = result.getData();
+                        for (int i=0; i < datas.size(); i++){
+                            for (int j=0; j < result.getData().size(); j++){
+                                XiaozhongNewResp resp = result.getData().get(j);
+                                if (resp.getUid() == datas.get(i).getUid()){
+                                    result.getData().remove(resp);
+                                    break;
+                                }
+                            }
+                        }
                         for (int i=0; i < result.getData().size(); i++){
                             datas.add(0, result.getData().get(i));
                         }
@@ -71,8 +82,14 @@ public class OthersNews extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-
-
+        if (CommonUtil.isLogin(getActivity())){
+            if (datas==null || datas.size()<15){
+                curPage = 1;
+            }else{
+                curPage = (int)(datas.size() / 15);
+            }
+            getMyLists(curPage);
+        }
     }
     public void getMyLists(int curpage){
         String url = getActivity().getResources().getString(R.string.url_get_shequ_list);
@@ -102,8 +119,7 @@ public class OthersNews extends BaseFragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.page_my_news, container, false);
         initViews(v);
-        curPage = 1;
-        getMyLists(curPage);
+
         return v;
     }
 
@@ -120,7 +136,13 @@ public class OthersNews extends BaseFragment {
             public void onRefresh() {
                 //访问网络数据
 //                refreshComments.setRefreshing(false);
-                curPage += 1;
+                if (datas==null || datas.size() < 15){
+                    curPage = 1;
+                }else {
+                    curPage = (int)(datas.size() / 15);
+                }
+                if (curPage <= 0)
+                    curPage = 1;
                 getMyLists(curPage);
             }
         });

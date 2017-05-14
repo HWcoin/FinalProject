@@ -25,6 +25,7 @@ import spencer.cn.finalproject.dojo.NewsInfo;
 import spencer.cn.finalproject.dojo.resp.CommentResp;
 import spencer.cn.finalproject.dojo.resp.RequestDetailBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
@@ -116,6 +117,11 @@ public class NewsDetailsActivity extends BaseActionBarActivity {
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                if (!CommonUtil.isLogin(NewsDetailsActivity.this)){
+//                    Intent intent = new Intent(NewsDetailsActivity.this, LoginActivity.class);
+//                    startActivity(intent);
+//                    return;
+//                }
                 if (resp == null || resp.getUid() <= 0){
                     Toast.makeText(NewsDetailsActivity.this, "等待新闻加载", Toast.LENGTH_LONG).show();
                     return;
@@ -130,6 +136,11 @@ public class NewsDetailsActivity extends BaseActionBarActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(NewsDetailsActivity.this)){
+                    Intent intent = new Intent(NewsDetailsActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
                 String commentContent = comments.getText().toString();
                 if (TextUtils.isEmpty(commentContent)){
                     Toast.makeText(NewsDetailsActivity.this, "请输入评论", Toast.LENGTH_LONG).show();
@@ -161,6 +172,11 @@ public class NewsDetailsActivity extends BaseActionBarActivity {
         collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(NewsDetailsActivity.this)){
+                    Intent intent = new Intent(NewsDetailsActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
                 if (resp == null || resp.getUid() <= 0){
                     Toast.makeText(NewsDetailsActivity.this, "等待新闻加载", Toast.LENGTH_LONG).show();
                     return;

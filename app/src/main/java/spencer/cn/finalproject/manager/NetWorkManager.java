@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -27,7 +28,9 @@ public class NetWorkManager {
         new Thread(){
             @Override
             public void run() {
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .build();
                 String url = head + "?type=" + type;
                 Request request = new Request.Builder()
                         .url(url)
@@ -80,7 +83,9 @@ public class NetWorkManager {
         new Thread(){
             @Override
             public void run() {
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .build();
                 String str = NetWorkManager.maptogstring(params);
                 RequestBody body = RequestBody.create(JSON, str);
                 Request request = new Request.Builder()
@@ -106,7 +111,9 @@ public class NetWorkManager {
         new Thread(){
             @Override
             public void run() {
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .build();
                 RequestBody body = RequestBody.create(JSON, params);
                 Request request = new Request.Builder()
                         .post(body)
@@ -137,7 +144,9 @@ public class NetWorkManager {
         new Thread(){
             @Override
             public void run() {
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .build();
                 Request request = new Request.Builder()
                         .url(url)
                         .build();

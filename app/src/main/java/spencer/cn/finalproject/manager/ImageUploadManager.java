@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,7 +32,9 @@ import spencer.cn.finalproject.util.BitmapUtil;
 
 public class ImageUploadManager {
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-    private final static OkHttpClient client = new OkHttpClient();
+    private final static OkHttpClient client = new OkHttpClient.Builder()
+                            .connectTimeout(60, TimeUnit.SECONDS)
+                            .build();
 
 
     private static MultipartBody.Builder getImageBuilderWithBitmap(Context mContext, File file){
@@ -73,7 +76,7 @@ public class ImageUploadManager {
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.e("imgCallBack", e.getLocalizedMessage());
+//                        Log.e("imgCallBack", e.getLocalizedMessage());
 
                     }
 

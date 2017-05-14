@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import spencer.cn.finalproject.acview.BaseActivity;
 import spencer.cn.finalproject.dojo.BaseNewType;
 import spencer.cn.finalproject.dojo.LoginBean;
+import spencer.cn.finalproject.dojo.UserConfig;
+import spencer.cn.finalproject.dojo.UserInfo;
 
 /**
  * Created by Administrator on 2017/3/4.
@@ -16,6 +18,8 @@ public class BaseApplication extends Application {
     private ArrayList<BaseActivity> allActivity = new ArrayList<>();
     private BaseNewType baseNewType;
     private static LoginBean loginBean;
+    private static UserConfig config;
+    private static UserInfo info;
 
     public BaseNewType getBaseNewType() {
         return baseNewType;
@@ -53,5 +57,21 @@ public class BaseApplication extends Application {
     }
     public static void setIsNightMode(boolean b) {
         BaseApplication.isNightMode = b;
+    }
+
+    public static UserConfig getConfig() {
+        return config;
+    }
+
+    public static void setConfig(UserConfig config) {
+        BaseApplication.config = config;
+    }
+
+    public static UserInfo getInfo() {
+        return info;
+    }
+
+    public static void setInfo(UserInfo info) {
+        BaseApplication.info = info;
     }
 }

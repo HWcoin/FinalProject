@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.resp.CurPointBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.DialogUtil;
@@ -73,6 +75,10 @@ public class MePageFragment extends Fragment {
                     //清除缓存
                     LocalDataManager.clearAccessToken(getActivity());
                     BaseApplication.setLoginBean(null);
+
+                    BaseApplication.setConfig(null);
+                    BaseApplication.setInfo(null);
+
                     Intent loginActivity = new Intent(getActivity(), LoginActivity.class);
                     getActivity().startActivity(loginActivity);
                 }else{
@@ -102,6 +108,24 @@ public class MePageFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if(login!=null && BaseApplication.getInfo()!=null){
+            String newName = BaseApplication.getInfo().getUsername();
+            String oldName = login.getText().toString();
+            if (TextUtils.isEmpty(oldName) || oldName.equals("请登录")){
+                if (!TextUtils.isEmpty(newName)){
+                    login.setText(newName);
+                }
+            }
+        }
+        if (icon != null && BaseApplication.getInfo()!=null){
+            String pic = BaseApplication.getInfo().getAvatar();
+            String url = getActivity().getResources().getString(R.string.url_download_small_img)+pic;
+            Picasso.with(getActivity()).load(url).into(icon);
+        }
+        if (BaseApplication.getInfo() == null){
+            login.setText("请登录");
+            icon.setImageResource(R.mipmap.ic_launcher);
+        }
 
     }
 
@@ -146,7 +170,7 @@ public class MePageFragment extends Fragment {
         LoginBean loginBean = BaseApplication.getLoginBean();
         if (loginBean!=null && loginBean.getData()!=null && loginBean.getData().getUser()!=null){
             String username = loginBean.getData().getUser().getUsername();
-            username = (username==null) ? "null" : username;
+            username = (username==null) ? "请登录" : username;
             login.setText(username);
             String pic = loginBean.getData().getUser().getAvatar();
             String url = getActivity().getResources().getString(R.string.url_download_small_img)+pic;
@@ -161,6 +185,11 @@ public class MePageFragment extends Fragment {
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
 //                Intent changeIcon = new Intent(getActivity(), ChangeIconActivity.class);
 //                getActivity().startActivityForResult(changeIcon, PublicVar.CHANGE_ICON_REQUEST_CODE);
                 getIconFromGalley();
@@ -170,6 +199,11 @@ public class MePageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //先判断状态
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(loginIntent);
             }
@@ -177,6 +211,7 @@ public class MePageFragment extends Fragment {
         history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent historyIntent = new Intent(getActivity(), HistoryDetailActivity.class);
                 getActivity().startActivity(historyIntent);
             }
@@ -184,6 +219,11 @@ public class MePageFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 String url = getActivity().getResources().getString(R.string.url_get_logout);
                 String accessToken = LocalDataManager.getAccessToken(getActivity());
                 NetWorkManager.doGet(url + accessToken, new NewsCallBack() {
@@ -200,6 +240,11 @@ public class MePageFragment extends Fragment {
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
                 cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_CHANGE_PASSWORD);
                 startActivity(cui);
@@ -208,6 +253,11 @@ public class MePageFragment extends Fragment {
         changeName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
                 cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_CHANGE_NAME);
                 startActivity(cui);
@@ -226,6 +276,11 @@ public class MePageFragment extends Fragment {
         pointsDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
                 cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_POINTS_DETAIL);
                 startActivity(cui);
@@ -234,6 +289,11 @@ public class MePageFragment extends Fragment {
         rulesPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
                 cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_POINTS_RULES);
                 startActivity(cui);
@@ -242,6 +302,11 @@ public class MePageFragment extends Fragment {
         contactService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
                 cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_CUSTOMER_SERVICE);
                 startActivity(cui);
@@ -250,6 +315,11 @@ public class MePageFragment extends Fragment {
         signForPoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 String url = getActivity().getResources().getString(R.string.url_post_daily_check_in);
                 String accessToken = LocalDataManager.getAccessToken(getActivity());
                 HashMap<String, String> params = new HashMap<String, String>();
@@ -268,6 +338,11 @@ public class MePageFragment extends Fragment {
         usrPoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 String url = getActivity().getResources().getString(R.string.url_get_user_integral);
                 String accessToken = LocalDataManager.getAccessToken(getActivity());
                 waiting.show();
@@ -285,6 +360,11 @@ public class MePageFragment extends Fragment {
         collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!CommonUtil.isLogin(getActivity())){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    return;
+                }
                 Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
                 cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_MY_COLLECT);
                 startActivity(cui);

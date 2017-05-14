@@ -39,6 +39,7 @@ import spencer.cn.finalproject.dojo.resp.CollectListBean;
 import spencer.cn.finalproject.dojo.resp.GetCommentsResp;
 import spencer.cn.finalproject.dojo.resp.PointsDetailsBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
@@ -140,6 +141,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                 }
             }else if (msg.what == 0xf95){
                 String rString = (String) msg.obj;
+                Log.e("cnm", rString);
                 UploadImgResp rules = userparser.fromJson(rString, UploadImgResp.class);
                 if (rules.getCode() == 200){
                     cusService.setText(rules.getData());
@@ -153,13 +155,30 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                 if (comments.getCode() == 200){
                     if (datas==null){
                         datas = comments.getData();
-                        Long userId = getLoginBean().getData().getUser().getUid();
+                        Long userId = -1L;
+                        if (CommonUtil.isLogin(ChangeUserInfoActivity.this)){
+                            userId = getLoginBean().getData().getUser().getUid();
+                        }
                         adapter = new CommontsAdapter(ChangeUserInfoActivity.this, datas, userId);
                         commentsContent.setAdapter(adapter);
                     }else{
                         if ( comments.getData().size() <= 0){
                             Toast.makeText(ChangeUserInfoActivity.this, "这已经是全部评论喽", Toast.LENGTH_LONG).show();
                             return;
+                        }
+//                        排除相同
+                        for (int i=0; i<datas.size();i++){
+                            int idx = -1;
+                            for (int j=0; j < comments.getData().size(); j++){
+
+                                if (datas.get(i).getCommentId() == comments.getData().get(j).getCommentId()){
+                                    idx = j;
+                                    break;
+                                }
+                            }
+                            if (idx != -1){
+                                comments.getData().remove(idx);
+                            }
                         }
                         for(int i=0; i < comments.getData().size(); i++){
                             datas.add(comments.getData().get(i));
@@ -172,7 +191,6 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
             }else if (msg.what == 0xf97){
                 refreshPointDetailView.setRefreshing(false);
                 String rString = (String) msg.obj;
-                Log.e("xxx", rString);
                 PointsDetailsBean bean = userparser.fromJson(rString, PointsDetailsBean.class);
                 if (bean.getCode() == 200){
                     if (integralDatas==null){
@@ -417,7 +435,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     private void getComments(Long uid, int page){
         String url = getResources().getString(R.string.url_get_comments);
         HashMap<String, String> params = new HashMap<>();
-        params.put("accessToken", LocalDataManager.getAccessToken(this));
+//        params.put("accessToken", LocalDataManager.getAccessToken(this));
         params.put("newId", uid+"");
         params.put("page", page+"");
         params.put("rows", 15+"");

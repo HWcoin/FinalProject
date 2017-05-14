@@ -1,10 +1,10 @@
 package spencer.cn.finalproject.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +22,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
+import spencer.cn.finalproject.acview.LoginActivity;
 import spencer.cn.finalproject.dojo.CommentInfoResp;
 import spencer.cn.finalproject.dojo.resp.CommentResp;
 import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 
@@ -53,7 +55,6 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
                 }
             }else if (msg.what == 0x258){
                 String newDetail = (String) msg.obj;
-                Log.e("ada", newDetail);
                 CommentResp result = parser.fromJson(newDetail, CommentResp.class);
                 if (result.getCode() == 200){
                     setItems(result.getData());
@@ -128,6 +129,11 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
     }
 
     private void setTop(int type, int position){
+        if (!CommonUtil.isLogin(context)){
+            Intent intent = new Intent(context, LoginActivity.class);
+            context.startActivity(intent);
+            return;
+        }
         String url = context.getResources().getString(R.string.url_post_stick_top);
         String accessToken = LocalDataManager.getAccessToken(context);
         HashMap<String, String> params = new HashMap<String, String>();

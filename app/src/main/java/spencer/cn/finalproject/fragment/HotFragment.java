@@ -66,11 +66,12 @@ public class HotFragment extends BaseFragment {
     }
 
     public void requestForDatas() {
-        int _type = this.getArguments().getInt("type", 0);
+        final int _type = this.getArguments().getInt("type", 0);
         String url = PublicVar.hotUrls[_type];
         NetWorkManager.doGet(url, new NewsCallBack() {
             @Override
             public void onNewsReturn(String gstring) {
+                Log.e("xxremen", gstring);
                 Message msg = new Message();
                 msg.what = 0xf17;
                 msg.obj = gstring;

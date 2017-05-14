@@ -51,6 +51,13 @@ public class LoginActivity extends BaseActionBarActivity {
                     BaseApplication application = (BaseApplication) getApplication();
                     application.setLoginBean(loginBean);
                     storeUserInfo(loginBean);
+//                    新处理
+                    BaseApplication.setConfig(loginBean.getData().getUserConfig());
+                    BaseApplication.setInfo(loginBean.getData().getUser());
+                    SharedPreferences settings = getSharedPreferences(PublicVar.SHARED_FILE, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString(PublicVar.ACCESSTOKEN, loginBean.getData().getAccessToken());
+                    editor.commit();
                     finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "登陆超时", Toast.LENGTH_LONG).show();

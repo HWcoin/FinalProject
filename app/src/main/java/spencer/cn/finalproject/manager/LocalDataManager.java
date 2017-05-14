@@ -102,6 +102,11 @@ public class LocalDataManager {
             }
         }
     }
+
+    /**
+     *
+     * @param record
+     */
     //////////////////////////////////////////////////保存一条新闻记录
     public static void keepNewsRecord(News record){
         News target = null;

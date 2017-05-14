@@ -21,11 +21,10 @@ import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.MyNewsAdapter;
-import spencer.cn.finalproject.application.BaseApplication;
-import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.XiaozhongNewResp;
 import spencer.cn.finalproject.dojo.resp.MyListBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 
@@ -60,10 +59,19 @@ public class MyNews extends BaseFragment {
                             Toast.makeText(getActivity(), "已经是全部内容了", Toast.LENGTH_LONG).show();
                             return;
                         }
-                        for (int i=0; i < result.getData().size(); i++){
-                            datas.add(0, result.getData().get(i));
-                        }
-                        mynewsAdapter.setItems(datas);
+                          for (int i=0; i < datas.size(); i++){
+                                for (int j=0; j < result.getData().size(); j++){
+                                        XiaozhongNewResp resp = result.getData().get(j);
+                                        if (resp.getUid() == datas.get(i).getUid()){
+                                            result.getData().remove(resp);
+                                            break;
+                                        }
+                                    }
+                                }
+                                for (int i=0; i < result.getData().size(); i++){
+                                    datas.add(0, result.getData().get(i));
+                                }
+                            mynewsAdapter.setItems(datas);
                     }
                 }else {
                     Toast.makeText(getActivity(), "timeout", Toast.LENGTH_LONG).show();
@@ -75,10 +83,12 @@ public class MyNews extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        LoginBean loginBean = BaseApplication.getLoginBean();
-        if (loginBean != null) {
-            Log.e("xx", "caonibabaqusi");
-            curPage = 1;
+        if (CommonUtil.isLogin(getActivity())){
+            if (datas==null || datas.size()<15){
+                curPage = 1;
+            }else{
+                curPage = (int)(datas.size() / 15);
+            }
             getMyLists(curPage);
         }
     }
@@ -127,7 +137,13 @@ public class MyNews extends BaseFragment {
             public void onRefresh() {
                 //访问网络数据
 //                refreshComments.setRefreshing(false);
-                curPage += 1;
+                if (datas==null || datas.size() < 15){
+                    curPage = 1;
+                }else {
+                    curPage = (int)(datas.size() / 15);
+                }
+                if (curPage <= 0)
+                    curPage = 1;
                 getMyLists(curPage);
             }
         });
