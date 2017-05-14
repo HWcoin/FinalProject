@@ -83,6 +83,13 @@ public class FirstPageFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if (this.fragmentAdapter!=null){
+            refreshDatas();
+//            this.fragmentAdapter = null;
+//            fragmentAdapter = new FunctionsFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, news_types);
+//            subPages.setAdapter(fragmentAdapter);
+            fragmentAdapter.notifyDataSetChanged();
+        }
 //        refreshDatas();
     }
 

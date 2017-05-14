@@ -1,5 +1,6 @@
 package spencer.cn.finalproject.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
+import spencer.cn.finalproject.acview.LoginActivity;
 import spencer.cn.finalproject.adapter.MyNewsAdapter;
 import spencer.cn.finalproject.dojo.XiaozhongNewResp;
 import spencer.cn.finalproject.dojo.resp.MyListBean;
@@ -83,6 +85,9 @@ public class MyNews extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
+        if (!CommonUtil.isLogin(getActivity())){
+            return;
+        }
         if (CommonUtil.isLogin(getActivity())){
             if (datas==null || datas.size()<15){
                 curPage = 1;
@@ -93,6 +98,7 @@ public class MyNews extends BaseFragment {
         }
     }
     public void getMyLists(int curpage){
+
         String url = getActivity().getResources().getString(R.string.url_get_my_list);
         HashMap<String, String> params = new HashMap<>();
         String accessToken = LocalDataManager.getAccessToken(getActivity());
@@ -137,6 +143,14 @@ public class MyNews extends BaseFragment {
             public void onRefresh() {
                 //访问网络数据
 //                refreshComments.setRefreshing(false);
+
+                if (!CommonUtil.isLogin(getActivity())){
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                    refreshMyNews.setRefreshing(false);
+                    return;
+                }
                 if (datas==null || datas.size() < 15){
                     curPage = 1;
                 }else {

@@ -22,12 +22,14 @@ import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.acview.CommentActivity;
+import spencer.cn.finalproject.acview.LoginActivity;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.XiaozhongNewResp;
 import spencer.cn.finalproject.dojo.resp.MyListBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.listener.OnViewHolderClickListener;
+import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.PublicVar;
@@ -106,6 +108,13 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (!CommonUtil.isLogin(context)){
+                        Toast.makeText(context, "请先登录", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                        return;
+                    }
+
                     String url = context.getResources().getString(R.string.url_post_delete_my_news);
                     String accessToken = LocalDataManager.getAccessToken(context);
                     HashMap<String, String> params = new HashMap<String, String>();
@@ -151,6 +160,13 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
         @Override
         public void onClick(View v) {
             if (mViewHolderClickListener!=null){
+                if (!CommonUtil.isLogin(context)){
+                    Toast.makeText(context, "请先登录", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
+                    return;
+                }
+
                 Intent intent = new Intent(context, CommentActivity.class);
                 intent.putExtra(PublicVar.MY_NEWS_ID, items.get(mViewHolderClickListener.getPosition()).getUid());
                 context.startActivity(intent);

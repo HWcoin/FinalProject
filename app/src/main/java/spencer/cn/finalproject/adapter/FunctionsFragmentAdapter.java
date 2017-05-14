@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -64,8 +67,21 @@ public class FunctionsFragmentAdapter extends FragmentStatePagerAdapter {
 //        notifyDataSetChanged();
     }
 
-    public int getItemPosition(Object object) {
-        return POSITION_NONE;
+//    public int getItemPosition(Object object) {
+//        return POSITION_NONE;
+//    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        ((ViewPager)container).removeView( ((NewsTabFragment) object).getView());
     }
+
+    @Override
+    public Object instantiateItem(View collection, int position) {
+        View v = fragments.get(position).getView();
+        ((ViewPager)collection).addView(v);
+        return v;
+    }
+
 
 }

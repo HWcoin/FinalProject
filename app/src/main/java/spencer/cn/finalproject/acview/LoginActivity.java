@@ -23,12 +23,14 @@ import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.NetWorkManager;
+import spencer.cn.finalproject.util.LoadingWaitUtils;
 import spencer.cn.finalproject.util.PublicVar;
 
 public class LoginActivity extends BaseActionBarActivity {
     private int curStatus;
     private ViewGroup loginLayout;
     private ViewGroup registLayout;
+    LoadingWaitUtils wait;
     Gson parser = new GsonBuilder().serializeNulls().create();
     private Handler handler = new Handler(){
         @Override
@@ -38,13 +40,17 @@ public class LoginActivity extends BaseActionBarActivity {
                 GsonNews registResp = parser.fromJson(gsonStrings, GsonNews.class);
                 Toast.makeText(LoginActivity.this, registResp.getMessage(), Toast.LENGTH_LONG).show();
             }else if (msg.what == 0xffb){
+                wait.cancel();
                 String registStrings = (String) msg.obj;
                 GsonNews registObj = parser.fromJson(registStrings, GsonNews.class);
                 Toast.makeText(LoginActivity.this, registObj.getMessage(), Toast.LENGTH_LONG).show();
                 if (registObj.getCode() == 200){
                     changeStatus(PublicVar.LOGIN_STATUS);
+                }else{
+                    Toast.makeText(LoginActivity.this, "超时", Toast.LENGTH_LONG).show();
                 }
             }else if (msg.what == 0xffc) {
+                wait.cancel();
                 String loginStrings = (String) msg.obj;
                 LoginBean loginBean = parser.fromJson(loginStrings, LoginBean.class);
                 if (loginBean.getCode() == 200) {
@@ -87,6 +93,7 @@ public class LoginActivity extends BaseActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_login_register);
+        wait = new LoadingWaitUtils(this);
         loginLayout = (ViewGroup) findViewById(R.id.layout_login);
         registLayout = (ViewGroup) findViewById(R.id.layout_regist);
         initLoginViews();
@@ -126,6 +133,7 @@ public class LoginActivity extends BaseActionBarActivity {
                 String errMsg = "不能为空";
                 if (checkText(login_email, errMsg)) return;
                 if (checkText(login_pass, errMsg)) return;
+                wait.show();
                 String url = getResources().getString(R.string.url_post_login);
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("deviceId", "1");
@@ -169,6 +177,7 @@ public class LoginActivity extends BaseActionBarActivity {
             public void onClick(View v) {
                 if (checkNull()) return;
                 if (checkPassword() ) return;
+                wait.show();
                 String url = getResources().getString(R.string.url_post_regist);
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("email", email.getEditText().getText().toString());

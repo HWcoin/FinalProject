@@ -63,10 +63,12 @@ public class MePageFragment extends Fragment {
     private LoadingWaitUtils waiting;
 
     private Context context;
+
     private Gson parser = new GsonBuilder().serializeNulls().create();
     private Handler executor = new Handler(){
         @Override
         public void handleMessage(Message msg) {
+            waiting.cancel();
             if (msg.what == 0xfc1){
                 String loginStrings = (String) msg.obj;
                 Log.e("e", loginStrings);
@@ -91,7 +93,6 @@ public class MePageFragment extends Fragment {
                 GsonNews checkBean = parser.fromJson(loginStrings, GsonNews.class);
                 Toast.makeText(getActivity(), checkBean.getMessage(), Toast.LENGTH_LONG).show();
             }else if (msg.what == 0xfc3){
-                waiting.cancel();
                 String pointsString = (String) msg.obj;
                 Log.e("xxxxxx", pointsString);
                 CurPointBean checkBean = parser.fromJson(pointsString, CurPointBean.class);
@@ -199,11 +200,11 @@ public class MePageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //先判断状态
-                if (!CommonUtil.isLogin(getActivity())){
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                    getActivity().startActivity(intent);
-                    return;
-                }
+//                if (!CommonUtil.isLogin(getActivity())){
+//                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+//                    getActivity().startActivity(intent);
+//                    return;
+//                }
                 Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(loginIntent);
             }
@@ -224,6 +225,7 @@ public class MePageFragment extends Fragment {
                     getActivity().startActivity(intent);
                     return;
                 }
+                waiting.show();
                 String url = getActivity().getResources().getString(R.string.url_get_logout);
                 String accessToken = LocalDataManager.getAccessToken(getActivity());
                 NetWorkManager.doGet(url + accessToken, new NewsCallBack() {

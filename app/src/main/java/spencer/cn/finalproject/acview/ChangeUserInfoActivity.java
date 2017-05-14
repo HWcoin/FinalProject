@@ -42,6 +42,7 @@ import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
+import spencer.cn.finalproject.util.LoadingWaitUtils;
 import spencer.cn.finalproject.util.PublicVar;
 
 import static spencer.cn.finalproject.application.BaseApplication.getLoginBean;
@@ -49,6 +50,7 @@ import static spencer.cn.finalproject.manager.NetWorkManager.mapToGetParams;
 
 public class ChangeUserInfoActivity extends BaseActionBarActivity {
     private Intent curIntent;
+    LoadingWaitUtils wait;
 
     ViewGroup changePassworld;
     TextInputLayout cp_oldPassword;
@@ -105,6 +107,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
+            wait.cancel();
             if (msg.what == 0xf91){
                 String cpgstring = (String) msg.obj;
                 Log.e("e", cpgstring);
@@ -250,6 +253,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_user_info);
+        wait = new LoadingWaitUtils(this);
         curIntent = getIntent();
         initViews();
 
@@ -297,6 +301,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                     Toast.makeText(ChangeUserInfoActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                wait.show();
                 String url = getResources().getString(R.string.url_post_change_name);
                 String accessToken = LocalDataManager.getAccessToken(ChangeUserInfoActivity.this);
                 HashMap<String, String> params = new HashMap<String, String>();
@@ -369,6 +374,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
     }
 
     private void getPointsDetail(int curPage){
+        wait.show();
         String url = getResources().getString(R.string.url_get_user_integral_list);
         HashMap<String, String> params = new HashMap<>();
         params.put("accessToken", LocalDataManager.getAccessToken(this));
@@ -388,7 +394,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
 
     private void initCusServiceViews() {
         cusService = (TextView) findViewById(R.id.tv_customer_service);
-
+        wait.show();
         String url = getResources().getString(R.string.url_get_custom_service);
         NetWorkManager.doGet(url, new NewsCallBack() {
             @Override
@@ -461,6 +467,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
             @Override
             public void onClick(View v) {
                 String text = "不能为空";
+
                 if (checkNil(cp_oldPassword, text)) return;
                 if (checkNil(cp_newPassword, text)) return;
                 if (checkNil(cp_newPasswordAgain, text)) return;
@@ -471,6 +478,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                     Toast.makeText(ChangeUserInfoActivity.this, "两次输入的密码不一致", Toast.LENGTH_LONG).show();
                     return;
                 }
+                wait.show();
                 String url = getResources().getString(R.string.url_post_change_pass) + LocalDataManager.getAccessToken(ChangeUserInfoActivity.this);
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("oldPassword", oldPass);
@@ -533,6 +541,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                     Toast.makeText(ChangeUserInfoActivity.this, "请输入验证码", Toast.LENGTH_LONG).show();
                     return;
                 }
+                wait.show();
                 String emailText = fp_oldPassword.getEditText().getText().toString();
                 String newPassText = fp_newPassword.getEditText().getText().toString();
                 String newPassTextAgain = fp_newPasswordAgain.getEditText().getText().toString();
@@ -595,6 +604,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
             getComments(curUid, curPage);
         }else if (viewType == PublicVar.VIEW_POINTS_RULES){
             pointRuleView.setVisibility(View.VISIBLE);
+            wait.show();
             String url = getResources().getString(R.string.url_get_points_rules);
             NetWorkManager.doGet(url, new NewsCallBack() {
                 @Override
