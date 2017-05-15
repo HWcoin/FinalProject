@@ -29,6 +29,7 @@ import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
+import spencer.cn.finalproject.util.LoadingWaitUtils;
 
 /**
  *  created at 2016/7/2 15:09
@@ -41,10 +42,12 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
     private ArrayList<CommentInfoResp> items;
     private Long userId;
     SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E");
+    LoadingWaitUtils waits;
     private Gson parser = new GsonBuilder().serializeNulls().create();
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
+            waits.cancel();
             if (msg.what == 0x257){
                 String newDetail = (String) msg.obj;
                 CommentResp result = parser.fromJson(newDetail, CommentResp.class);
@@ -69,6 +72,7 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
         this.context = context;
         this.items = items;
         this.userId = userId;
+        waits = new LoadingWaitUtils(context);
     }
 
     @Override
@@ -109,6 +113,12 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
             holder.btnRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (!CommonUtil.isLogin(context)){
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                        return;
+                    }
+                    waits.show();
                     String url = context.getResources().getString(R.string.url_post_delete_comments);
                     String accessToken = LocalDataManager.getAccessToken(context);
                     HashMap<String, String> params = new HashMap<String, String>();
@@ -134,6 +144,7 @@ public class CommontsAdapter extends RecyclerView.Adapter<CommontsAdapter.Commen
             context.startActivity(intent);
             return;
         }
+        waits.show();
         String url = context.getResources().getString(R.string.url_post_stick_top);
         String accessToken = LocalDataManager.getAccessToken(context);
         HashMap<String, String> params = new HashMap<String, String>();
