@@ -72,6 +72,7 @@
     <string name="url_post_my_news_delete_comments">http://120.25.97.250:8008/xiaozhong/info/deleteComments?accessToken=</string>
     <string name="url_post_delete_my_news">http://120.25.97.250:8008/xiaozhong/info/deleteXiaozhongNews?accessToken=</string>
     <string name="url_post_change_name">http://120.25.97.250:8008/user/info/updateUserInfo?accessToken=</string>
+    <string name="url_get_post_quality">http://120.25.97.250:8008/xiaozhong/info/publishQualification?accessToken=</string>
 
     <string name="change_new_password">new password</string>
     <string name="change_old_password">old password</string>

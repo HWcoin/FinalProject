@@ -24,8 +24,10 @@ import java.util.HashMap;
 import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.dojo.resp.CurPointBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
+import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.ImageUploadManager;
 import spencer.cn.finalproject.manager.LocalDataManager;
+import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.BitmapUtil;
 import spencer.cn.finalproject.util.LoadingWaitUtils;
 import spencer.cn.finalproject.util.PublicVar;
@@ -58,9 +60,34 @@ public class CreateNews extends BaseFragment {
                 }else{
                     Toast.makeText(getActivity(), postResult.getMessage(), Toast.LENGTH_LONG).show();
                 }
+            }else if (msg.what == 0xe22){
+                String quality = (String) msg.obj;
+                CurPointBean postResult = parser.fromJson(quality, CurPointBean.class);
+                if (postResult.getCode() != 200){
+                    Toast.makeText(getActivity(), postResult.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (CommonUtil.isLogin(getActivity())){
+            String url = getActivity().getResources().getString(R.string.url_get_post_quality);
+            String accessToken = LocalDataManager.getAccessToken(getActivity());
+            NetWorkManager.doGet(url + accessToken, new NewsCallBack() {
+                @Override
+                public void onNewsReturn(String gstring) {
+                    Message msg = new Message();
+                    msg.what = 0xe22;
+                    msg.obj = gstring;
+                    handler.sendMessage(msg);
+                }
+            });
+        }
+    }
+
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

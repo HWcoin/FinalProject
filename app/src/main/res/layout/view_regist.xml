@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/textInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
@@ -42,7 +43,36 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edt_regist_code"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:hint="@string/prompt_register_code"
+                    android:imeActionId="@+id/login"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="18sp"
+                    android:paddingLeft="8dp"
+                    android:layout_height="wrap_content" />
 
+                <Button
+                    android:id="@+id/btn_getRegistCode"
+                    android:layout_width="0dp"
+                    android:elevation="16dp"
+                    android:background="@drawable/rect_quad"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/get_register_code" />
+            </LinearLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/sign_in_password"
                 android:layout_marginLeft="16dp"
@@ -122,36 +152,7 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/edt_regist_code"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:hint="@string/prompt_register_code"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textSize="18sp"
-                    android:paddingLeft="8dp"
-                    android:layout_height="wrap_content" />
 
-                <Button
-                    android:id="@+id/btn_getRegistCode"
-                    android:layout_width="0dp"
-                    android:elevation="16dp"
-                    android:background="@drawable/rect_quad"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/get_register_code" />
-            </LinearLayout>
 
             <Button
                 android:id="@+id/email_sign_in_ok"
