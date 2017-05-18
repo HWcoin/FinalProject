@@ -175,6 +175,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
+                                android:id="@+id/btn_check_version"
+                                android:text="版本检查"
+                                android:elevation="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp" />
+                            <Button
                                 android:id="@+id/btn_logout"
                                 android:text="登出"
                                 android:elevation="8dp"

@@ -25,8 +25,8 @@ import spencer.cn.finalproject.adapter.FunctionsFragmentAdapter;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.BaseNewType;
 import spencer.cn.finalproject.dojo.GsonNews;
-import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.NewType;
+import spencer.cn.finalproject.dojo.UserConfig;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.LocalDataManager;
 import spencer.cn.finalproject.manager.NetWorkManager;
@@ -143,9 +143,9 @@ public class FirstPageFragment extends Fragment {
     }
     private void initTabsDatas(){
         BaseNewType baseNewType = loadBaseConfig(getActivity());
-        LoginBean loginBean = BaseApplication.getLoginBean();
-        if (loginBean!=null){
-            List<Long> types_uid = loginBean.getData().getUserConfig().getUserNewType();
+        UserConfig config = BaseApplication.getConfig();
+        if (config!=null){
+            List<Long> types_uid = config.getUserNewType();
             news_types = new String[types_uid.size()];
             for (int i=0; i < types_uid.size(); i++){
                 NewType _type = getNewTypeByUid(types_uid.get(i));
@@ -224,10 +224,10 @@ public class FirstPageFragment extends Fragment {
     }
     ///////////////根据新闻类型名字获取新闻类型对象
     private NewType getNewTypeByName(String name){
-        LoginBean loginBean = BaseApplication.getLoginBean();
+        UserConfig loginBean = BaseApplication.getConfig();
         List<NewType> lists = null;
         if (loginBean != null){
-            lists = loginBean.getData().getUserConfig().getNewTypes();
+            lists = loginBean.getNewTypes();
         }else {
             lists = LocalDataManager.loadBaseConfig(getActivity()).getData();
         }
@@ -241,8 +241,9 @@ public class FirstPageFragment extends Fragment {
     }
     /////////////////根据uid获取新闻类型对象
     private NewType getNewTypeByUid(Long uid){
-        LoginBean loginBean = BaseApplication.getLoginBean();
-        List<NewType> lists = loginBean.getData().getUserConfig().getNewTypes();
+//        LoginBean loginBean = BaseApplication.getLoginBean();
+        UserConfig config = BaseApplication.getConfig();
+        List<NewType> lists = config.getNewTypes();
         for (int i=0; i < lists.size(); i++){
             if (uid == lists.get(i).getUid()){
                 return lists.get(i);

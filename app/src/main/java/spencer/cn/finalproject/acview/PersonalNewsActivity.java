@@ -54,7 +54,11 @@ public class PersonalNewsActivity extends BaseActivity {
                 if (personal.getCode() == 200) {
                     BaseApplication application = (BaseApplication) getApplication();
                     if (myType != null){
-                        application.getLoginBean().getData().getUserConfig().setUserNewType(myType);
+                        UserConfig config = BaseApplication.getConfig();
+                        if (config != null){
+                            config.setUserNewType(myType);
+                        }
+//                        application.getLoginBean().getData().getUserConfig().setUserNewType(myType);
                     }
                     finish();
                 } else {

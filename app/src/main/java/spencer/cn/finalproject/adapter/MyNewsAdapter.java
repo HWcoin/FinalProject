@@ -24,7 +24,7 @@ import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.acview.CommentActivity;
 import spencer.cn.finalproject.acview.LoginActivity;
 import spencer.cn.finalproject.application.BaseApplication;
-import spencer.cn.finalproject.dojo.LoginBean;
+import spencer.cn.finalproject.dojo.UserInfo;
 import spencer.cn.finalproject.dojo.XiaozhongNewResp;
 import spencer.cn.finalproject.dojo.resp.MyListBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
@@ -95,11 +95,12 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ItemViewHo
         holder.tvTitle.setOnClickListener(holder);
         holder.tvSource.setOnClickListener(holder);
         holder.tvDate.setOnClickListener(holder);
-        LoginBean loginBean = BaseApplication.getLoginBean();
+//        LoginBean loginBean = BaseApplication.getLoginBean();
+        UserInfo userInfo = BaseApplication.getInfo();
         Long userId = -1L;
-        if (loginBean == null) {
+        if (userInfo == null) {
         } else{
-            userId = BaseApplication.getLoginBean().getData().getUser().getUid();
+            userId = userInfo.getUid();
         }
         if (userId != items.get(position).getUserId()){
             holder.btnDelete.setVisibility(View.GONE);

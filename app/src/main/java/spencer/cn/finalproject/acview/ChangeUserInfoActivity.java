@@ -33,8 +33,8 @@ import spencer.cn.finalproject.dojo.CollectionListResp;
 import spencer.cn.finalproject.dojo.CommentInfoResp;
 import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.IntegralInfoResp;
-import spencer.cn.finalproject.dojo.LoginBean;
 import spencer.cn.finalproject.dojo.UploadImgResp;
+import spencer.cn.finalproject.dojo.UserInfo;
 import spencer.cn.finalproject.dojo.resp.CollectListBean;
 import spencer.cn.finalproject.dojo.resp.GetCommentsResp;
 import spencer.cn.finalproject.dojo.resp.PointsDetailsBean;
@@ -45,7 +45,6 @@ import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.LoadingWaitUtils;
 import spencer.cn.finalproject.util.PublicVar;
 
-import static spencer.cn.finalproject.application.BaseApplication.getLoginBean;
 import static spencer.cn.finalproject.manager.NetWorkManager.mapToGetParams;
 
 public class ChangeUserInfoActivity extends BaseActionBarActivity {
@@ -160,7 +159,9 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                         datas = comments.getData();
                         Long userId = -1L;
                         if (CommonUtil.isLogin(ChangeUserInfoActivity.this)){
-                            userId = getLoginBean().getData().getUser().getUid();
+//                            userId = getLoginBean().getData().getUser().getUid();
+
+                            userId = BaseApplication.getInfo().getUid();
                         }
                         adapter = new CommontsAdapter(ChangeUserInfoActivity.this, datas, userId);
                         commentsContent.setAdapter(adapter);
@@ -634,9 +635,10 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
             }
         }else if (viewType == PublicVar.VIEW_CHANGE_NAME){
             changenameView.setVisibility(View.VISIBLE);
-            LoginBean bena =  BaseApplication.getLoginBean();
-            if (bena != null){
-                edtName.setHint(bena.getData().getUser().getUsername());
+//            LoginBean bena =  BaseApplication.getLoginBean();
+            UserInfo userInfo = BaseApplication.getInfo();
+            if (userInfo != null){
+                edtName.setHint(userInfo.getUsername());
             }
         }
     }

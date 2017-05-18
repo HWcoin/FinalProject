@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,8 +32,9 @@ import spencer.cn.finalproject.acview.HistoryDetailActivity;
 import spencer.cn.finalproject.acview.LoginActivity;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.GsonNews;
-import spencer.cn.finalproject.dojo.LoginBean;
+import spencer.cn.finalproject.dojo.UserInfo;
 import spencer.cn.finalproject.dojo.resp.CurPointBean;
+import spencer.cn.finalproject.dojo.resp.VersionResp;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
@@ -59,6 +61,7 @@ public class MePageFragment extends Fragment {
     private Button pointsDetail;
     private Button collect;
     private Button changeName;
+    private Button checkVersion;
 
     private LoadingWaitUtils waiting;
 
@@ -94,10 +97,20 @@ public class MePageFragment extends Fragment {
                 Toast.makeText(getActivity(), checkBean.getMessage(), Toast.LENGTH_LONG).show();
             }else if (msg.what == 0xfc3){
                 String pointsString = (String) msg.obj;
-                Log.e("xxxxxx", pointsString);
                 CurPointBean checkBean = parser.fromJson(pointsString, CurPointBean.class);
                 if (checkBean != null)
                     DialogUtil.dialog(getActivity(), "您当前的积分：" + checkBean.getData().getIntegral() + "\n当前排名："+checkBean.getData().getSeq());
+            }else if (msg.what == 0xfc4){
+                String versionInfo = (String) msg.obj;
+                VersionResp result = parser.fromJson(versionInfo, VersionResp.class);
+                if (result != null){
+//                    判断版本是否更新
+                    Uri uri = Uri.parse("http://" + result.getData().getUrl());
+                    startActivity(new Intent(Intent.ACTION_VIEW,uri));
+                }
+//               {"code":200,"message":"成功",
+// "data":{"version":"1.1","url":"www.baodu.com","remarks":"版本更新"}}
+
             }
         }
     };
@@ -165,15 +178,17 @@ public class MePageFragment extends Fragment {
         pointsDetail = (Button) v.findViewById(R.id.btn_points_detail);
         collect = (Button) v.findViewById(R.id.btn_my_collect);
         changeName = (Button) v.findViewById(R.id.btn_change_user_name);
+        checkVersion = (Button) v.findViewById(R.id.btn_check_version);
     }
     public void refreshDatas(){
 
-        LoginBean loginBean = BaseApplication.getLoginBean();
-        if (loginBean!=null && loginBean.getData()!=null && loginBean.getData().getUser()!=null){
-            String username = loginBean.getData().getUser().getUsername();
+//        LoginBean loginBean = BaseApplication.getLoginBean();
+        UserInfo userInfo = BaseApplication.getInfo();
+        if (userInfo!=null){
+            String username = userInfo.getUsername();
             username = (username==null) ? "请登录" : username;
             login.setText(username);
-            String pic = loginBean.getData().getUser().getAvatar();
+            String pic = userInfo.getAvatar();
             String url = getActivity().getResources().getString(R.string.url_download_small_img)+pic;
             Picasso.with(getActivity()).load(url).into(icon);
         }else {
@@ -370,6 +385,23 @@ public class MePageFragment extends Fragment {
                 Intent cui = new Intent(getActivity(), ChangeUserInfoActivity.class);
                 cui.putExtra(PublicVar.VIEW_NAME, PublicVar.VIEW_MY_COLLECT);
                 startActivity(cui);
+            }
+        });
+        checkVersion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = getActivity().getResources().getString(R.string.url_get_check_version);
+                String type = "xiaozhong-client";
+                String connatUrl = url + "?type=" + type;
+                NetWorkManager.doGet(connatUrl, new NewsCallBack() {
+                    @Override
+                    public void onNewsReturn(String gstring) {
+                        Message msg = new Message();
+                        msg.what = 0xfc4;
+                        msg.obj = gstring;
+                        executor.sendMessage(msg);
+                    }
+                });
             }
         });
     }

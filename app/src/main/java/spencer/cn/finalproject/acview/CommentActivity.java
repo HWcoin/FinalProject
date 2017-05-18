@@ -28,6 +28,7 @@ import spencer.cn.finalproject.R;
 import spencer.cn.finalproject.adapter.MyNewsComAdapter;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.CommentInfoResp;
+import spencer.cn.finalproject.dojo.UserInfo;
 import spencer.cn.finalproject.dojo.resp.CommentResp;
 import spencer.cn.finalproject.dojo.resp.MyNewsBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
@@ -73,7 +74,11 @@ public class CommentActivity extends BaseActionBarActivity {
                     curPage = 1;
                     Toast.makeText(CommentActivity.this, "发表成功", Toast.LENGTH_SHORT).show();
                         datas = result.getData();
-                        Long uid = BaseApplication.getLoginBean().getData().getUser().getUid();
+                        Long uid = -1L;
+                        UserInfo userInfo = BaseApplication.getInfo();
+                        if (userInfo != null){
+                            uid = userInfo.getUid();
+                        }
                         adapter = new MyNewsComAdapter(CommentActivity.this, datas, uid);
                         commentsContent.setAdapter(adapter);
 
@@ -89,7 +94,12 @@ public class CommentActivity extends BaseActionBarActivity {
                     curPage = 1;
                     if (datas==null){
                         datas = result.getData();
-                        Long uid = BaseApplication.getLoginBean().getData().getUser().getUid();
+                        Long uid = -1L;
+                        UserInfo userInfo = BaseApplication.getInfo();
+                        if (userInfo != null){
+                            uid = userInfo.getUid();
+                        }
+//                        Long uid = BaseApplication.getLoginBean().getData().getUser().getUid();
                         adapter = new MyNewsComAdapter(CommentActivity.this, datas, uid);
                         commentsContent.setAdapter(adapter);
                     }else{
