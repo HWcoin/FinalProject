@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:card="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_me">
 
 
@@ -15,14 +16,14 @@
                 android:elevation="16dp"
                 android:orientation="vertical">
 
-                <ImageView
+                <spencer.cn.finalproject.customview.CircleImageView
                     android:id="@+id/iv_player"
                     android:layout_width="78dp"
                     android:layout_height="78dp"
                     android:layout_margin="8dp"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/rect_quad"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/ic_action_icon"/>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -124,6 +125,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <Button
+                                android:gravity="left|center_vertical"
+                                android:background="@drawable/rect_quad_white"
+                                android:drawableLeft="@mipmap/ic_action_document"
                                 android:id="@+id/btn_me_history_record"
                                 android:layout_width="match_parent"
                                 android:text="@string/prompt_history_record"
@@ -136,55 +140,79 @@
                                 android:id="@+id/btn_my_collect"
                                 android:text="我的收藏"
                                 android:elevation="8dp"
+                                android:background="@drawable/rect_quad_white"
+                                android:gravity="left|center_vertical"
+                                android:drawableLeft="@mipmap/ic_action_bookmark"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
                                 android:id="@+id/btn_points_detail"
                                 android:text="积分详情"
                                 android:elevation="8dp"
+                                android:background="@drawable/rect_quad_white"
+                                android:gravity="left|center_vertical"
+                                android:drawableLeft="@mipmap/ic_action_list_2"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
                                 android:id="@+id/btn_rules_point"
                                 android:text="积分规则说明"
                                 android:elevation="8dp"
+                                android:background="@drawable/rect_quad_white"
+                                android:gravity="left|center_vertical"
+                                android:drawableLeft="@mipmap/ic_action_ruler"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
                                 android:id="@+id/btn_customer_service"
                                 android:text="联系客服"
                                 android:elevation="8dp"
+                                android:background="@drawable/rect_quad_white"
+                                android:gravity="left|center_vertical"
+                                android:drawableLeft="@mipmap/ic_action_phone_start"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
                                 android:elevation="8dp"
+                                android:background="@drawable/rect_quad_white"
                                 android:id="@+id/btn_forget_password"
                                 android:text="忘记密码"
+                                android:gravity="left|center_vertical"
+                                android:drawableLeft="@mipmap/ic_action_lock_closed"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
                                 android:id="@+id/btn_change_user_name"
                                 android:text="修改昵称"
                                 android:elevation="8dp"
+                                android:background="@drawable/rect_quad_white"
+                                android:gravity="left|center_vertical"
+                                android:drawableLeft="@mipmap/ic_action_tag"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
                                 android:id="@+id/btn_change_password"
                                 android:text="修改密码"
                                 android:elevation="8dp"
+                                android:background="@drawable/rect_quad_white"
+                                android:gravity="left|center_vertical"
+                                android:drawableLeft="@mipmap/ic_action_tag"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
                                 android:id="@+id/btn_check_version"
                                 android:text="版本检查"
                                 android:elevation="8dp"
+                                android:background="@drawable/rect_quad_white"
+                                android:gravity="left|center_vertical"
+                                android:drawableLeft="@mipmap/ic_action_drop"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                             <Button
                                 android:id="@+id/btn_logout"
                                 android:text="登出"
                                 android:elevation="8dp"
-                                android:background="@color/red"
+                                android:background="@drawable/rect_quad_red"
                                 android:layout_width="match_parent"
                                 android:layout_height="64dp" />
                     </LinearLayout>

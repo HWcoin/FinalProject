@@ -25,4 +25,6 @@
     <color name="night_mode_dark_color">#DD4814</color>
     <color name="background_color">#FFFFFF</color>
     <color name="bg">#03a9f4</color>
+    <color name="btnBackground">#bdbdbd</color>
+    <color name="logout">#f44336</color>
 </resources>

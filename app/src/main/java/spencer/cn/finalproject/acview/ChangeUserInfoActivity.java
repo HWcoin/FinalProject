@@ -38,6 +38,7 @@ import spencer.cn.finalproject.dojo.UserInfo;
 import spencer.cn.finalproject.dojo.resp.CollectListBean;
 import spencer.cn.finalproject.dojo.resp.GetCommentsResp;
 import spencer.cn.finalproject.dojo.resp.PointsDetailsBean;
+import spencer.cn.finalproject.dojo.resp.UserNameResp;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.CommonUtil;
 import spencer.cn.finalproject.manager.LocalDataManager;
@@ -45,6 +46,7 @@ import spencer.cn.finalproject.manager.NetWorkManager;
 import spencer.cn.finalproject.util.LoadingWaitUtils;
 import spencer.cn.finalproject.util.PublicVar;
 
+import static spencer.cn.finalproject.application.BaseApplication.getInfo;
 import static spencer.cn.finalproject.manager.NetWorkManager.mapToGetParams;
 
 public class ChangeUserInfoActivity extends BaseActionBarActivity {
@@ -161,7 +163,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
                         if (CommonUtil.isLogin(ChangeUserInfoActivity.this)){
 //                            userId = getLoginBean().getData().getUser().getUid();
 
-                            userId = BaseApplication.getInfo().getUid();
+                            userId = getInfo().getUid();
                         }
                         adapter = new CommontsAdapter(ChangeUserInfoActivity.this, datas, userId);
                         commentsContent.setAdapter(adapter);
@@ -239,8 +241,10 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
             }else if (msg.what == 0xf99){
                 String rString = (String) msg.obj;
                 Log.e("x23", rString);
-                GsonNews bean = userparser.fromJson(rString, GsonNews.class);
+                UserNameResp bean = userparser.fromJson(rString, UserNameResp.class);
                 if (bean.getCode() == 200){
+                    UserInfo info = BaseApplication.getInfo();
+                    info.setUsername(bean.getData().getUsername());
                     finish();
                     Toast.makeText(ChangeUserInfoActivity.this, "修改成功", Toast.LENGTH_LONG).show();
                 }else {
@@ -636,7 +640,7 @@ public class ChangeUserInfoActivity extends BaseActionBarActivity {
         }else if (viewType == PublicVar.VIEW_CHANGE_NAME){
             changenameView.setVisibility(View.VISIBLE);
 //            LoginBean bena =  BaseApplication.getLoginBean();
-            UserInfo userInfo = BaseApplication.getInfo();
+            UserInfo userInfo = getInfo();
             if (userInfo != null){
                 edtName.setHint(userInfo.getUsername());
             }

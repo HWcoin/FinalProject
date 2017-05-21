@@ -67,6 +67,7 @@
                     android:gravity="center"/>
 
                 <Button
+                    android:background="@color/red"
                     android:id="@+id/btn_collect_delete"
                     android:text="删除"
                     android:layout_weight="1"

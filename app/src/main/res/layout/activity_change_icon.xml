@@ -21,6 +21,7 @@
     <Button
         android:id="@+id/btn_back"
         android:text="@string/confirm"
+        android:background="@drawable/rect_quad_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

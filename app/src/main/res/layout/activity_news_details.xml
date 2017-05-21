@@ -39,22 +39,26 @@
             android:layout_height="wrap_content" />
         <Button
             android:id="@+id/btn_send_commont"
-            android:text="发送"
             android:textSize="10sp"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@mipmap/ic_send_black"/>
         <Button
             android:id="@+id/btn_check_commonts"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:textSize="10sp"
-            android:text="评论"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@mipmap/ic_mode_comment_black"/>
 
         <Button
             android:id="@+id/btn_check_collect"
             android:textSize="10sp"
-            android:text="收藏"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
+            android:background="@mipmap/ic_favorite_black"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
     </LinearLayout>
 </LinearLayout>

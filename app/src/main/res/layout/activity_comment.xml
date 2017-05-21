@@ -112,7 +112,8 @@
             android:id="@+id/btn_send_mynews_commont"
             android:text="发送"
             android:textSize="10sp"
-            android:layout_width="70dp"
+            android:layout_width="50dp"
+            android:background="@mipmap/ic_send_black"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

@@ -9,7 +9,7 @@
         android:id="@+id/btn_complete_update"
         android:text="完成"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/rect_quad_white"
         android:layout_height="wrap_content" />
 
     <ScrollView
