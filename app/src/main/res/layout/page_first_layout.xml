@@ -16,6 +16,19 @@
         <!--app:tabTextColor="@color/black"-->
         <!--app:tabIndicatorColor="@color/green">-->
     <!--</android.support.design.widget.TabLayout>-->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="50dp">
+        <LinearLayout
+            android:background="@color/colorPrimary"
+            android:id="@+id/tab_container"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+    </HorizontalScrollView>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_refresh"
         android:layout_width="match_parent"

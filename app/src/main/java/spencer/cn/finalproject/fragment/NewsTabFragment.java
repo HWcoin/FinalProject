@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,11 +87,12 @@ public class NewsTabFragment extends Fragment {
     }
 
     public void refreshDatas(GsonNews requestNews){
-        newsAdapter = new ItemsAdapter(getActivity(), requestNews.getData());
+//        newsAdapter = new ItemsAdapter(getActivity(), requestNews.getData());
         if (newsItems != null){
-            newsItems.setAdapter(newsAdapter);
-//            newsAdapter.setItems(requestNews.getData());
-            newsAdapter.notifyDataSetChanged();
+            Log.e("xx", "suaxinshuju");
+//            newsItems.setAdapter(newsAdapter);
+            newsAdapter.setItems(requestNews.getData());
+//            newsAdapter.notifyDataSetChanged();
         }
     }
 

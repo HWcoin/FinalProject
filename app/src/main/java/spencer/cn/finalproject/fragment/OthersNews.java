@@ -44,36 +44,36 @@ public class OthersNews extends BaseFragment {
     private Handler newsHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-
+            refreshMyNews.setRefreshing(false);
             if (msg.what == 0xe23){
                 String gsonStrings = (String) msg.obj;
                 MyListBean result = parser.fromJson(gsonStrings, MyListBean.class);
-                if (result.getCode()==200){
-                    refreshMyNews.setRefreshing(false);
-                    if (datas==null || datas.size()==0){
-                        datas = result.getData();
-                        mynewsAdapter = new MyNewsAdapter(getActivity(), datas);
-                        mynewsItems.setAdapter(mynewsAdapter);
-                    }else{
-                        if (result.getData().size()<=0){
-                            Toast.makeText(getActivity(), "已经是全部内容了", Toast.LENGTH_LONG).show();
-                            return;
-                        }
+                if (datas==null || datas.size()==0){
+                    datas = result.getData();
+                    mynewsAdapter = new MyNewsAdapter(getActivity(), datas);
+                    mynewsItems.setAdapter(mynewsAdapter);
+                }else{
+                    if (result.getData().size()<=0){
+                        Toast.makeText(getActivity(), "已经是全部内容了", Toast.LENGTH_LONG).show();
+                        return;
+                    }
 //                        datas = result.getData();
-                        for (int i=0; i < datas.size(); i++){
-                            for (int j=0; j < result.getData().size(); j++){
-                                XiaozhongNewResp resp = result.getData().get(j);
-                                if (resp.getUid() == datas.get(i).getUid()){
-                                    result.getData().remove(resp);
-                                    break;
-                                }
+                    for (int i=0; i < datas.size(); i++){
+                        for (int j=0; j < result.getData().size(); j++){
+                            XiaozhongNewResp resp = result.getData().get(j);
+                            if (resp.getUid() == datas.get(i).getUid()){
+                                result.getData().remove(resp);
+                                break;
                             }
                         }
-                        for (int i=0; i < result.getData().size(); i++){
-                            datas.add(0, result.getData().get(i));
-                        }
-                        mynewsAdapter.setItems(datas);
                     }
+                    for (int i=0; i < result.getData().size(); i++){
+                        datas.add(0, result.getData().get(i));
+                    }
+                    mynewsAdapter.setItems(datas);
+                }
+                if (result.getCode()==200){
+                    refreshMyNews.setRefreshing(false);
                 }else {
                     Toast.makeText(getActivity(), "timeout", Toast.LENGTH_LONG).show();
                 }

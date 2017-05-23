@@ -46,12 +46,12 @@ public class MyNews extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
 
+            refreshMyNews.setRefreshing(false);
             if (msg.what == 0xe12){
                 String gsonStrings = (String) msg.obj;
                 Log.e("xx", gsonStrings);
                 MyListBean result = parser.fromJson(gsonStrings, MyListBean.class);
                 if (result.getCode()==200){
-                    refreshMyNews.setRefreshing(false);
                     if (datas==null || datas.size()==0){
                         datas = result.getData();
                         mynewsAdapter.setItems(datas);

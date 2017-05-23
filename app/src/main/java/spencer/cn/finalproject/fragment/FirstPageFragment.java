@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,6 +41,8 @@ import static spencer.cn.finalproject.manager.LocalDataManager.loadBaseConfig;
 public class FirstPageFragment extends Fragment {
     private AppCompatActivity activity;
 //    private TabLayout subTab;
+    private ViewGroup tabContainer;
+    private Button[] tabs = new Button[20];
     private ViewPager subPages;
     private SwipeRefreshLayout refresh;
     ArrayList<NewsTabFragment> fragmentList;
@@ -56,7 +60,8 @@ public class FirstPageFragment extends Fragment {
                 NewsTabFragment cur = fragmentList.get(msg.arg1);
                 NewType _type = cur.getType();
                 String cachefilename = _type.getType().concat(".txt");
-                LocalDataManager.pullToCache(getActivity(), requestNews, cachefilename);
+                if (requestNews.getData().size()>0)
+                    LocalDataManager.pullToCache(getActivity(), requestNews, cachefilename);
                 cur.refreshDatas(requestNews);
                 refresh.setRefreshing(false);
             }
@@ -107,6 +112,7 @@ public class FirstPageFragment extends Fragment {
 
     private void initViews(View v) {
         //初始化ViewPager
+        tabContainer = (ViewGroup) v.findViewById(R.id.tab_container);
         refresh = (SwipeRefreshLayout) v.findViewById(R.id.srl_refresh);
         this.subPages = (ViewPager) v.findViewById(R.id.vp_sub_pages);
 //        this.subTab = (TabLayout) v.findViewById(R.id.layout_sub_tab);
@@ -159,6 +165,41 @@ public class FirstPageFragment extends Fragment {
                 news_types[i] = baseNewType.getData().get(i).getTypeName();
             }
         }
+        afterInitDatas();
+    }
+
+    private void afterInitDatas(){
+        tabContainer.removeAllViews();
+        for (int i=0; i < news_types.length; i++){
+            if (tabs[i] == null){
+                tabs[i] = createButtons(news_types[i]);
+            }else {
+                tabs[i].setText(news_types[i]);
+            }
+            final int finalI = i;
+            tabs[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    subPages.setCurrentItem(finalI);
+                    for (int j=0; j < news_types.length; j++){
+                        if (j == finalI){
+                            tabs[j].setTextColor(getActivity().getResources().getColor(R.color.white));
+                        }else{
+                            tabs[j].setTextColor(getActivity().getResources().getColor(R.color.black));
+                        }
+                    }
+                }
+            });
+            tabContainer.addView(tabs[i], i);
+        }
+    }
+
+    private Button createButtons(String title){
+        Button instance = new Button(getActivity());
+        instance.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        instance.setText(title);
+        instance.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        return instance;
     }
     private void refreshDatas(){
         initTabsDatas();
@@ -191,6 +232,22 @@ public class FirstPageFragment extends Fragment {
 
         fragmentAdapter = new FunctionsFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, news_types);
         this.subPages.setAdapter(fragmentAdapter);//给ViewPager设置适配器
+        subPages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tabs[position].performClick();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 //        this.subTab.setupWithViewPager(this.subPages);//将TabLayout和ViewPager关联起来。
 //        this.subTab.setTabsFromPagerAdapter(fragmentAdapter);//给Tabs设置适配器
 //        this.subTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

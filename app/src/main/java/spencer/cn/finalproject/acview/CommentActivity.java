@@ -54,7 +54,7 @@ public class CommentActivity extends BaseActionBarActivity {
     private Handler newsHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-
+            refresharticalComment.setRefreshing(false);
             if (msg.what == 0xee1) {
                 String gsonStrings = (String) msg.obj;
                 MyNewsBean result = parser.fromJson(gsonStrings, MyNewsBean.class);
@@ -107,8 +107,23 @@ public class CommentActivity extends BaseActionBarActivity {
                             Toast.makeText(CommentActivity.this, "这已经是全部喽", Toast.LENGTH_LONG).show();
                             return;
                         }
+
+//                        排除相同
+                        for (int i=0; i<datas.size();i++){
+                            int idx = -1;
+                            for (int j=0; j < result.getData().size(); j++){
+
+                                if (datas.get(i).getCommentId() == result.getData().get(j).getCommentId()){
+                                    idx = j;
+                                    break;
+                                }
+                            }
+                            if (idx != -1){
+                                result.getData().remove(idx);
+                            }
+                        }
                         for(int i=0; i < result.getData().size(); i++){
-                            datas.add(0, result.getData().get(i));
+                            datas.add(result.getData().get(i));
                         }
                         adapter.setItems(datas);
                     }
@@ -205,9 +220,9 @@ public class CommentActivity extends BaseActionBarActivity {
             @Override
             public void onRefresh() {
                 //访问网络数据
-//                refreshComments.setRefreshing(false);
-//                curPage += 1;
-//                getComments(curUid, curPage);
+                requestForNewsDetail(curMyNewsId);
+                curPage = 1;
+                requestForCommentDetails(curMyNewsId);
             }
         });
 
