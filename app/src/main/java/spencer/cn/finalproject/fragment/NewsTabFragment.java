@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,7 @@ public class NewsTabFragment extends Fragment {
     private RecyclerView newsItems;
     private ItemsAdapter newsAdapter;
     private NewType _type;
+    private View _view;
     Gson parser = new GsonBuilder().serializeNulls().create();
     private Handler newsHandler = new Handler(){
         @Override
@@ -59,7 +59,6 @@ public class NewsTabFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.e("xe", "onstart");
 //        requestForDatas();
     }
     public static NewsTabFragment newInstance(NewType type){
@@ -79,9 +78,12 @@ public class NewsTabFragment extends Fragment {
         View view = inflater.inflate(R.layout.page_news_layout, container,false);
         initViews(view);
         requestForDatas();
+        _view = view;
         return view;
     }
-
+    public View getCustomView(){
+        return this._view;
+    }
 
     public void refreshDatas(GsonNews requestNews){
         newsAdapter = new ItemsAdapter(getActivity(), requestNews.getData());

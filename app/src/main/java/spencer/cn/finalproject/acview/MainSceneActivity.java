@@ -26,6 +26,7 @@ import spencer.cn.finalproject.adapter.ModuleFragmentAdatper;
 import spencer.cn.finalproject.application.BaseApplication;
 import spencer.cn.finalproject.dojo.BaseNewType;
 import spencer.cn.finalproject.dojo.UploadImgResp;
+import spencer.cn.finalproject.dojo.UserInfo;
 import spencer.cn.finalproject.fragment.FirstPageFragment;
 import spencer.cn.finalproject.fragment.GroupPageFragment;
 import spencer.cn.finalproject.fragment.HotNewsFragment;
@@ -52,6 +53,8 @@ public class MainSceneActivity extends BaseActionBarActivity {//implements IActi
                 String gsonStrings = (String) msg.obj;
                 Log.e("e", gsonStrings);
                 UploadImgResp registResp = parser.fromJson(gsonStrings, UploadImgResp.class);
+                UserInfo userInfo = BaseApplication.getInfo();
+                userInfo.setAvatar(registResp.getData());
                 Toast.makeText(MainSceneActivity.this, registResp.getMessage(), Toast.LENGTH_LONG).show();
             }
         }

@@ -16,7 +16,7 @@
                 android:elevation="16dp"
                 android:orientation="vertical">
 
-                <spencer.cn.finalproject.customview.CircleImageView
+                <ImageView
                     android:id="@+id/iv_player"
                     android:layout_width="78dp"
                     android:layout_height="78dp"

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -39,7 +38,7 @@ import static spencer.cn.finalproject.manager.LocalDataManager.loadBaseConfig;
 
 public class FirstPageFragment extends Fragment {
     private AppCompatActivity activity;
-    private TabLayout subTab;
+//    private TabLayout subTab;
     private ViewPager subPages;
     private SwipeRefreshLayout refresh;
     ArrayList<NewsTabFragment> fragmentList;
@@ -88,9 +87,12 @@ public class FirstPageFragment extends Fragment {
 //            this.fragmentAdapter = null;
 //            fragmentAdapter = new FunctionsFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, news_types);
 //            subPages.setAdapter(fragmentAdapter);
-            fragmentAdapter.notifyDataSetChanged();
+            fragmentAdapter.updateData(fragmentList);
+            subPages.setCurrentItem(0);
         }
 //        refreshDatas();
+//     java.lang.IllegalStateException: Recursive entry to executePendingTransactions
+
     }
 
     @Override
@@ -107,8 +109,8 @@ public class FirstPageFragment extends Fragment {
         //初始化ViewPager
         refresh = (SwipeRefreshLayout) v.findViewById(R.id.srl_refresh);
         this.subPages = (ViewPager) v.findViewById(R.id.vp_sub_pages);
-        this.subTab = (TabLayout) v.findViewById(R.id.layout_sub_tab);
-        this.subTab.setTabMode(TabLayout.MODE_SCROLLABLE);
+//        this.subTab = (TabLayout) v.findViewById(R.id.layout_sub_tab);
+//        this.subTab.setTabMode(TabLayout.MODE_SCROLLABLE);
         this.subPages.setOffscreenPageLimit(20);
 
 
@@ -174,11 +176,11 @@ public class FirstPageFragment extends Fragment {
         
         initTabsDatas();
 
-        for (int i=0; i < news_types.length; i++){
-            TabLayout.Tab  tab = this.subTab.newTab();
-            tab.setText(news_types[i]);
-            this.subTab.addTab(tab);
-        }
+//        for (int i=0; i < news_types.length; i++){
+//            TabLayout.Tab  tab = this.subTab.newTab();
+//            tab.setText(news_types[i]);
+//            this.subTab.addTab(tab);
+//        }
 
         fragmentList = new ArrayList<>();
         for (int i = 0; i < news_types.length; i++) {
@@ -189,20 +191,20 @@ public class FirstPageFragment extends Fragment {
 
         fragmentAdapter = new FunctionsFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, news_types);
         this.subPages.setAdapter(fragmentAdapter);//给ViewPager设置适配器
-        this.subTab.setupWithViewPager(this.subPages);//将TabLayout和ViewPager关联起来。
-        this.subTab.setTabsFromPagerAdapter(fragmentAdapter);//给Tabs设置适配器
-        this.subTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                subPages.setCurrentItem(tab.getPosition());
-            }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+//        this.subTab.setupWithViewPager(this.subPages);//将TabLayout和ViewPager关联起来。
+//        this.subTab.setTabsFromPagerAdapter(fragmentAdapter);//给Tabs设置适配器
+//        this.subTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                subPages.setCurrentItem(tab.getPosition());
+//            }
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//            }
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//            }
+//        });
         /**
          * 解决SwipeRefreshLayout与ViewPager冲突
          */

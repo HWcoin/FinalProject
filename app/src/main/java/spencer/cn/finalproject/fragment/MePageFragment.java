@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,6 @@ import spencer.cn.finalproject.acview.ChangeUserInfoActivity;
 import spencer.cn.finalproject.acview.HistoryDetailActivity;
 import spencer.cn.finalproject.acview.LoginActivity;
 import spencer.cn.finalproject.application.BaseApplication;
-import spencer.cn.finalproject.customview.CircleImageView;
 import spencer.cn.finalproject.dojo.GsonNews;
 import spencer.cn.finalproject.dojo.UserInfo;
 import spencer.cn.finalproject.dojo.resp.CurPointBean;
@@ -48,7 +48,7 @@ import spencer.cn.finalproject.util.PublicVar;
  */
 
 public class MePageFragment extends Fragment {
-    private CircleImageView icon;
+    private ImageView icon;
     private TextView login;//用户名
     private TextView signForPoints;//签到
     private TextView usrPoints;
@@ -129,11 +129,11 @@ public class MePageFragment extends Fragment {
                 login.setText(newName);
             }
         }
-        if (icon != null && BaseApplication.getInfo()!=null){
-            String pic = BaseApplication.getInfo().getAvatar();
-            String url = getActivity().getResources().getString(R.string.url_download_small_img)+pic;
-            Picasso.with(getActivity()).load(url).into(icon);
-        }
+//        if (icon != null && BaseApplication.getInfo()!=null){
+//            String pic = BaseApplication.getInfo().getAvatar();
+//            String url = getActivity().getResources().getString(R.string.url_download_small_img)+pic;
+//            Picasso.with(getActivity()).load(url).into(icon);
+//        }
         if (BaseApplication.getInfo() == null){
             login.setText("请登录");
             icon.setImageResource(R.mipmap.ic_action_icon);
@@ -163,7 +163,7 @@ public class MePageFragment extends Fragment {
     }
     //初始化控件
     public void initViews(View v){
-        icon = (CircleImageView) v.findViewById(R.id.iv_player);
+        icon = (ImageView) v.findViewById(R.id.iv_player);
         login = (TextView) v.findViewById(R.id.btn_name);
         history = (Button) v.findViewById(R.id.btn_me_history_record);
         logout = (Button) v.findViewById(R.id.btn_logout);

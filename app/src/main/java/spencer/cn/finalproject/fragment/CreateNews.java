@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -21,7 +22,6 @@ import com.google.gson.GsonBuilder;
 import java.util.HashMap;
 
 import spencer.cn.finalproject.R;
-import spencer.cn.finalproject.customview.CircleImageView;
 import spencer.cn.finalproject.dojo.resp.CurPointBean;
 import spencer.cn.finalproject.iexport.NewsCallBack;
 import spencer.cn.finalproject.manager.CommonUtil;
@@ -37,7 +37,7 @@ import spencer.cn.finalproject.util.PublicVar;
  */
 
 public class CreateNews extends BaseFragment {
-    private CircleImageView pic;
+    private ImageView pic;
     private EditText title;
     private EditText content;
     private Button post;
@@ -100,9 +100,8 @@ public class CreateNews extends BaseFragment {
         wait = new LoadingWaitUtils(getActivity());
         return view;
     }
-
     private void initViews(View view) {
-        pic = (CircleImageView) view.findViewById(R.id.iv_xiaozhong_icon);
+        pic = (ImageView) view.findViewById(R.id.iv_xiaozhong_icon);
         title = (EditText) view.findViewById(R.id.edt_edit_xiaozhong_title);
         content = (EditText) view.findViewById(R.id.edt_edit_xiaozhong_content);
         post = (Button) view.findViewById(R.id.btn_post);

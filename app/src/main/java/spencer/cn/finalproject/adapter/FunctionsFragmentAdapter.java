@@ -3,9 +3,8 @@ package spencer.cn.finalproject.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.view.View;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class FunctionsFragmentAdapter extends FragmentStatePagerAdapter {
         this.fragTitles = fragTitles;
         this.fragmentManager = fm;
 
-//        setFragments(fragments);
+        setFragments(fragments);
     }
 
     @Override
@@ -51,20 +50,16 @@ public class FunctionsFragmentAdapter extends FragmentStatePagerAdapter {
 
     private void setFragments(ArrayList<NewsTabFragment> mFragmentList) {
         if(fragments != null){
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            for(Fragment f: fragments){
-                fragmentTransaction.remove(f);
-            }
-            fragmentTransaction.commit();
-            fragmentManager.executePendingTransactions();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            for(Fragment f: fragments){
+//                fragmentTransaction.remove(f);
+//            }
+//            fragmentTransaction.commit();
+//            fragmentManager.executePendingTransactions();
+            fragments.clear();
         }
         this.fragments = mFragmentList;
         notifyDataSetChanged();
-//        if(this.fragments != null){
-//            fragments.clear();
-//        }
-//        this.fragments = mFragmentList;
-//        notifyDataSetChanged();
     }
 
 //    public int getItemPosition(Object object) {
@@ -73,15 +68,22 @@ public class FunctionsFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        Log.e("remove", position+"");
         ((ViewPager)container).removeView( ((NewsTabFragment) object).getView());
     }
 
+//    @Override
+//    public Object instantiateItem(View collection, int position) {
+//        Log.e("create", position+"");
+//        View v = fragments.get(position).getCustomView();
+//        ((ViewPager)collection).addView(v);
+//        return v;
+//    }
+
+
     @Override
-    public Object instantiateItem(View collection, int position) {
-        View v = fragments.get(position).getView();
-        ((ViewPager)collection).addView(v);
-        return v;
+    public Object instantiateItem(ViewGroup container, int position) {
+        Log.e("create", position+"");
+        return super.instantiateItem(container, position);
     }
-
-
 }
